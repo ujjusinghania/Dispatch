@@ -22,12 +22,14 @@ CREATE TABLE member (
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
 
-CREATE TABLE table_name (
-    time_stamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    text       VARCHAR(500),
-    FOREIGN KEY (username) REFERENCES person(username) 
-    FOREIGN KEY (content)  REFERENCES content(ID)
-    PRIMARY KEY (username, content)
+CREATE TABLE comment (
+    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    text_comment VARCHAR(500),
+    username     VARCHAR(12),
+    content      INT      
+    FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY  (content)  REFERENCES content(ID) ON DELETE CASCADE,
+    PRIMARY KEY  (username, content)
 );
 
 CREATE TABLE content(
