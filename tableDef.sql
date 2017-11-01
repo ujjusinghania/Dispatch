@@ -11,15 +11,15 @@ CREATE TABLE friendgroup (
     username VARCHAR(12),
     description VARCHAR(100),
     PRIMARY KEY (username, name),
-    FOREIGN KEY (username) REFERENCES person(username)
+    FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE
 );
 
 CREATE TABLE member (
     username VARCHAR(12),
     name VARCHAR(40),
     PRIMARY KEY (username, name)
-    FOREIGN KEY (username) REFERENCES person(username),
-    FOREIGN KEY (name) REFERENCES friendgroup(name)
+    FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
 
 CREATE TABLE comment (
@@ -27,8 +27,8 @@ CREATE TABLE comment (
     text_comment VARCHAR(500),
     username     VARCHAR(12),
     content      INT      
-    FOREIGN KEY  (username) REFERENCES person(username),
-    FOREIGN KEY  (content)  REFERENCES content(ID),
+    FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY  (content)  REFERENCES content(ID) ON DELETE CASCADE,
     PRIMARY KEY  (username, content)
 );
 
