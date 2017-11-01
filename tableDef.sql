@@ -23,8 +23,8 @@ CREATE TABLE member (
 );
 
 CREATE TABLE table_name (
-    `time_stamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `text`       VARCHAR(500),
+    time_stamp  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    text        VARCHAR(500),
     FOREIGN KEY (username) REFERENCES person(username)
     FOREIGN KEY (content)  REFERENCES content(ID)
     PRIMARY KEY (username, content)
