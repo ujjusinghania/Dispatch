@@ -11,21 +11,21 @@ CREATE TABLE friendgroup (
     username VARCHAR(12),
     description VARCHAR(100),
     PRIMARY KEY (username, name),
-    FOREIGN KEY (username) REFERENCES person(username)
+    FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE
 );
 
 CREATE TABLE member (
     username VARCHAR(12),
     name VARCHAR(40),
     PRIMARY KEY (username, name)
-    FOREIGN KEY (username) REFERENCES person(username),
-    FOREIGN KEY (name) REFERENCES friendgroup(name)
+    FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
 
 CREATE TABLE table_name (
-    `time_stamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `text`       VARCHAR(500),
-    FOREIGN KEY (username) REFERENCES person(username)
+    time_stamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    text       VARCHAR(500),
+    FOREIGN KEY (username) REFERENCES person(username) 
     FOREIGN KEY (content)  REFERENCES content(ID)
     PRIMARY KEY (username, content)
 );
