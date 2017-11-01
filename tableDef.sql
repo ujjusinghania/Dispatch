@@ -30,3 +30,13 @@ CREATE TABLE table_name (
     PRIMARY KEY (username, content)
 );
 
+CREATE TABLE content(
+    ContentID int,
+    ContentDate date,
+    file_path VARCHAR(50),
+    ContentName VARCHAR(50),
+    is_pub BOOLEAN,
+    username VARCHAR(12),
+    PRIMARY KEY (ContentID)
+    FOREIGN KEY (username) REFERENCES person(username)
+);
