@@ -29,7 +29,7 @@ CREATE TABLE comment (
     contentID    INTEGER      
     FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE,
-    PRIMARY KEY  (username, contentID, username)
+    PRIMARY KEY  (username, contentID, time_stamp)
 );
 
 CREATE TABLE content(
@@ -39,6 +39,6 @@ CREATE TABLE content(
     contentName     VARCHAR(50),
     is_pub          BOOLEAN,
     username        VARCHAR(12),
-    PRIMARY KEY (ContentID)
+    PRIMARY KEY (contentID)
     FOREIGN KEY (username) REFERENCES person(username) 
 );
