@@ -33,12 +33,12 @@ CREATE TABLE comment (
 );
 
 CREATE TABLE content(
-    ContentID int,
-    ContentDate date,
+    contentID INTEGER,
+    contentDate DATE,
     file_path VARCHAR(50),
-    ContentName VARCHAR(50),
+    contentName VARCHAR(50),
     is_pub BOOLEAN,
     username VARCHAR(12),
     PRIMARY KEY (ContentID)
-    FOREIGN KEY (username) REFERENCES person(username)
+    FOREIGN KEY (username) REFERENCES person(username) 
 );
