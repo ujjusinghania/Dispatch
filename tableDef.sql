@@ -40,5 +40,17 @@ CREATE TABLE content(
     is_pub          BOOLEAN,
     username        VARCHAR(12),
     PRIMARY KEY (contentID)
-    FOREIGN KEY (username) REFERENCES person(username) 
+    FOREIGN KEY (username) REFERENCES person(username)
+);
+
+CREATE TABLE tag(
+    status          Boolean,
+    contentID       INTEGER,
+    taggedusername        VARCHAR(12),
+    taggerusername        VARCHAR(12),
+    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (taggedusername, taggerusername, contentID)
+    FOREIGN KEY (taggedusername) REFERENCES person(username)
+    FOREIGN KEY (taggerusername) REFERENCES person(username)
+    FOREIGN KEY (contentID) REFERENCES content(contentID)
 );
