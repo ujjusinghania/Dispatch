@@ -39,6 +39,6 @@ CREATE TABLE content(
     contentName     VARCHAR(50),
     is_pub          BOOLEAN,
     username        VARCHAR(12),
-    PRIMARY KEY (contentID)
-    FOREIGN KEY (username) REFERENCES person(username) 
+    PRIMARY KEY (contentID),
+    FOREIGN KEY (username) REFERENCES person(username) ON DELETE SET NULL 
 );
