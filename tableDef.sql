@@ -26,10 +26,10 @@ CREATE TABLE comment (
     time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text_comment VARCHAR(500),
     username     VARCHAR(12),
-    contentID    INTEGER      
+    contentID    INTEGER       
+    PRIMARY KEY  (username, contentID, time_stamp)
     FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE,
-    PRIMARY KEY  (username, contentID, time_stamp)
 );
 
 CREATE TABLE content(
@@ -39,6 +39,24 @@ CREATE TABLE content(
     contentName     VARCHAR(50),
     is_pub          BOOLEAN,
     username        VARCHAR(12),
+<<<<<<< HEAD
     PRIMARY KEY (contentID),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE SET NULL 
 );
+=======
+    PRIMARY KEY (contentID)
+    FOREIGN KEY (username) REFERENCES person(username)
+);
+
+CREATE TABLE tag(
+    status          Boolean,
+    contentID       INTEGER,
+    taggedusername        VARCHAR(12),
+    taggerusername        VARCHAR(12),
+    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (taggedusername, taggerusername, contentID)
+    FOREIGN KEY (taggedusername) REFERENCES person(username)
+    FOREIGN KEY (taggerusername) REFERENCES person(username)
+    FOREIGN KEY (contentID) REFERENCES content(contentID)
+);
+>>>>>>> 24b9a32a69ee1a50b7bd8cc248075fd64ab17f43
