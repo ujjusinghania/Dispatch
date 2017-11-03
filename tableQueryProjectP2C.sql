@@ -1,14 +1,8 @@
-SELECT contentID, contentName
-FROM share JOIN content ON (share.contentID = content.contentID)
-WHERE is_pub = TRUE OR name IN
-    (SELECT name
+SELECT content.contentID, contentName
+FROM share NATURAL JOIN content NATURAL JOIN member
+WHERE is_pub = TRUE OR (member.name, adminusername) IN
+    (SELECT member.name, adminusername
      FROM member
-     WHERE username = returnUsername('David'))
-
-CREATE FUNCTION returnUsername (nameParameter IN VARCHAR(20))
-RETURN VARCHAR(12)
-BEGIN
-    SELECT username
-    FROM person 
-    WHERE firstname = nameParameter
-END returnUsername; 
+     WHERE username IN (SELECT username
+    					FROM person 
+    					WHERE firstname = 'David'))
