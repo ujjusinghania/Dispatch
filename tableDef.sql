@@ -5,6 +5,8 @@ CREATE TABLE person (
     lastname    VARCHAR(20),    # Last name of person
     PRIMARY KEY (username)
 );
+ALTER TABLE person ADD INDEX(username);
+
 
 CREATE TABLE friendgroup (
     name        VARCHAR(40),    # Name of the friend group
@@ -13,6 +15,7 @@ CREATE TABLE friendgroup (
     PRIMARY KEY (username, name),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE
 );
+ALTER TABLE friendgroup ADD INDEX(name);
 
 CREATE TABLE member (
     username    VARCHAR(12),    # username of the member
