@@ -1,6 +1,6 @@
 CREATE TABLE person (
     username    VARCHAR(12),    # Username of the person
-    password    VARCHAR(14),    # MD5-hashed password
+    password    VARCHAR(100),    # MD5-hashed password
     firstname   VARCHAR(20),    # First name of person
     lastname    VARCHAR(20),    # Last name of person
     PRIMARY KEY (username)

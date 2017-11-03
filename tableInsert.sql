@@ -17,6 +17,7 @@ INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
 
 #inserting ann into family
+<<<<<<< HEAD
 INSERT INTO friendgroup VALUES ('family','AA');
 INSERT INTO member VALUES ('family','CC', 'AA');
 INSERT INTO member VALUES ('family','DD', 'AA');
@@ -31,6 +32,22 @@ INSERT INTO member VALUES ('family','EE', 'BB');
 INSERT INTO friendgroup VALUES ('besties','AA');
 INSERT INTO member VALUES ('besties','GG','AA');
 INSERT INTO member VALUES ('besties','HH','AA');
+=======
+INSERT INTO friendgroup VALUES ('family','AA', NULL );
+INSERT INTO member VALUES ('family','CC');
+INSERT INTO member VALUES ('family','DD');
+INSERT INTO member VALUES ('family','EE');
+
+# inserting bob into family
+INSERT INTO friendgroup VALUES ('family','BB', NULL);
+INSERT INTO member VALUES ('family','FF');
+INSERT INTO member VALUES ('family','EE');
+
+# inserting ann into besties
+INSERT INTO friendgroup VALUES ('besties','AA', NULL);
+INSERT INTO member VALUES ('besties','GG');
+INSERT INTO member VALUES ('besties','HH');
+>>>>>>> 06b41596867b2d4a281db655532e6cfc5fe5850a
 
 
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
