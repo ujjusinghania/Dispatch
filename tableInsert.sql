@@ -22,3 +22,11 @@ INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg');
 INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox');
 INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
+INSERT INTO friendgroup VALUES ('family','AA')
+INSERT INTO member VALUES ('family','CC')
+INSERT INTO member VALUES ('family','DD')
+INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('family','BB')
+INSERT INTO member VALUES ('family','FF')
+INSERT INTO member VALUES ('family','EE')
+
