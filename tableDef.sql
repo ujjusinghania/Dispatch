@@ -37,6 +37,8 @@ CREATE TABLE content (
     PRIMARY KEY (contentID),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE SET NULL 
 );
+ALTER TABLE content ADD INDEX(contentID);
+
 
 CREATE TABLE comment (
     time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  # Timestamp
