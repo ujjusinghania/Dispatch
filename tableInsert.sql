@@ -1,11 +1,3 @@
-CREATE TABLE person (
-    username    VARCHAR(12),
-    password    VARCHAR(14),
-    firstname   VARCHAR(20),
-    lastname    VARCHAR(20),
-    PRIMARY KEY (username)
-);
-
 DELETE FROM person;
 DELETE FROM friendgroup;
 DELETE FROM member;
