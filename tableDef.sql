@@ -18,8 +18,8 @@ CREATE TABLE friendgroup (
 ALTER TABLE friendgroup ADD INDEX(name);
 
 CREATE TABLE member (
-    username    VARCHAR(12),    # username of the member
     name        VARCHAR(40),    # name of the friend group
+    username    VARCHAR(12),    # username of the member
     adminusername VARCHAR(12),  # username of the group admin
     PRIMARY KEY (username, name, adminusername),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
