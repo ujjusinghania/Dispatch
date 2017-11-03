@@ -36,4 +36,20 @@ INSERT INTO content VALUES
 INSERT INTO share VALUES (1, 'family');
 
 
+# Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=2,​ ​caption​ ​=​ ​“My​ ​birthday​ ​party”,​ ​
+# is​ ​pub​ ​=​ ​False,​ ​and shared​ ​it​ ​with​ ​her​ ​“besties”​ ​FriendGroup.
+INSERT INTO content VALUES 
+	(2, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'My​ ​birthday​ ​party', FALSE, 'AA');
+
+INSERT INTO share VALUES (2, 'besties');
+
+
+# Bob​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=3,​ ​caption​ ​=​ ​“Rover”,​ ​
+# is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​his​ ​“family”​ ​FriendGroup.
+INSERT INTO content VALUES 
+	(3, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'Rover', FALSE, 'BB');
+
+INSERT INTO share VALUES (3, 'family');
+
+
 
