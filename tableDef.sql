@@ -1,15 +1,15 @@
 CREATE TABLE person (
-    username    VARCHAR(12),
-    password    VARCHAR(14),
-    firstname   VARCHAR(20),
-    lastname    VARCHAR(20),
+    username    VARCHAR(12),    # Username of the person
+    password    VARCHAR(14),    # MD5-hashed password
+    firstname   VARCHAR(20),    # First name of person
+    lastname    VARCHAR(20),    # Last name of person
     PRIMARY KEY (username)
 );
 
 CREATE TABLE friendgroup (
-    name        VARCHAR(40),
-    username    VARCHAR(12),
-    description VARCHAR(100),
+    name        VARCHAR(40),    # Name of the friend group
+    username    VARCHAR(12),    # UserName of the admin
+    description VARCHAR(100),   # Description of the friend group
     PRIMARY KEY (username, name),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE
 );
@@ -23,10 +23,10 @@ CREATE TABLE member (
 );
 
 CREATE TABLE comment (
-    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    text_comment VARCHAR(500),
-    username     VARCHAR(12),
-    contentID    INTEGER       
+    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  # Timestamp
+    text_comment VARCHAR(500),                                  # Content of comment
+    username     VARCHAR(12),                                   # Username of commentor
+    contentID    INTEGER                                        # Content commented on
     PRIMARY KEY  (username, contentID, time_stamp)
     FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE,
