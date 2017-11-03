@@ -59,7 +59,7 @@ CREATE TABLE tag (
     taggerusername  VARCHAR(12),    # Username of the person tagging another
     time_stamp      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, # Timestamp of the tag
     PRIMARY KEY (taggedusername, taggerusername, contentID),
-    FOREIGN KEY (taggedusername) REFERENCES person(username) ON DELETE NULL,
-    FOREIGN KEY (taggerusername) REFERENCES person(username) ON DELETE NULL,
+    FOREIGN KEY (taggedusername) REFERENCES person(username) ON DELETE SET NULL,
+    FOREIGN KEY (taggerusername) REFERENCES person(username) ON DELETE SET NULL,
     FOREIGN KEY (contentID) REFERENCES content(contentID) ON DELETE CASCADE
 );
