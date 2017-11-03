@@ -17,8 +17,10 @@ CREATE TABLE friendgroup (
 CREATE TABLE member (
     username    VARCHAR(12),    # username of the member
     name        VARCHAR(40),    # name of the friend group
-    PRIMARY KEY (username, name),
+    adminusername VARCHAR(12),  # username of the group admin
+    PRIMARY KEY (username, name, adminusername),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY (adminusername) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
 
