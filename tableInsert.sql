@@ -29,4 +29,7 @@ INSERT INTO member VALUES ('family','EE')
 INSERT INTO friendgroup VALUES ('family','BB')
 INSERT INTO member VALUES ('family','FF')
 INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('besties','AA')
+INSERT INTO member VALUES ('besties','GG')
+INSERT INTO member VALUES ('besties','HH')
 
