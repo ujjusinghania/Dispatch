@@ -1,7 +1,7 @@
 SELECT content.contentID, contentName
-FROM share NATURAL JOIN content NATURAL JOIN member
-WHERE is_pub = TRUE OR (member.name, adminusername) IN
-    (SELECT member.name, adminusername
+FROM share NATURAL JOIN content
+WHERE is_pub = TRUE OR (name, username) IN
+    (SELECT name, adminusername
      FROM member
      WHERE username IN (SELECT username
     					FROM person 
