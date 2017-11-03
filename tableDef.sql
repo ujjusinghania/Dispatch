@@ -44,8 +44,8 @@ CREATE TABLE content (
 );
 
 CREATE TABLE share (
-    contentID   INTEGER,
-    name        VARCHAR(40),
+    contentID   INTEGER,        # ID of content that is being shared
+    name        VARCHAR(40),    # Group that the content is being shared to
     PRIMARY KEY (name, contentID),
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE,
     FOREIGN KEY (contentID) REFERENCES content(contentID) ON DELETE CASCADE
