@@ -17,7 +17,7 @@ CREATE TABLE friendgroup (
 CREATE TABLE member (
     username    VARCHAR(12),    # username of the member
     name        VARCHAR(40),    # name of the friend group
-    PRIMARY KEY (username, name)
+    PRIMARY KEY (username, name),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
@@ -57,7 +57,7 @@ CREATE TABLE tag (
     taggedusername  VARCHAR(12),    # Username of the tagged person
     taggerusername  VARCHAR(12),    # Username of the person tagging another
     time_stamp      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, # Timestamp of the tag
-    PRIMARY KEY (taggedusername, taggerusername, contentID)
+    PRIMARY KEY (taggedusername, taggerusername, contentID),
     FOREIGN KEY (taggedusername) REFERENCES person(username) ON DELETE NULL,
     FOREIGN KEY (taggerusername) REFERENCES person(username) ON DELETE NULL,
     FOREIGN KEY (contentID) REFERENCES content(contentID) ON DELETE CASCADE
