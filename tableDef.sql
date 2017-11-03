@@ -26,10 +26,10 @@ CREATE TABLE comment (
     time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  # Timestamp
     text_comment VARCHAR(500),                                  # Content of comment
     username     VARCHAR(12),                                   # Username of commentor
-    contentID    INTEGER                                        # Content commented on
-    PRIMARY KEY  (username, contentID, time_stamp)
+    contentID    INTEGER,                                        # Content commented on
+    PRIMARY KEY  (username, contentID, time_stamp),
     FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
-    FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE,
+    FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE
 );
 
 CREATE TABLE content (

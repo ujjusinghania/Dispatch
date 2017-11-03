@@ -6,6 +6,7 @@ DELETE FROM content;
 DELETE FROM share;
 DELETE FROM tag;
 
+#Initial table creation
 INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
 INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker');
 INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang');
