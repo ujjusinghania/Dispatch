@@ -15,8 +15,8 @@ CREATE TABLE friendgroup (
 );
 
 CREATE TABLE member (
-    username    VARCHAR(12),
-    name        VARCHAR(40),
+    username    VARCHAR(12),    # username of the member
+    name        VARCHAR(40),    # name of the friend group
     PRIMARY KEY (username, name)
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
@@ -33,12 +33,12 @@ CREATE TABLE comment (
 );
 
 CREATE TABLE content (
-    contentID       INTEGER,
-    contentDate     DATE,
-    file_path       VARCHAR(50),
-    contentName     VARCHAR(50),
-    is_pub          BOOLEAN,
-    username        VARCHAR(12),
+    contentID       INTEGER,        # ID of the content
+    contentDate     DATE,           # Date content posted
+    file_path       VARCHAR(50),    # Path of the content
+    contentName     VARCHAR(50),    # Name of the content
+    is_pub          BOOLEAN,        # Determines whether the content is public or not
+    username        VARCHAR(12),    # Username of the poster
     PRIMARY KEY (contentID),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE SET NULL 
 );
