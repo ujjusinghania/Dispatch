@@ -52,11 +52,11 @@ CREATE TABLE share (
 );
 
 CREATE TABLE tag (
-    status          Boolean,
-    contentID       INTEGER,
-    taggedusername  VARCHAR(12),
-    taggerusername  VARCHAR(12),
-    time_stamp      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status          Boolean,        # Determines if the tag is accepted
+    contentID       INTEGER,        # ID of the content
+    taggedusername  VARCHAR(12),    # Username of the tagged person
+    taggerusername  VARCHAR(12),    # Username of the person tagging another
+    time_stamp      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, # Timestamp of the tag
     PRIMARY KEY (taggedusername, taggerusername, contentID)
     FOREIGN KEY (taggedusername) REFERENCES person(username) ON DELETE NULL,
     FOREIGN KEY (taggerusername) REFERENCES person(username) ON DELETE NULL,
