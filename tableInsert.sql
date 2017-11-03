@@ -22,3 +22,11 @@ INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg');
 INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox');
 INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
+
+
+# Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
+# is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
+INSERT INTO content VALUES 
+	(1, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'Whiskers', FALSE, 'AA');
+
+INSERT INTO share 	VALUES (1, 'family');
