@@ -22,16 +22,6 @@ CREATE TABLE member (
     FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
 );
 
-CREATE TABLE comment (
-    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  # Timestamp
-    text_comment VARCHAR(500),                                  # Content of comment
-    username     VARCHAR(12),                                   # Username of commentor
-    contentID    INTEGER,                                        # Content commented on
-    PRIMARY KEY  (username, contentID, time_stamp),
-    FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
-    FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE
-);
-
 CREATE TABLE content (
     contentID       INTEGER,        # ID of the content
     contentDate     DATE,           # Date content posted
@@ -42,6 +32,17 @@ CREATE TABLE content (
     PRIMARY KEY (contentID),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE SET NULL 
 );
+
+CREATE TABLE comment (
+    time_stamp   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  # Timestamp
+    text_comment VARCHAR(500),                                  # Content of comment
+    username     VARCHAR(12),                                   # Username of commentor
+    contentID    INTEGER,                                        # Content commented on
+    PRIMARY KEY  (username, contentID, time_stamp),
+    FOREIGN KEY  (username) REFERENCES person(username) ON DELETE CASCADE,
+    FOREIGN KEY  (contentID)  REFERENCES content(contentID) ON DELETE CASCADE
+);
+
 
 CREATE TABLE share (
     contentID   INTEGER,        # ID of content that is being shared
