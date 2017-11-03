@@ -17,43 +17,28 @@ INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
 
 #inserting ann into family
-<<<<<<< HEAD
-INSERT INTO friendgroup VALUES ('family','AA');
-INSERT INTO member VALUES ('family','CC', 'AA');
-INSERT INTO member VALUES ('family','DD', 'AA');
-INSERT INTO member VALUES ('family','EE', 'AA');
 
-# inserting bob into family
-INSERT INTO friendgroup VALUES ('family', 'BB');
-INSERT INTO member VALUES ('family','FF', 'BB');
-INSERT INTO member VALUES ('family','EE', 'BB');
-
-# inserting ann into besties
-INSERT INTO friendgroup VALUES ('besties','AA');
-INSERT INTO member VALUES ('besties','GG','AA');
-INSERT INTO member VALUES ('besties','HH','AA');
-=======
 INSERT INTO friendgroup VALUES ('family','AA', NULL );
-INSERT INTO member VALUES ('family','CC');
-INSERT INTO member VALUES ('family','DD');
-INSERT INTO member VALUES ('family','EE');
+INSERT INTO member VALUES ('family','CC', NULL);
+INSERT INTO member VALUES ('family','DD', NULL);
+INSERT INTO member VALUES ('family','EE', NULL);
 
 # inserting bob into family
 INSERT INTO friendgroup VALUES ('family','BB', NULL);
-INSERT INTO member VALUES ('family','FF');
-INSERT INTO member VALUES ('family','EE');
+INSERT INTO member VALUES ('family','FF', Null);
+INSERT INTO member VALUES ('family','EE', Null);
 
 # inserting ann into besties
 INSERT INTO friendgroup VALUES ('besties','AA', NULL);
 INSERT INTO member VALUES ('besties','GG');
 INSERT INTO member VALUES ('besties','HH');
->>>>>>> 06b41596867b2d4a281db655532e6cfc5fe5850a
+
 
 
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
 INSERT INTO content VALUES 
-	(1, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'Whiskers', FALSE, 'AA');
+	(1, '2017-11-3', NULL, 'Whiskers', FALSE, 'AA');
 
 INSERT INTO share VALUES (1, 'family');
 
@@ -61,7 +46,7 @@ INSERT INTO share VALUES (1, 'family');
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=2,​ ​caption​ ​=​ ​“My​ ​birthday​ ​party”,​ ​
 # is​ ​pub​ ​=​ ​False,​ ​and shared​ ​it​ ​with​ ​her​ ​“besties”​ ​FriendGroup.
 INSERT INTO content VALUES 
-	(2, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'My​ ​birthday​ ​party', FALSE, 'AA');
+	(2, '2017-11-3', NULL, 'My​ ​birthday​ ​party', FALSE, 'AA');
 
 INSERT INTO share VALUES (2, 'besties');
 
@@ -69,7 +54,7 @@ INSERT INTO share VALUES (2, 'besties');
 # Bob​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=3,​ ​caption​ ​=​ ​“Rover”,​ ​
 # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​his​ ​“family”​ ​FriendGroup.
 INSERT INTO content VALUES 
-	(3, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'Rover', FALSE, 'BB');
+	(3, '2017-11-3', NULL, 'Rover', FALSE, 'BB');
 
 INSERT INTO share VALUES (3, 'family');
 
