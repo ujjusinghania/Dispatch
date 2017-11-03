@@ -1,3 +1,4 @@
+# delete existing values
 DELETE FROM person;
 DELETE FROM friendgroup;
 DELETE FROM member;
