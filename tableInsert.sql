@@ -30,3 +30,15 @@ INSERT INTO content VALUES
 	(1, TO_DATE('11/3/17', 'MM/DD/YY'), NULL, 'Whiskers', FALSE, 'AA');
 
 INSERT INTO share 	VALUES (1, 'family');
+INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
+INSERT INTO friendgroup VALUES ('family','AA')
+INSERT INTO member VALUES ('family','CC')
+INSERT INTO member VALUES ('family','DD')
+INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('family','BB')
+INSERT INTO member VALUES ('family','FF')
+INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('besties','AA')
+INSERT INTO member VALUES ('besties','GG')
+INSERT INTO member VALUES ('besties','HH')
+
