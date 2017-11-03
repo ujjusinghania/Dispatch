@@ -7,7 +7,7 @@ DELETE FROM content;
 DELETE FROM share;
 DELETE FROM tag;
 
-#Initial table creation
+#Initial user creation
 INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
 INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker');
 INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang');
@@ -39,7 +39,7 @@ INSERT INTO member VALUES ('besties','HH','AA');
 INSERT INTO content VALUES 
 	(1, '2017-11-3', NULL, 'Whiskers', FALSE, 'AA');
 
-INSERT INTO share VALUES (1, 'family');
+INSERT INTO share VALUES (1, 'family', 'AA');
 
 
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=2,​ ​caption​ ​=​ ​“My​ ​birthday​ ​party”,​ ​
@@ -47,7 +47,7 @@ INSERT INTO share VALUES (1, 'family');
 INSERT INTO content VALUES 
 	(2, '2017-11-3', NULL, 'My​ ​birthday​ ​party', FALSE, 'AA');
 
-INSERT INTO share VALUES (2, 'besties');
+INSERT INTO share VALUES (2, 'besties', 'AA');
 
 
 # Bob​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=3,​ ​caption​ ​=​ ​“Rover”,​ ​
@@ -55,7 +55,7 @@ INSERT INTO share VALUES (2, 'besties');
 INSERT INTO content VALUES 
 	(3, '2017-11-3', NULL, 'Rover', FALSE, 'BB');
 
-INSERT INTO share VALUES (3, 'family');
+INSERT INTO share VALUES (3, 'family', 'BB');
 
 
 

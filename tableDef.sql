@@ -24,7 +24,7 @@ CREATE TABLE member (
     PRIMARY KEY (username, name, adminusername),
     FOREIGN KEY (username) REFERENCES person(username) ON DELETE CASCADE,
     FOREIGN KEY (adminusername) REFERENCES person(username) ON DELETE CASCADE,
-    FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE
+    FOREIGN KEY (name, adminusername) REFERENCES friendgroup(name, username) ON DELETE CASCADE
 );
 
 CREATE TABLE content (
@@ -54,8 +54,9 @@ CREATE TABLE comment (
 CREATE TABLE share (
     contentID   INTEGER,        # ID of content that is being shared
     name        VARCHAR(40),    # Group that the content is being shared to
+    username    VARCHAR(12),    # Username of Group Admin
     PRIMARY KEY (name, contentID),
-    FOREIGN KEY (name) REFERENCES friendgroup(name) ON DELETE CASCADE,
+    FOREIGN KEY (name, username) REFERENCES friendgroup(name, username) ON DELETE CASCADE,
     FOREIGN KEY (contentID) REFERENCES content(contentID) ON DELETE CASCADE
 );
 
