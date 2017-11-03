@@ -17,20 +17,20 @@ INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
 
 #inserting ann into family
-INSERT INTO friendgroup VALUES ('family','AA')
-INSERT INTO member VALUES ('family','CC')
-INSERT INTO member VALUES ('family','DD')
-INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('family','AA', NULL );
+INSERT INTO member VALUES ('family','CC');
+INSERT INTO member VALUES ('family','DD');
+INSERT INTO member VALUES ('family','EE');
 
 # inserting bob into family
-INSERT INTO friendgroup VALUES ('family','BB')
-INSERT INTO member VALUES ('family','FF')
-INSERT INTO member VALUES ('family','EE')
+INSERT INTO friendgroup VALUES ('family','BB', NULL);
+INSERT INTO member VALUES ('family','FF');
+INSERT INTO member VALUES ('family','EE');
 
 # inserting ann into besties
-INSERT INTO friendgroup VALUES ('besties','AA')
-INSERT INTO member VALUES ('besties','GG')
-INSERT INTO member VALUES ('besties','HH')
+INSERT INTO friendgroup VALUES ('besties','AA', NULL);
+INSERT INTO member VALUES ('besties','GG');
+INSERT INTO member VALUES ('besties','HH');
 
 
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
