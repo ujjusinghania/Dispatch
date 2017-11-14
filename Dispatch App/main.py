@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def homepage():
+def login():
     return render_template('login.html')
 
 @app.route('/register')
