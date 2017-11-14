@@ -5,12 +5,12 @@ import pymysql.cursors
 app = Flask(__name__)
 
 #Configure MySQL
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='root',
-                       db='meetup3',
-                       charset='utf8mb4',
-                       cursorclass=pymysql.cursors.DictCursor)
+#conn = pymysql.connect(host='localhost',
+#                       user='root',
+#                       password='root',
+#                       db='meetup3',
+#                       charset='utf8mb4',
+#                       cursorclass=pymysql.cursors.DictCursor)
 
 
 @app.route('/')
