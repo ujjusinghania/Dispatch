@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session, url_for, redirect
 from flask import request
 import pymysql.cursors
 
@@ -12,15 +12,39 @@ conn = pymysql.connect(host='localhost',
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
+<<<<<<< HEAD
 
+=======
+>>>>>>> 363fde2eb39d625db094161144b539c86c7c4e0f
 
 @app.route('/')
 def login():
     return render_template('login.html')
 
+<<<<<<< HEAD
 @app.route('/loginAuth', methods = ['GET', 'POST'])
+=======
+@app.route('/loginAuth', methods=['GET', 'POST'])
+>>>>>>> 363fde2eb39d625db094161144b539c86c7c4e0f
 def loginAuth():
-    return "Welcome Home!"
+	username = request.form['username']
+	password = request.form['password']
+
+	cursor = conn.cursor()
+
+	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
+	cursor.execute(query, (username, password))
+
+	data = cursor.fetchone()
+
+	cursor.close()
+
+	if(data):
+		session['username'] = username
+		return redirect(url_for('home'))
+	else:
+		error = "Invalid Login or Username"
+		return render_template('login.html', error=error)
 
 @app.route('/register')
 def register(): 
@@ -31,4 +55,9 @@ def registerAuth():
     return "Welcome Home!"
 
 app.run()
-
+'''
+#change this
+app.secret_key = "qwertyuiop"
+if __name__ == "__main__":
+	app.run('127.0.0.1', 5000, debug=True)
+'''
