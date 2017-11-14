@@ -5,19 +5,20 @@ import pymysql.cursors
 app = Flask(__name__)
 
 #Configure MySQL
-#conn = pymysql.connect(host='localhost',
-#                       user='root',
-#                       password='root',
-#                       db='meetup3',
-#                       charset='utf8mb4',
-#                       cursorclass=pymysql.cursors.DictCursor)
+conn = pymysql.connect(host='localhost',
+                      port=8889,
+                      user='root',
+                      password='root',
+                      db='dispatch',
+                      charset='latin1',
+                      cursorclass=pymysql.cursors.DictCursor)
 
 
 @app.route('/')
 def login():
     return render_template('login.html')
 
-@app.route('/loginAuth')
+@app.route('/loginAuth', methods = ['GET', 'POST'])
 def loginAuth():
     return "Welcome Home!"
 
@@ -25,7 +26,7 @@ def loginAuth():
 def register(): 
     return render_template('register.html')
 
-@app.route('/registerAuth')
+@app.route('/registerAuth', methods = ['GET', 'POST'])
 def registerAuth():
     return "Welcome Home!"
 
