@@ -6,8 +6,7 @@ app = Flask(__name__)
 
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
-
-                      port=8889,
+                      port=3306,
                       user='root',
                       password='root',
                       db='dispatch',
@@ -29,8 +28,7 @@ def loginAuth():
 	cursor.close()
 
 	if(data):
-		session['username'] = username
-		return redirect(url_for('home'))
+		return render_template('login.html', error="HELLLLOOOOOOOOO")
 	else:
 		error = "Invalid Login or Username"
 		return render_template('login.html', error=error)
