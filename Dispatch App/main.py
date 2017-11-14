@@ -12,31 +12,19 @@ conn = pymysql.connect(host='localhost',
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
-<<<<<<< HEAD
-
-=======
->>>>>>> 363fde2eb39d625db094161144b539c86c7c4e0f
 
 @app.route('/')
 def login():
     return render_template('login.html')
 
-<<<<<<< HEAD
-@app.route('/loginAuth', methods = ['GET', 'POST'])
-=======
 @app.route('/loginAuth', methods=['GET', 'POST'])
->>>>>>> 363fde2eb39d625db094161144b539c86c7c4e0f
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-
 	cursor = conn.cursor()
-
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (username, password))
-
 	data = cursor.fetchone()
-
 	cursor.close()
 
 	if(data):
@@ -55,6 +43,7 @@ def registerAuth():
     return "Welcome Home!"
 
 app.run()
+
 '''
 #change this
 app.secret_key = "qwertyuiop"
