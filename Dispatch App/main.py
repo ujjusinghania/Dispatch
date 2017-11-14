@@ -6,13 +6,9 @@ app = Flask(__name__)
 
 #Configure MySQL
 conn = pymysql.connect(host='localhost',
-<<<<<<< HEAD
                       port=3306,
-=======
-                      port=8889,
->>>>>>> 2ea2af340fac239bbbdcae8c1236dd60daa88865
                       user='root',
-                      password='',
+                      password='root',
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -21,28 +17,18 @@ conn = pymysql.connect(host='localhost',
 def login():
     return render_template('login.html')
 
-@app.route('/loginAuth', methods = ['GET', 'POST'])
+@app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-
 	cursor = conn.cursor()
-
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (username, password))
-
 	data = cursor.fetchone()
-
 	cursor.close()
 
 	if(data):
-<<<<<<< HEAD
 		return render_template('login.html', error="HELLLLOOOOOOOOO")
-=======
-		session['username'] = username
-		#return redirect(url_for('home'))
-		return render_template('test.html')
->>>>>>> 2ea2af340fac239bbbdcae8c1236dd60daa88865
 	else:
 		error = "Invalid Login or Username"
 		return render_template('login.html', error=error)
@@ -56,6 +42,7 @@ def registerAuth():
     return "Welcome Home!"
 
 app.run()
+
 '''
 #change this
 app.secret_key = "qwertyuiop"
