@@ -36,6 +36,7 @@ def loginAuth():
 	cursor = conn.cursor()
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (username, password))
+	print cursor.fetchone()
 	data = cursor.fetchone()
 	cursor.close()
 
@@ -63,7 +64,7 @@ def registerAuth():
 	
 	cursor = conn.cursor()
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
-    cursor.execute(query, (username, password, fname, lname))
+	cursor.execute(query, (username, password, fname, lname))
 	data = cursor.fetchone()
 	cursor.close()
 	
