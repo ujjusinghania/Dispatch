@@ -4,11 +4,14 @@ import pymysql.cursors
 import hashlib
 app = Flask(__name__)
 
-#Configure MySQL
+# this is for pulling the port and database password from environment variables
+import os
+
+# Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port=3306,
+                      port=int(os.environ['DB_PORT']),
                       user='root',
-                      password='',
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -29,6 +32,7 @@ def loginAuth():
 	
 	#md5 hashes password user enters
 	m = hashlib.md5()
+	password = password.encode('utf-8')
 	m.update(password)
 	password = m.digest()
 	print(password)
