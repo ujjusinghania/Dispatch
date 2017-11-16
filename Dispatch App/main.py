@@ -25,18 +25,18 @@ def home():
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-	print password
+	print(password)
 	
 	#md5 hashes password user enters
 	m = hashlib.md5()
 	m.update(password)
 	password = m.digest()
-	print password
+	print(password)
 	
 	cursor = conn.cursor()
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (username, password))
-	print cursor.fetchone()
+	print(cursor.fetchone())
 	data = cursor.fetchone()
 	cursor.close()
 
@@ -60,7 +60,7 @@ def registerAuth():
 	m = hashlib.md5()
 	m.update(password)
 	password = m.digest()
-	print password
+	print(password)
 	
 	cursor = conn.cursor()
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
