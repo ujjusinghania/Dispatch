@@ -1,12 +1,18 @@
 # Dispatch
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
+### Instructions for using virtual environment
+	1) to activate the virtual environment
+		a) ```source venv\Scripts\activate``` for OSX/Linux
+		a) ```venv\Scripts\activate``` for Windows
+	1) run ```export FLASK_APP=main.py```
+	1) run ```flask run```
+	1) do work
+	1) run ```deactivate``` to leave the virtual environment
+
 ### Importing / resetting the database
 	1) run `./form_reset.sh`
 	2) from phpMyAdmin select the `Dispatch` database and then import the generated file `reset.sql`
-
-### Part 1 ER Diagram
-![Part 1 ER](/docs/Part1_ER.png)
 
 ### To Do List for Part 3
 	1) Basic Framework
@@ -30,3 +36,6 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 	- Blocking People
 	- Removing people from group
 	- Starring Messages
+
+### Part 1 ER Diagram
+![Part 1 ER](/docs/Part1_ER.png)

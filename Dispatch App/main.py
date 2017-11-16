@@ -4,9 +4,9 @@ import pymysql.cursors
 
 app = Flask(__name__)
 
-#Configure MySQL
+# Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port=3306,
+                      port=8889,
                       user='root',
                       password='root',
                       db='dispatch',
@@ -15,7 +15,15 @@ conn = pymysql.connect(host='localhost',
 
 @app.route('/')
 def login():
-    return render_template('login.html')
+	cursor = conn.cursor()
+	query = 'SELECT * FROM person'
+	cursor.execute(query)
+	data = cursor.fetchone()
+	cursor.close()
+	print(data)
+	return data["firstname"]
+
+    # return render_template('login.html')
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
@@ -43,9 +51,8 @@ def registerAuth():
 
 app.run()
 
-'''
+
 #change this
 app.secret_key = "qwertyuiop"
 if __name__ == "__main__":
-	app.run('127.0.0.1', 5000, debug=True)
-'''
+	app.run('127.0.0.1', 8889, debug=True)
