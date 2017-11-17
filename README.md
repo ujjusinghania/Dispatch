@@ -23,6 +23,8 @@ source venv/bin/activate
 export FLASK_APP=main.py
 export DB_PASS="root"
 export DP_PORT=8889
+flask run
+
 ```
 
 
