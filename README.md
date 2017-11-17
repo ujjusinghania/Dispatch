@@ -27,7 +27,7 @@ export DP_PORT=8889
 
 
 ### Importing / resetting the database
-	run `./form_reset.sh`
+	run `./reset_db.sh`
 
 
 ### To Do List for Part 3
