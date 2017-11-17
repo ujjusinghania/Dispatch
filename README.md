@@ -3,35 +3,22 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 
 ### Instructions for using virtual environment
 	1) if you havn't yet 
-		a) run 
-
-```
-sudo pip install virtualenv
-```
-
-	1) to activate the virtual environment
-		a) for OSX/Linux
-			```source venv\Scripts\activate``` 
-		a) for Windows
-			```venv\Scripts\activate``` 
-	1) if you havn't already 
-		```pip3 install -r requirements.txt```
-	1) run 
-		```export FLASK_APP=main.py```
-	1) run 
-		```export DB_PASS="YOUR_PASSWORD"```
-	1) run 
-		```export DP_PORT=YOUR_PORTNUMBER```
-	1) run 
-		```flask run```
-	1) do work
-	1) to leave the virtual environment run 
-		```deactivate```
+		a) run `sudo pip install virtualenv`
+		<!-- a) run `virtualenv venv` -->
+	2) to activate the virtual environment
+		a) `source venv\Scripts\activate` for OSX/Linux
+		b) `venv\Scripts\activate` for Windows
+	3) if you havn't already `pip3 install -r requirements.txt`
+	4) run `export FLASK_APP=main.py`
+	5) run `export DB_PASS="YOUR_PASSWORD"`
+	6) run `export DP_PORT=YOUR_PORTNUMBER`
+	7) run `flask run`
+	8) do work
+	9) run `deactivate` to leave the virtual environment
 
 ### Importing / resetting the database
-	1) run 
-		```./form_reset.sh```
-	2) from phpMyAdmin select the 'Dispatch' database and then import the generated file 'reset.sql'
+	1) run `./form_reset.sh`
+	2) from phpMyAdmin select the `Dispatch` database and then import the generated file `reset.sql`
 
 ### To Do List for Part 3
 	1) Basic Framework
