@@ -28,7 +28,7 @@ export DP_PORT=8889
 
 ### Importing / resetting the database
 	1) run `./form_reset.sh`
-	2) ~~from phpMyAdmin select the Dispatch database and then import the generated file reset.sql~~
+
 
 ### To Do List for Part 3
 	1) Basic Framework
