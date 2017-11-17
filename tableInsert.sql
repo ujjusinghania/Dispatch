@@ -45,7 +45,7 @@ INSERT INTO share VALUES (1, 'family', 'AA');
 # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=2,​ ​caption​ ​=​ ​“My​ ​birthday​ ​party”,​ ​
 # is​ ​pub​ ​=​ ​False,​ ​and shared​ ​it​ ​with​ ​her​ ​“besties”​ ​FriendGroup.
 INSERT INTO content VALUES 
-	(2, '2017-11-3', NULL, 'My​ ​birthday​ ​party', FALSE, 'AA');
+	(2, '2017-11-3', NULL,'My​ ​birthday​ ​party', FALSE, 'AA');
 
 INSERT INTO share VALUES (2, 'besties', 'AA');
 
