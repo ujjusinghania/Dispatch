@@ -10,15 +10,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-<<<<<<< HEAD
-                      #port=int(os.environ['DB_PORT']), #get the port from an env var
+                      port=3306, #int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= '', #get the pswd from an env var
-=======
-                       port=3306,#int(os.environ['DB_PORT']), #get the port from an env var
-                      user='root',
-                       password='root', #os.environ['DB_PASS'], #get the pswd from an env var
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c
+                      password= 'root', #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -42,9 +36,9 @@ def home():
 
 	# Gets a list of all the content that the user has posted/is public. 
 	# Need to add list of content that is shared with groups the user is a part of. 
-	query = 'SELECT * FROM content WHERE username = %s OR public = %d'
-	cursor.execute(query, (username, 1))
-	messages = cursor.fetchall()
+	query = 'SELECT * FROM content WHERE username = %s OR public = 1'
+	cursor.execute(query, (username))
+	messages = cursor.fetchall() 
 	print(groups)
 
 	cursor.close()
