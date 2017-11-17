@@ -16,15 +16,11 @@ body {
 }
 #view-code:hover{opacity:1;}
 #chatbox{
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
-=======
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	background:#fff;
 	border-radius:6px;
 	overflow:hidden;
-	height:968px;
+	height:484px;
 	position:absolute;
 	top:100px;
 	left:50%;
@@ -35,21 +31,12 @@ body {
 	position:absolute;
 	top:0;
 	left:0;
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
 	height:484px;
 }
 #topmenu{
 	height:69px;
 	width:850px;
-=======
-	width:580px;
-	height:968px;
-}
-#topmenu{
-	height:69px;
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	border-bottom:1px solid #d8dfe3;	
 }
 #topmenu span{
@@ -118,11 +105,7 @@ body {
 #search{
 	background:#e3e9ed url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/search.png") -11px 0 no-repeat;
 	height:60px;
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
-=======
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	position:absolute;
 	bottom:0;
 	left:0;
@@ -141,13 +124,8 @@ body {
 	 outline: 0;
 }
 #chatview{
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
 	height:484px;
-=======
-	width:580px;
-	height:968px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	position:absolute;
 	top:0;
 	left:0;	
@@ -198,11 +176,7 @@ body {
 #chat-messages{
 	opacity:0;
 	margin-top:30px;
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
-=======
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	height:270px;
 	overflow-y:scroll;	
 	overflow-x:hidden;
@@ -223,11 +197,7 @@ body {
 	font-size:12px;
 	text-align:center;
 	margin:15px 0;
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
-=======
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	display:block;	
 }
 #chat-messages div.message{
@@ -294,11 +264,7 @@ div.message.right .corner{
 	position:absolute;
 	bottom:0;
 	right:0px;
-<<<<<<< HEAD:Dispatch App/templates/css/style.css
 	width:850px;
-=======
-	width:580px;
->>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c:Dispatch App/static/styles/home.css
 	background:#fff;
 	padding-bottm:50px;
 }
