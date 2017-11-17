@@ -18,6 +18,14 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 	9) do work
 	10) run `deactivate` to leave the virtual environment
 
+```
+source venv/bin/activate
+export FLASK_APP=main.py
+export DB_PASS="root"
+export DP_PORT=8889
+```
+
+
 ### Importing / resetting the database
 	1) run `./form_reset.sh`
 	2) from phpMyAdmin select the `Dispatch` database and then import the generated file `reset.sql`

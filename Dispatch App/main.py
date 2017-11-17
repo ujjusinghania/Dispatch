@@ -62,11 +62,15 @@ def registerAuth():
 
 	print("pswd_hash insert: ", password_digest)
 	
+	conn.commit()
+
 	cursor = conn.cursor()
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
 	cursor.execute(query, (username, password_digest, fname, lname))
 	data = cursor.fetchone()
 	
+	conn.commit()
+
 	print("\n\n\n")
 	print(query, (username, password_digest, fname, lname))
 	print(data)	
