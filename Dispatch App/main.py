@@ -52,19 +52,26 @@ def register():
 
 @app.route('/registerAuth', methods = ['GET', 'POST'])
 def registerAuth():
+	print("hello")
 	username = request.form['username']
 	password = request.form['password']
-	fname = request.form['First Name']
-	lname = request.form['Last Name']
-	
+	fname = request.form['fname']
+	lname = request.form['lname']
+
 	password_digest = md5(password)
 
-	print(password_digest)
+	print("pswd_hash insert: ", password_digest)
 	
 	cursor = conn.cursor()
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
 	cursor.execute(query, (username, password_digest, fname, lname))
 	data = cursor.fetchone()
+	
+	print("\n\n\n")
+	print(query, (username, password_digest, fname, lname))
+	print(data)	
+	print("\n\n\n")
+
 	cursor.close()
 	
 	return render_template('login.html')
