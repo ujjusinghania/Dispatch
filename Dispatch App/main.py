@@ -10,9 +10,15 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
+<<<<<<< HEAD
                       #port=int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
                       password= '', #get the pswd from an env var
+=======
+                       port=3306,#int(os.environ['DB_PORT']), #get the port from an env var
+                      user='root',
+                       password='root', #os.environ['DB_PASS'], #get the pswd from an env var
+>>>>>>> 6ad5ebc8ac096d3e98950b9f084943ffd2c9e45c
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -23,9 +29,27 @@ def login():
     return render_template('login.html')
 
 
-#page that appears when you log in
+@app.route('/home')
 def home():
-    return render_template('index.html')
+	username = session['username']
+
+	# Gets a list of all the groups the user is a part of/is the admin of. 
+	cursor = conn.cursor()
+	query = 'SELECT * FROM member WHERE username = %s OR username_creator = %s'
+	cursor.execute(query, (username, username))
+	groups = cursor.fetchall()
+	print(groups)
+
+	# Gets a list of all the content that the user has posted/is public. 
+	# Need to add list of content that is shared with groups the user is a part of. 
+	query = 'SELECT * FROM content WHERE username = %s OR public = %d'
+	cursor.execute(query, (username, 1))
+	messages = cursor.fetchall()
+	print(groups)
+
+	cursor.close()
+
+	return render_template('index.html')
 
 	
 @app.route('/loginAuth', methods=['GET', 'POST'])
@@ -45,9 +69,10 @@ def loginAuth():
 	cursor.close()
 
 	if(data):
-		return render_template('index.html')
+		session['username'] = username
+		return redirect(url_for('home'))
 	else:
-		error = "Invalid Login or Username"
+		error = "Invalid Username or Password"
 		return render_template('login.html', error=error)
 
 
@@ -76,8 +101,11 @@ def registerAuth():
 	# commit changes and close connetion
 	conn.commit()
 	cursor.close()
-	
-	return render_template('login.html')
+	if(data):
+		return render_template('register.html', error="Username already taken.")
+	else:
+		session['username'] = username
+		return redirect(url_for('home'))
 	#return "Welcome Home!"
 
 
@@ -89,13 +117,11 @@ def md5(password):
 	password_digest = m.hexdigest()
 	return password_digest
 
-
+app.secret_key = os.urandom(24)
+#Run the app on localhost port 5000
+#debug = True -> you don't have to restart flask
+#for changes to go through, TURN OFF FOR PRODUCTION
+if __name__ == "__main__":
+	app.run('127.0.0.1', 5000, debug = True)
 app.run()
 
-
-'''
-#change this
-app.secret_key = "qwertyuiop"
-if __name__ == "__main__":
-	app.run('127.0.0.1', 5000, debug=True)
-'''
