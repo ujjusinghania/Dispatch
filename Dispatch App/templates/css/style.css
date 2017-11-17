@@ -16,7 +16,7 @@ body {
 }
 #view-code:hover{opacity:1;}
 #chatbox{
-	width:290px;
+	width:850px;
 	background:#fff;
 	border-radius:6px;
 	overflow:hidden;
@@ -24,19 +24,19 @@ body {
 	position:absolute;
 	top:100px;
 	left:50%;
-	margin-left:-155px;
+	margin-left:-425px;
 }
 
 #friendslist{
 	position:absolute;
 	top:0;
 	left:0;
-	width:290px;
+	width:850px;
 	height:484px;
 }
 #topmenu{
 	height:69px;
-	width:290px;
+	width:850px;
 	border-bottom:1px solid #d8dfe3;	
 }
 #topmenu span{
@@ -44,6 +44,7 @@ body {
 	width: 96px;
     height: 70px;
     background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/top-menu.png") -3px -118px no-repeat;
+    margin-left:150px;
 }
 #topmenu span.friends{margin-bottom:-1px;}
 #topmenu span.chats{background-position:-95px 25px; cursor:pointer;}
@@ -72,6 +73,7 @@ body {
 	top:0;
 	left:12px;
 	border:3px solid #fff;
+	margin-left:275px;
 }
 .friend p{
 	padding:15px 0 0 0;			
@@ -103,7 +105,7 @@ body {
 #search{
 	background:#e3e9ed url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/search.png") -11px 0 no-repeat;
 	height:60px;
-	width:290px;
+	width:850px;
 	position:absolute;
 	bottom:0;
 	left:0;
@@ -122,7 +124,7 @@ body {
 	 outline: 0;
 }
 #chatview{
-	width:290px;
+	width:850px;
 	height:484px;
 	position:absolute;
 	top:0;
@@ -133,11 +135,12 @@ body {
 #profile{
 	height:153px;
 	overflow:hidden;
-	text-align:center;
+	text-align:middle;
 	color:#fff;
+	margin-left:260px;
 }
 .p1 #profile{
-	background:#fff url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/timeline1.png") 0 0 no-repeat;
+	background:#fff url("https://i.ytimg.com/vi/QbeBhdjW1_w/mqdefault.jpg") 0 0 no-repeat;
 }
 #profile .avatar{
 	width:68px;
@@ -150,6 +153,7 @@ body {
 	font-size:15px;
 	margin:118px 0 -1px;
 	opacity:0;
+	margin-left:100px;
 	-webkit-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
 	   -moz-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
 	    -ms-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
@@ -172,7 +176,7 @@ body {
 #chat-messages{
 	opacity:0;
 	margin-top:30px;
-	width:290px;
+	width:850px;
 	height:270px;
 	overflow-y:scroll;	
 	overflow-x:hidden;
@@ -193,7 +197,7 @@ body {
 	font-size:12px;
 	text-align:center;
 	margin:15px 0;
-	width:290px;
+	width:850px;
 	display:block;	
 }
 #chat-messages div.message{
@@ -239,11 +243,13 @@ body {
 	height:7px;
 	left:-5px;
 	bottom:0;
+	margin-left:150px;
 }
 div.message.right .corner{
 	background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-cornerR.png") 0 0 no-repeat;
 	left:auto;
 	right:-5px;
+	margin-left:150px;
 }
 .bubble span{
 	  color: #aab8c2;
@@ -258,7 +264,7 @@ div.message.right .corner{
 	position:absolute;
 	bottom:0;
 	right:0px;
-	width:290px;
+	width:850px;
 	background:#fff;
 	padding-bottm:50px;
 }
