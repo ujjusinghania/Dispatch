@@ -4,8 +4,9 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 ### Instructions for using virtual environment
 	1) if you havn't yet 
 		a) run `sudo pip3 install virtualenv`
+		b) run `virtualenv venv`
 	2) to activate the virtual environment
-		a) `source venv\Scripts\activate` for OSX/Linux
+		a) `source venv/bin/activate` for OSX/Linux
 		b) `venv\Scripts\activate` for Windows
 	3) if you havn't already `pip3 install -r requirements.txt`
 	4) run `export FLASK_APP=main.py`

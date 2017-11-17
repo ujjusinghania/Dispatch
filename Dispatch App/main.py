@@ -30,18 +30,14 @@ def loginAuth():
 	password = request.form['password']
 	print(password)
 	
-	#md5 hashes password user enters
-	m = hashlib.md5()
-	password = password.encode('utf-8')
-	m.update(password)
-	password = m.digest()
-	print(password)
+	password_digest = md5(password)
 	
 	cursor = conn.cursor()
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
-	cursor.execute(query, (username, password))
-	print(cursor.fetchone())
+	cursor.execute(query, (username, password_digest))
+
 	data = cursor.fetchone()
+	print(data)
 	cursor.close()
 
 	if(data):
@@ -61,21 +57,28 @@ def registerAuth():
 	fname = request.form['First Name']
 	lname = request.form['Last Name']
 	
-	m = hashlib.md5()
-	m.update(password)
-	password = m.digest()
-	print(password)
+	password_digest = md5(password)
+
+	print(password_digest)
 	
 	cursor = conn.cursor()
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
-	cursor.execute(query, (username, password, fname, lname))
+	cursor.execute(query, (username, password_digest, fname, lname))
 	data = cursor.fetchone()
 	cursor.close()
 	
 	return render_template('login.html')
 	#return "Welcome Home!"
 
+def md5(password):
+	m = hashlib.md5()
+	password = password.encode('utf-8')
+	m.update(password)
+	password_digest = m.hexdigest()
+	return password_digest
+
 app.run()
+
 
 '''
 #change this
