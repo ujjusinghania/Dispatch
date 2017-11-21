@@ -2,12 +2,12 @@
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
 ### Instructions for using virtual environment
-	4) run `export FLASK_APP=main.py`
-	5) run `export DB_PASS="YOUR_PASSWORD"`
-	6) run `export DP_PORT=YOUR_PORTNUMBER`
-	7) open MAMP/WAMP/LAMP and start the server
-	8) run `flask run`
-	9) do work
+	1) run `export FLASK_APP=main.py`
+	2) run `export DB_PASS="YOUR_PASSWORD"`
+	3) run `export DP_PORT=YOUR_PORTNUMBER`
+	4) open MAMP/WAMP/LAMP and start the server
+	5) run `flask run`
+	6) do work
 
 ##### example:
 ```
