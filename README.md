@@ -2,6 +2,7 @@
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
 ### Instructions for running the app
+	0) navagate to Dispatch folder
 	1) run `export FLASK_APP=main.py`
 	2) run `export DB_PASS="YOUR_PASSWORD"`
 	3) run `export DP_PORT=YOUR_PORTNUMBER`
@@ -11,7 +12,6 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 
 ##### example:
 ```
-source venv/bin/activate
 export FLASK_APP=main.py
 export DB_PASS="root"
 export DB_PORT=8889
