@@ -1,7 +1,7 @@
 # Dispatch
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
-### Instructions for using virtual environment
+### Instructions for running the app
 	1) run `export FLASK_APP=main.py`
 	2) run `export DB_PASS="YOUR_PASSWORD"`
 	3) run `export DP_PORT=YOUR_PORTNUMBER`
