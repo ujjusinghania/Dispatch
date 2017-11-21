@@ -22,7 +22,7 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 source venv/bin/activate
 export FLASK_APP=main.py
 export DB_PASS="root"
-export DP_PORT=8889
+export DB_PORT=8889
 flask run
 
 ```
