@@ -9,9 +9,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port=3306, #int(os.environ['DB_PORT']), #get the port from an env var
+                      port=int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= 'root', #get the pswd from an env var
+                      password=os.environ['DB_PASS'],#'root', #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
