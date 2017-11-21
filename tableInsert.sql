@@ -17,21 +17,21 @@ INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox');
 INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
 INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
 
-#inserting ann into family
-INSERT INTO friendgroup VALUES ('AA', 'family', NULL);
-INSERT INTO member VALUES ('CC', 'family', 'AA');
-INSERT INTO member VALUES ('DD', 'family', 'AA');
-INSERT INTO member VALUES ('EE', 'family', 'AA');
+-- #inserting ann into family
+-- INSERT INTO friendgroup VALUES ('AA', 'family', NULL);
+-- INSERT INTO member VALUES ('CC', 'family', 'AA');
+-- INSERT INTO member VALUES ('DD', 'family', 'AA');
+-- INSERT INTO member VALUES ('EE', 'family', 'AA');
 
-# inserting bob into family
-INSERT INTO friendgroup VALUES 	('BB','family', NULL);
-INSERT INTO member VALUES 		('FF','family', 'BB');
-INSERT INTO member VALUES 		('EE','family', 'BB');
+-- # inserting bob into family
+-- INSERT INTO friendgroup VALUES 	('BB','family', NULL);
+-- INSERT INTO member VALUES 		('FF','family', 'BB');
+-- INSERT INTO member VALUES 		('EE','family', 'BB');
 
-# inserting ann into besties
-INSERT INTO friendgroup VALUES 	('AA','besties', NULL);
-INSERT INTO member VALUES 		('GG','besties','AA');
-INSERT INTO member VALUES 		('HH','besties','AA');
+-- # inserting ann into besties
+-- INSERT INTO friendgroup VALUES 	('AA','besties', NULL);
+-- INSERT INTO member VALUES 		('GG','besties','AA');
+-- INSERT INTO member VALUES 		('HH','besties','AA');
 
 
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
