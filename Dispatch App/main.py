@@ -26,6 +26,7 @@ def messages():
 		return redirect(url_for('login'))
 	else:
 		friendGroup = request.args.get("groupSelected")
+		print("friend groop: "+friendGroup)
 		session['groupSelected'] = friendGroup
 		username = session['username']
 		print(friendGroup)

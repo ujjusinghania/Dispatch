@@ -6,16 +6,13 @@
     <link rel="stylesheet" href="/static/styles/messages.css" />
 </head>
 
-<br />
-<center>
+<body>  
+<center class="content">
     <div class="textbox">
-
-        <head>
-            <b>{{session['groupSelected']}}</b>
-        </head>
+        <b>{{session['groupSelected']}}</b>
     </div>
 
-    <body>
+
         <br />
         <div class="scrollBox">
             {% for message in messages %} 
