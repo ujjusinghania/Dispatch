@@ -16,59 +16,78 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-
 @app.route('/')
 def login():
 	return render_template('login.html')
 
 @app.route('/home/friendgroups/messages', methods=['GET'])
-def messages(): 
-	friendGroup = request.args.get("groupSelected")
-	session['groupSelected'] = friendGroup
-	username = session['username']
-	print(friendGroup)
+def messages():
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		friendGroup = request.args.get("groupSelected")
+		session['groupSelected'] = friendGroup
+		username = session['username']
+		print(friendGroup)
 
-	cursor = conn.cursor()
-	# Gets a list of all the content that the user has posted/is public. 
-	# Need to add list of content that is shared with groups the user is a part of. 
-	query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
-	cursor.execute(query, (username, friendGroup))
-	messages = cursor.fetchall() 
-	print(messages)
+		cursor = conn.cursor()
+		# Gets a list of all the content that the user has posted/is public. 
+		# Need to add list of content that is shared with groups the user is a part of. 
+		query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
+		cursor.execute(query, (username, friendGroup))
+		messages = cursor.fetchall() 
+		print(messages)
 
-	cursor.close()
+		cursor.close()
 
-	return render_template('messages.html')
+		return render_template('messages.html')
 
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
-	username = session['username']
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		username = session['username']
 
-	# Gets a list of all the groups the user is a part of/is the admin of. 
-	cursor = conn.cursor()
-	query = 'SELECT DISTINCT group_name FROM member WHERE username = %s OR username_creator = %s'
-	cursor.execute(query, (username, username))
-	groups = cursor.fetchall()
-	print(groups)
-	cursor.close()
+		# Gets a list of all the groups the user is a part of/is the admin of. 
+		cursor = conn.cursor()
+		query = 'SELECT DISTINCT group_name FROM member WHERE username = %s OR username_creator = %s'
+		cursor.execute(query, (username, username))
+		groups = cursor.fetchall()
+		print(groups)
+		cursor.close()
 	
-	return render_template('friendgroups.html', groups=groups)
+		return render_template('friendgroups.html', groups=groups)
 
+def checkSess():
+	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
+	
+@app.route('/logout')
+def logout():
+	#clear session variables
+	session['username'] = ""
+	session['fname'] = ""
+	session['lname'] = ""
+	return redirect(url_for('login'))
+	
 @app.route('/home')
 def home():
-
-
-	return render_template('home.html')
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('home.html')
 
 @app.route('/home/settings')
 def setting():
-	return render_template('settings.html')
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('settings.html')
 	
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-	print(password)
 	
 	password_digest = md5(password)
 	
