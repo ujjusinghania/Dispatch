@@ -127,6 +127,12 @@ def registerAuth():
 
 	# connonect to db and insert new user
 	cursor = conn.cursor()
+	query = 'SELECT * FROM person WHERE username = %s'
+	cursor.execute(query, (username))
+	data = cursor.fetchone()
+	if(data):
+		return render_template('register.html', error="Username already taken.")
+
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
 	cursor.execute(query, (username, password_digest, fname, lname))
 	data = cursor.fetchone()
@@ -134,13 +140,10 @@ def registerAuth():
 	# commit changes and close connetion
 	conn.commit()
 	cursor.close()
-	if(data):
-		return render_template('register.html', error="Username already taken.")
-	else:
-		session['username'] = username
-		session['fname'] = fname
-		session['lname'] = lname
-		return redirect(url_for('home'))
+	session['username'] = username
+	session['fname'] = fname
+	session['lname'] = lname
+	return redirect(url_for('home'))
 	#return "Welcome Home!"
 
 
