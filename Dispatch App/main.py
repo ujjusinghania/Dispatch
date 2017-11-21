@@ -26,6 +26,7 @@ def messages():
 		return redirect(url_for('login'))
 	else:
 		friendGroup = request.args.get("groupSelected")
+		print("friend groop: "+friendGroup)
 		session['groupSelected'] = friendGroup
 		username = session['username']
 		print(friendGroup)
@@ -57,6 +58,7 @@ def friendgroups():
 		print(groups)
 		cursor.close()
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 		return render_template('friendgroups.html', groups=groups)
 
@@ -85,6 +87,9 @@ def logout():
 	
 =======
 	
+=======
+	
+>>>>>>> 8febee18873e774f227d4110f98109dc1e9cf907
 		return render_template('friendgroups.html', groups=groups)
 
 def checkSess():
@@ -98,7 +103,6 @@ def logout():
 	session['lname'] = ""
 	return redirect(url_for('login'))
 	
->>>>>>> ed4770e05c7437cbb586d1f55974f18b60cc9c04
 @app.route('/home')
 def home():
 	if (checkSess()):
