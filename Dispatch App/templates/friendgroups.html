@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Your Friend Groups</title>
+    <link rel="stylesheet" href="/static/styles/friendgroups.css" />
+</head>
+
+<body>
+    <div class=content>
+        {% for group in groups%}
+        <a href='/home/friendgroups/message' style="text-decoration:none;">
+            <p>{{group.group_name}}</p>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

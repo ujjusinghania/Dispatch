@@ -1,0 +1,33 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Home</title>
+    <link rel="stylesheet" href="/static/styles/homestyle.css" />
+</head>
+
+<body>
+    <div class=content>
+        <p><font size='40em'>Hello {{session["fname"]}} {{session["lname"]}}</font></p><br/>
+        <a href='/home/profile' style="text-decoration:none;">
+            <p>Profile</p>
+        </a>
+        <a href='/home/friendgroups' style="text-decoration:none;">
+            <p>Friend Groups</p>
+        </a>
+        <a href='/home/tags' style="text-decoration:none;">
+            <p>Tags</p>
+        </a>
+        <a href='/home/favorites' style="text-decoration:none;">
+            <p>Favorites</p>
+        </a>
+        <a href='/home/medialibrary' style="text-decoration:none;">
+            <p>Media Library</p>
+        </a>
+        <a href='/home/settings' style="text-decoration:none;">
+            <p>Settings</p>
+        </a>
+    </div>
+</body>
+
+</html>

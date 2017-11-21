@@ -7,7 +7,6 @@ app = Flask(__name__)
 # this is for pulling the port and database password from environment variables
 import os
 
-
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
                       port=3306, #int(os.environ['DB_PORT']), #get the port from an env var
@@ -20,30 +19,34 @@ conn = pymysql.connect(host='localhost',
 
 @app.route('/')
 def login():
-    return render_template('login.html')
+	return render_template('login.html')
 
-
-@app.route('/home')
-def home():
+@app.route('/home/friendgroups')
+def friendgroups():
 	username = session['username']
 
 	# Gets a list of all the groups the user is a part of/is the admin of. 
 	cursor = conn.cursor()
-	query = 'SELECT * FROM member WHERE username = %s OR username_creator = %s'
+	query = 'SELECT DISTINCT group_name FROM member WHERE username = %s OR username_creator = %s'
 	cursor.execute(query, (username, username))
 	groups = cursor.fetchall()
 	print(groups)
-
-	# Gets a list of all the content that the user has posted/is public. 
-	# Need to add list of content that is shared with groups the user is a part of. 
-	query = 'SELECT * FROM content WHERE username = %s OR public = 1'
-	cursor.execute(query, (username))
-	messages = cursor.fetchall() 
-	print(groups)
-
 	cursor.close()
+	
+	return render_template('friendgroups.html', groups=groups)
 
-	return render_template('index.html')
+@app.route('/home')
+def home():
+	# # Gets a list of all the content that the user has posted/is public. 
+	# # Need to add list of content that is shared with groups the user is a part of. 
+	# query = 'SELECT * FROM content WHERE username = %s OR public = 1'
+	# cursor.execute(query, (username))
+	# messages = cursor.fetchall() 
+	# print(groups)
+
+	# cursor.close()
+
+	return render_template('home.html')
 
 	
 @app.route('/loginAuth', methods=['GET', 'POST'])
@@ -64,6 +67,8 @@ def loginAuth():
 
 	if(data):
 		session['username'] = username
+		session['fname'] = data['first_name']
+		session['lname'] = data['last_name']
 		return redirect(url_for('home'))
 	else:
 		error = "Invalid Username or Password"

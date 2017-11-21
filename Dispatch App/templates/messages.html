@@ -1,0 +1,110 @@
+<html>
+<style type="text/css">
+    input[type="text"] {
+        padding: 10px;
+        border: solid 1px #fff;
+        border-bottom: solid 2px #969696;
+        transition: box-shadow 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="text"].focus {
+        border-bottom: solid 3px black;
+    }
+
+    input.sendButton {
+        background-color: #FFFFFF;
+        width=6%;
+        height: 6%;
+    }
+
+    div.scrollBox {
+        background-color: #FFFFFF;
+        left: 10%;
+        width: 80%;
+        height: 60%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        text-align: left;
+        border: solid 1px;
+        padding: 15px;
+    }
+
+    div.textbox {
+        background-color: #D3D3D3;
+        left: 10%;
+        width: 80%;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        text-align: left;
+        border: solid 1px;
+        padding: 15px;
+    }
+
+    p.machine {
+        padding: 12px;
+        background-color: #DCDCDC;
+        word-break: keep-all;
+        white-space: normal;
+        border-radius: 12px;
+        position: relative;
+        max-width: 50%;
+        left: 5%;
+        font-family: arial;
+        font-size: 14px;
+        word-break: default;
+    }
+
+    p.user {
+        padding: 12px;
+        background-color: #0080ff;
+        word-break: keep-all;
+        white-space: normal;
+        border-radius: 12px;
+        color: white;
+        position: relative;
+        max-width: 50%;
+        left: 42%;
+        font-family: arial;
+        font-size: 14px;
+        word-break: default;
+    }
+</style>
+
+<br />
+<center>
+    <div class="textbox">
+
+        <head>
+            <b>Welcome to the ChatBot interface.</b>
+        </head>
+    </div>
+
+    <body>
+        <br />
+        <div class="scrollBox">
+            <% 
+ArrayList<String> messagingThread = (ArrayList<String>)request.getAttribute("messagingThread"); 
+int counter = 0; 
+for(String input : messagingThread) {
+	if (counter % 2 == 0) {
+	out.println("<p class = " + "user" + "><b> </b>" + input + "</p>"); 
+	}
+	else {
+		out.println("<p class = " + "machine" + "><b> </b>" + input + "</p>"); 
+	}
+	counter++; 
+	}
+		%>
+        </div>
+        <form action="echomessage" method="POST">
+            <br />
+            <div class="textbox">
+                <input type="text" style="width: 92%" placeholder="Enter your question" name="userQuestion" />
+                <input type="submit" text="Submit" class="sendButton" />
+            </div>
+        </form>
+</center>
+</body>
+
+</html>
