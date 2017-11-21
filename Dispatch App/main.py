@@ -9,9 +9,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= 3306, #int(os.environ['DB_PORT']), #get the port from an env var
+                      port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= 'root', #os.environ['DB_PASS'], #get the pswd from an env var
+                      password= os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -57,17 +57,14 @@ def friendgroups():
 		groups = cursor.fetchall()
 		print(groups)
 		cursor.close()
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
 		return render_template('friendgroups.html', groups=groups)
 
-@app.route('home/tags',methods=['GET'])
+@app.route('/home/tags',methods=['GET'])
 def tags():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_tagger = %s'
-  cursor.execute(query,(username_taggee))
+  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_taggee = %s'
+  cursor.execute(query,(username))
   tags =  cursor.fetchall()
   print(tag)
   cursor.close()
@@ -84,24 +81,9 @@ def logout():
 	session['fname'] = ""
 	session['lname'] = ""
 	return redirect(url_for('login'))
-	
-=======
-	
-=======
-	
->>>>>>> 8febee18873e774f227d4110f98109dc1e9cf907
-		return render_template('friendgroups.html', groups=groups)
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
-	
-@app.route('/logout')
-def logout():
-	#clear session variables
-	session['username'] = ""
-	session['fname'] = ""
-	session['lname'] = ""
-	return redirect(url_for('login'))
 	
 @app.route('/home')
 def home():
