@@ -9,10 +9,13 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port=int(os.environ['DB_PORT']), #get the port from an env var
+                      port= 3306,#int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password=os.environ['DB_PASS'],#'root', #get the pswd from an env var
+<<<<<<< HEAD
+                      password= 'root',#os.environ['DB_PASS'],#'root', #get the pswd from an env var
+=======
                       password= os.environ['DB_PASS'], #get the pswd from an env var
+>>>>>>> 37e87e80883dd750f9dd01d0f1356614fe57be67
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -22,7 +25,26 @@ conn = pymysql.connect(host='localhost',
 def login():
 	return render_template('login.html')
 
-@app.route('/home/friendgroups')
+@app.route('/home/friendgroups/messages', methods=['GET'])
+def messages(): 
+	friendGroup = request.args.get("groupSelected")
+	session['groupSelected'] = friendGroup
+	username = session['username']
+	print(friendGroup)
+
+	cursor = conn.cursor()
+	# Gets a list of all the content that the user has posted/is public. 
+	# Need to add list of content that is shared with groups the user is a part of. 
+	query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
+	cursor.execute(query, (username, friendGroup))
+	messages = cursor.fetchall() 
+	print(messages)
+
+	cursor.close()
+
+	return render_template('messages.html')
+
+@app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
 	username = session['username']
 
@@ -38,14 +60,7 @@ def friendgroups():
 
 @app.route('/home')
 def home():
-	# # Gets a list of all the content that the user has posted/is public. 
-	# # Need to add list of content that is shared with groups the user is a part of. 
-	# query = 'SELECT * FROM content WHERE username = %s OR public = 1'
-	# cursor.execute(query, (username))
-	# messages = cursor.fetchall() 
-	# print(groups)
 
-	# cursor.close()
 
 	return render_template('home.html')
 
@@ -105,8 +120,8 @@ def registerAuth():
 		return render_template('register.html', error="Username already taken.")
 	else:
 		session['username'] = username
-		session['fname'] = data['first_name']
-		session['lname'] = data['last_name']
+		session['fname'] = fname
+		session['lname'] = lname
 		return redirect(url_for('home'))
 	#return "Welcome Home!"
 
