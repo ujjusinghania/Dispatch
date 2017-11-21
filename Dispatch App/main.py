@@ -60,6 +60,9 @@ def home():
 
 	return render_template('home.html')
 
+@app.route('/home/settings')
+def setting():
+	return render_template('settings.html')
 	
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
