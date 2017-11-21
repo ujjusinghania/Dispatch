@@ -16,7 +16,6 @@ export FLASK_APP=main.py
 export DB_PASS="root"
 export DB_PORT=8889
 flask run
-
 ```
 
 
