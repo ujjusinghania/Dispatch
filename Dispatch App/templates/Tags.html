@@ -1,0 +1,20 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Your Tags</title>
+    <link rel="stylesheet" href="/static/styles/friendgroups.css" />
+</head>
+
+<body>
+    <div class=content>
+        <p><font size='40em'>Your Tags, {{session["fname"]}} {{session["lname"]}}.</font></p><br/>
+        {% for tag in tags%}
+        <a href='/home/friendgroups/messages?groupSelected='+{{group.group_name}} style="text-decoration:none;">
+            <p>{{group.group_name}}</p>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

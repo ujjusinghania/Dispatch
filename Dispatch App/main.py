@@ -57,7 +57,39 @@ def friendgroups():
 		groups = cursor.fetchall()
 		print(groups)
 		cursor.close()
+<<<<<<< HEAD
+<<<<<<< HEAD
 	
+		return render_template('friendgroups.html', groups=groups)
+
+@app.route('home/tags',methods=['GET'])
+def tags():
+  username = session['username']
+  cursor = conn.cursor()
+  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_tagger = %s'
+  cursor.execute(query,(username_taggee))
+  tags =  cursor.fetchall()
+  print(tag)
+  cursor.close()
+
+  return render_template('Tags.html',tags = tags)
+
+def checkSess():
+	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
+	
+@app.route('/logout')
+def logout():
+	#clear session variables
+	session['username'] = ""
+	session['fname'] = ""
+	session['lname'] = ""
+	return redirect(url_for('login'))
+	
+=======
+	
+=======
+	
+>>>>>>> 8febee18873e774f227d4110f98109dc1e9cf907
 		return render_template('friendgroups.html', groups=groups)
 
 def checkSess():
