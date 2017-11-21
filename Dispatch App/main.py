@@ -11,7 +11,6 @@ import os
 conn = pymysql.connect(host='localhost',
                       port=int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password=os.environ['DB_PASS'],#'root', #get the pswd from an env var
                       password= os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
