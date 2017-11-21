@@ -105,6 +105,8 @@ def registerAuth():
 		return render_template('register.html', error="Username already taken.")
 	else:
 		session['username'] = username
+		session['fname'] = data['first_name']
+		session['lname'] = data['last_name']
 		return redirect(url_for('home'))
 	#return "Welcome Home!"
 
