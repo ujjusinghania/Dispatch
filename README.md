@@ -17,7 +17,7 @@ export DB_PASS="root"
 export DB_PORT=8889
 flask run
 ```
-
+### port numbers: 3306 for Windows, 8889 for MacOS
 
 ### Importing / resetting the database
 	run `./reset_db.sh`
