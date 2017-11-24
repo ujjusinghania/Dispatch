@@ -26,7 +26,7 @@ def messages():
 		return redirect(url_for('login'))
 	else:
 		friendGroup = request.args.get("groupSelected")
-		print("friend groop: "+friendGroup)
+		print("friend group: "+friendGroup)
 		session['groupSelected'] = friendGroup
 		username = session['username']
 		print(friendGroup)
@@ -98,7 +98,56 @@ def setting():
 		return redirect(url_for('login'))
 	else:
 		return render_template('settings.html')
+
+@app.route('/settings/changepass')#, methods=['GET', 'POST'])
+def changepass():
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('changepass.html')
+		
+@app.route('/changepassAuth', methods=['GET', 'POST'])
+def changepassAuth():
+	currpass = request.form['current_password']
+	newpass = request.form['new_password']
+	confirmpass = request.form['confirm_password']
 	
+	current_password_digest = md5(currpass)
+	
+	cursor = conn.cursor()
+	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
+	cursor.execute(query, (session['username'], current_password_digest))
+
+	data = cursor.fetchone()
+	print(data)
+	cursor.close()
+	
+	if (data):
+		if (newpass != confirmpass):
+			error = "Passwords do not match"
+			print(error)
+			return render_template('changepass.html', error=error)
+		else:
+			new_password_digest = md5(newpass)
+			confirm_password_digest = md5(confirmpass)
+			
+			cursor = conn.cursor()
+			query = 'UPDATE person SET password = %s WHERE username = %s'
+			cursor.execute(query, (new_password_digest, session['username']))
+			conn.commit()
+			
+			query = 'SELECT * FROM person WHERE username = %s AND password = %s'
+			cursor.execute(query, (session['username'], new_password_digest))
+			
+			data1 = cursor.fetchone()
+			print(data1)
+			cursor.close()
+			return redirect(url_for('setting'))
+	else:
+		error = "Incorrect Password"
+		print(error)
+		return render_template('changepass.html', error=error)
+		
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
