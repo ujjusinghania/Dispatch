@@ -106,12 +106,14 @@ def changepass():
 	else:
 		return render_template('changepass.html')
 		
-@app.route('/changepassAuth', methods=['GET', 'POST'])
+@app.route('/changePassAuth', methods=['GET', 'POST'])
 def changepassAuth():
 	currpass = request.form['current_password']
 	newpass = request.form['new_password']
 	confirmpass = request.form['confirm_password']
 	
+	print(currpass, newpass, confirmpass)
+
 	current_password_digest = md5(currpass)
 	
 	cursor = conn.cursor()
@@ -124,7 +126,7 @@ def changepassAuth():
 	
 	if (data):
 		if (newpass != confirmpass):
-			error = "Passwords do not match"
+			error = "Passwords Do Not Match"
 			print(error)
 			return render_template('changepass.html', error=error)
 		else:
