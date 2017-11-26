@@ -9,9 +9,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= int(os.environ['DB_PORT']), #get the port from an env var
+                      port= 3306, #int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
+                      password= 'root', #os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -80,7 +80,7 @@ def logout():
 	session['username'] = ""
 	session['fname'] = ""
 	session['lname'] = ""
-	return redirect(url_for('login'))
+	return render_template('login.html', error="You have successfully logged out")
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
@@ -111,8 +111,6 @@ def changepassAuth():
 	currpass = request.form['current_password']
 	newpass = request.form['new_password']
 	confirmpass = request.form['confirm_password']
-	
-	print(currpass, newpass, confirmpass)
 
 	current_password_digest = md5(currpass)
 	
@@ -212,6 +210,9 @@ def registerAuth():
 	return redirect(url_for('home'))
 	#return "Welcome Home!"
 
+@app.route('/home/friendgroups/addfriendgroup')
+def addFriendGroup(): 
+	return render_template('addfriendgroup.html')
 
 def md5(password):
 	# encode and hash password
