@@ -6,16 +6,35 @@ CREATE TABLE Person(
     PRIMARY KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+
 CREATE TABLE Content(
     id INT AUTO_INCREMENT,
     username VARCHAR (50),
     timest TIMESTAMP,
-    file_path VARCHAR (100),
     content_name VARCHAR (50),
     public BOOLEAN,
     PRIMARY KEY (id),
     FOREIGN KEY (username) REFERENCES Person (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE TextContent(
+    id INT,
+    text_content VARCHAR (140),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE FileContent(
+    id INT,
+    file_path VARCHAR (100),
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
 
 CREATE TABLE Tag(
     id INT,
@@ -59,9 +78,9 @@ CREATE TABLE Member(
 
 CREATE TABLE Share(
     id INT,
-group_name VARCHAR (50),    
-username VARCHAR (50),
-PRIMARY KEY (id, group_name, username),
-FOREIGN KEY (id) REFERENCES Content(id),
-FOREIGN KEY (group_name, username) REFERENCES FriendGroup(group_name, username)
+    group_name VARCHAR (50),    
+    username VARCHAR (50),
+    PRIMARY KEY (id, group_name, username),
+    FOREIGN KEY (id) REFERENCES Content(id),
+    FOREIGN KEY (group_name, username) REFERENCES FriendGroup(group_name, username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

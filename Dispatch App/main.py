@@ -32,16 +32,23 @@ def messages():
 		print(friendGroup)
 
 		cursor = conn.cursor()
+		
 		# Gets a list of all the content that the user has posted/is public. 
 		# Need to add list of content that is shared with groups the user is a part of. 
-		query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
-		cursor.execute(query, (username, friendGroup))
+		# query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
+		query = 'SELECT * FROM Share                           \
+					NATURAL JOIN Content                       \
+					NATURAL JOIN TextContent                   \
+					WHERE group_name = %s AND username = %s'
+		
+		cursor.execute(query, (friendGroup, username))
 		messages = cursor.fetchall() 
+
 		print(messages)
 
 		cursor.close()
 
-		return render_template('messages.html')
+		return render_template('messages.html', messages=messages)
 
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
@@ -217,17 +224,37 @@ def addFriendGroup():
 
 @app.route('/addMessage', methods = ['GET', 'POST'])
 def addMessage():
+
+	## There is an error in this. I use the current logged in user as the 
+	## primary key for friendgroup, but it should be the group creator 
+
 	message = request.form['userEnteredMessage']
 	print(message)
 
-	# cursor = conn.cursor()
-	# query = 'INSERT INTO Content VALUES (%s, %s, %s, %s)'
-	# cursor.execute(query, (username, password_digest, fname, lname))
-	# data = cursor.fetchone()
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], "TextContent", False))
+
+	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, (message))
 	
+
+	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+	cursor.execute(query, (session['groupSelected'], session['username']))
+
+
+	# query = 'SELECT * FROM Content NATURAL JOIN TextContent WHERE id=LAST_INSERT_ID()'
+	# cursor.execute(query)
+	
+	# data = cursor.fetchone()
+	# print(data)
+
+
 	# commit changes and close connetion
-	# conn.commit()
-	# cursor.close()
+	conn.commit()
+	cursor.close()
 
 	return redirect(url_for('messages')+'?groupSelected='+session['groupSelected'])
 

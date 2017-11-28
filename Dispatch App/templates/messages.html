@@ -16,7 +16,7 @@
         <br />
         <div class="scrollBox">
             {% for message in messages %} 
-                <p>{{message.id}}</p>
+                <p>{{message.id}} {{message.text_content}}</p>
             {% endfor %}
         </div>
 
