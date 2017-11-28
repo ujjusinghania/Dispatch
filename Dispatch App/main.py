@@ -20,7 +20,7 @@ conn = pymysql.connect(host='localhost',
 def login():
 	return render_template('login.html')
 
-@app.route('/home/friendgroups/messages', methods=['GET'])
+@app.route('/home/friendgroups/messages', methods=['GET', 'POST'])
 def messages():
 	if (checkSess()):
 		return redirect(url_for('login'))
@@ -213,6 +213,24 @@ def registerAuth():
 @app.route('/home/friendgroups/addfriendgroup')
 def addFriendGroup(): 
 	return render_template('addfriendgroup.html')
+
+
+@app.route('/addMessage', methods = ['GET', 'POST'])
+def addMessage():
+	message = request.form['userEnteredMessage']
+	print(message)
+
+	# cursor = conn.cursor()
+	# query = 'INSERT INTO Content VALUES (%s, %s, %s, %s)'
+	# cursor.execute(query, (username, password_digest, fname, lname))
+	# data = cursor.fetchone()
+	
+	# commit changes and close connetion
+	# conn.commit()
+	# cursor.close()
+
+	return redirect(url_for('messages')+'?groupSelected='+session['groupSelected'])
+
 
 def md5(password):
 	# encode and hash password

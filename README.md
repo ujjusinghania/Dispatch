@@ -7,7 +7,7 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 	2) run `export DB_PASS="YOUR_PASSWORD"`
 	3) run `export DP_PORT=YOUR_PORTNUMBER`
 	4) open MAMP/WAMP/LAMP and start the server
-	5) run `flask run`
+	5) run `flask run --reload`
 	6) do work
 
 ##### example:
