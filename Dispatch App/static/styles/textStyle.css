@@ -3,7 +3,7 @@ html *
    font-family: Helvetica !important;
 }
  
- p, span    { 
+ p, span { 
         color: rgb(255, 255, 255);
         font-size: 2em;
         font-weight: 900; 
