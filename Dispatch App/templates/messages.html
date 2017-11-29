@@ -4,27 +4,58 @@
     <meta charset="UTF-8">
     <title>Dispatch - Messages</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        function getMessages() {
+            $(function() {
+              $("#input_box").focus();
+            });
+            // var text = $(this).val();
+            // $("#scrollBox").html("ddd blah")
+
+            $.ajax({
+              url: "{{ url_for('getMessages') }}",
+              // type: "get",
+              // data: {"group_name": "{{session['groupSelected'][0]}}", "admin": "{{session['groupSelected'][1]}}"},
+              success: function(response) {
+                $("#scrollBox").html(response);
+                // console.log(response)
+                // console.log("success :-)")
+                // $("#scrollBox").html("success !")
+              },
+              error: function(xhr) {
+                //Do Something to handle error
+              }
+            });
+        };
+
+        window.setInterval(getMessages, 200);
+        // console.log("hello")
+        // console.log(getMessages())
+        // getMessages()
+    </script>
+
 </head>
 
 <body>  
 <center class="content">
     <div class="textbox">
-        <span><b>{{session['groupSelected']}}</b></span>
+        <span><b>{{session['groupSelected'][1]}}'s {{session['groupSelected'][0]}}</b></span>
     </div>
 
 
         <br />
-        <div class="scrollBox">
-            {% for message in messages %} 
-                <p>{{message.id}} {{message.text_content}}</p>
-            {% endfor %}
+        <div id="scrollBox" class="scrollBox">
+
         </div>
 
         <form action="/addMessage" method="POST">
             <br />
             <div class="textbox">
-                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" />
-                <input type="submit" text="Send" class="sendButton" />
+                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages()" />
             </div>
         </form>
 

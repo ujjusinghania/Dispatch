@@ -25,30 +25,46 @@ def messages():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		friendGroup = request.args.get("groupSelected")
-		print("friend group: "+friendGroup)
+		friendGroup = ( request.args.get("groupSelected"), request.args.get("username_creator") )
+		print("friend group: {}{}".format(*friendGroup))
 		session['groupSelected'] = friendGroup
 		username = session['username']
 		print(friendGroup)
 
-		cursor = conn.cursor()
-		
-		# Gets a list of all the content that the user has posted/is public. 
-		# Need to add list of content that is shared with groups the user is a part of. 
-		# query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
-		query = 'SELECT * FROM Share                           \
-					NATURAL JOIN Content                       \
-					NATURAL JOIN TextContent                   \
-					WHERE group_name = %s AND username = %s'
-		
-		cursor.execute(query, (friendGroup, username))
-		messages = cursor.fetchall() 
-
-		print(messages)
-
-		cursor.close()
+		print("\n\n\nABOUT TO GET MESSAGES\n\n\n")
+		messages = getMessages()
+		print("\n\n\nJUST GOT MESSAGES\n\n\n")
 
 		return render_template('messages.html', messages=messages)
+
+
+@app.route('/home/friendgroups/getMessages')
+def getMessages():
+	cursor = conn.cursor()
+		
+	query = "SELECT Content.timest,									\
+					Content.id as ContentID,						\
+					Share.group_name,								\
+			        Share.username as group_admin,					\
+			        TextContent.text_content,						\
+			        Content.username as ContentOwner,				\
+			        Content.public									\
+				FROM Share 											\
+				JOIN Content ON Content.id = Share.id				\
+			    JOIN TextContent on Content.id = TextContent.id 	\
+			    WHERE group_name = %s  AND  Share.username = %s     "
+
+
+	cursor.execute(query, session['groupSelected'])
+	messages = cursor.fetchall() 
+
+	cursor.close()
+
+	print("\n\n\nIN GET_MESSAGES: {}\n\n\n".format(messages))
+
+	# return messages
+	return render_template('getMessages.html', messages=messages)
+
 
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
@@ -59,11 +75,16 @@ def friendgroups():
 
 		# Gets a list of all the groups the user is a part of/is the admin of. 
 		cursor = conn.cursor()
-		query = 'SELECT DISTINCT group_name FROM member WHERE username = %s OR username_creator = %s'
+		query = 'SELECT DISTINCT group_name, username_creator 			\
+						FROM member 									\
+						WHERE username = %s OR username_creator = %s'
+
 		cursor.execute(query, (username, username))
 		groups = cursor.fetchall()
+
 		print(groups)
 		cursor.close()
+
 		return render_template('friendgroups.html', groups=groups)
 
 @app.route('/home/tags',methods=['GET'])
@@ -237,12 +258,25 @@ def addMessage():
 	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
 	cursor.execute(query, (session['username'], "TextContent", False))
 
+
 	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
 	cursor.execute(query, (message))
 	
 
+								# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-	cursor.execute(query, (session['groupSelected'], session['username']))
+
+	print(query, session['groupSelected'])
+
+	cursor.execute(query, session['groupSelected'])
+
+
+
+	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	cursor.execute(query)
+
+	data = cursor.fetchone()
+	print(data)
 
 
 	# query = 'SELECT * FROM Content NATURAL JOIN TextContent WHERE id=LAST_INSERT_ID()'
@@ -256,7 +290,10 @@ def addMessage():
 	conn.commit()
 	cursor.close()
 
-	return redirect(url_for('messages')+'?groupSelected='+session['groupSelected'])
+	return redirect(url_for('messages')						+				
+		'?groupSelected='+session['groupSelected'][0]		+
+		'&username_creator='+session['groupSelected'][1]
+		)
 
 
 def md5(password):

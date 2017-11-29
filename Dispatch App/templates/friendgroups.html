@@ -10,8 +10,8 @@
     <div class=content>
         <span><font size='40em'>Your Groups, {{session["fname"]}} {{session["lname"]}}.</font></span><a href='/home/friendgroups/addfriendgroup' style="text-decoration:none;"><span style='float:right'>Add Group</span></a><br/>
         {% for group in groups%}
-        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}' style="text-decoration:none;">
-            <p>{{group.group_name}}</p>
+        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
+            <p>{{group.group_name}} {{group.username_creator}}</p>
         </a>
         {% endfor %}
     </div>

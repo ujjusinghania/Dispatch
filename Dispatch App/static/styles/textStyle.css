@@ -2,8 +2,12 @@ html *
 {
    font-family: Helvetica !important;
 }
- 
- p, span    { 
+
+.scrollBox {
+        color: white;
+    }
+
+p, span { 
         color: rgb(255, 255, 255);
         font-size: 2em;
         font-weight: 900; 
@@ -16,4 +20,6 @@ body {
 .content {
         padding: 100px;
         margin: auto;
-        }
+    }
+
+
