@@ -8,13 +8,13 @@
 
 <body>
     <div class=content>
-        <span><font size='40em'>Your Groups, {{session["fname"]}} {{session["lname"]}}.</font></span><a href='/home/friendgroups/addfriendgroup' style="text-decoration:none;"><span style='float:right'>Add Group</span></a><br/>
-        <span style='float:right'><font size='2em'><a href='/home' style="text-decoration:none;"><p>Go Back Home</p></a><br/>
+        <span><font size='40em'>Your Groups, {{session["fname"]}} {{session["lname"]}}.</font></span><a href='/home/friendgroups/addfriendgroup' style="text-decoration:none;"><span style='float:right'>Add Group</span></a><br/><br/>
         {% for group in groups%}
         <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}' style="text-decoration:none;">
-            <p>{{group.group_name}}</p>
-        </a>
+            <span>{{group.group_name}}</span>
+        </a><br/><br/>
         {% endfor %}
+        <a href='/home' style="text-decoration:none;"><font size='3em'><span style='float:right'>Go Back Home</span></font></a>
     </div>
 </body>
 
