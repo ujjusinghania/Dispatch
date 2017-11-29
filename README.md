@@ -46,6 +46,7 @@ flask run
 	- Blocking People
 	- Removing people from group
 	- Starring Messages
+	- Friendlist (add/delete)
 
 ### Part 1 ER Diagram
 ![Part 1 ER](/docs/Part1_ER.png)
