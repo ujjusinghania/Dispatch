@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session, url_for, redirect
 from flask import request
 import pymysql.cursors
 import hashlib
+
 app = Flask(__name__)
 
 # this is for pulling the port and database password from environment variables
@@ -15,6 +16,8 @@ conn = pymysql.connect(host='localhost',
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
+
+conn.autocommit = True
 
 @app.route('/')
 def login():
@@ -213,6 +216,26 @@ def registerAuth():
 @app.route('/home/friendgroups/addfriendgroup')
 def addFriendGroup(): 
 	return render_template('addfriendgroup.html')
+
+@app.route('/home/friendgroups/addfriendgroup/addtodatabase', methods=['GET', 'POST'])
+def addFriendGroupAuth(): 
+	cursor = conn.cursor()
+
+	groupName = request.form['group_name']
+	groupDescription = request.form['group_description']
+	username = session['username']
+
+	query = 'SELECT username, group_name FROM friendgroup WHERE username = %s AND group_name = %s'
+	cursor.execute(query, (username, groupName))
+	data = cursor.fetchone()
+	if (data):
+		return render_template('addfriendgroup.html', error="You already own a FriendGroup called " + groupName)
+	else:
+		query = 'INSERT INTO friendgroup VALUES(%s, %s, %s)'
+		cursor.execute(query, (groupName, username, groupDescription))
+		query = 'INSERT INTO member VALUES(%s, %s, %s)'
+		cursor.execute(query, (username, groupName, username))
+		return redirect(url_for('friendgroups'))
 
 def md5(password):
 	# encode and hash password
