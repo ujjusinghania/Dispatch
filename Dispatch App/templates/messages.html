@@ -12,18 +12,11 @@
             $(function() {
               $("#input_box").focus();
             });
-            // var text = $(this).val();
-            // $("#scrollBox").html("ddd blah")
 
             $.ajax({
               url: "{{ url_for('getMessages') }}",
-              // type: "get",
-              // data: {"group_name": "{{session['groupSelected'][0]}}", "admin": "{{session['groupSelected'][1]}}"},
               success: function(response) {
                 $("#scrollBox").html(response);
-                // console.log(response)
-                // console.log("success :-)")
-                // $("#scrollBox").html("success !")
               },
               error: function(xhr) {
                 //Do Something to handle error
@@ -32,9 +25,6 @@
         };
 
         window.setInterval(getMessages, 200);
-        // console.log("hello")
-        // console.log(getMessages())
-        // getMessages()
     </script>
 
 </head>

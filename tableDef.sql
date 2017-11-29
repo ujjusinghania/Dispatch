@@ -11,24 +11,24 @@ CREATE TABLE Person(
 
 CREATE TABLE Content(
     id INT AUTO_INCREMENT,
-    username VARCHAR (50),
-    timest TIMESTAMP,
-    content_name VARCHAR (50),
-    public BOOLEAN,
+    username VARCHAR (50),      # the owner of this content
+    timest TIMESTAMP,           # when this content was created
+    content_name VARCHAR (50),  # ContentType?
+    public BOOLEAN,             #
     PRIMARY KEY (id),
     FOREIGN KEY (username) REFERENCES Person (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE TextContent(
-    id INT,
-    text_content VARCHAR (140),
+    id INT,                     # content id
+    text_content VARCHAR (140), # the content itself
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE FileContent(
-    id INT,
-    file_path VARCHAR (100),
+    id INT,                     # content id
+    file_path VARCHAR (100),    # path to content
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -77,9 +77,9 @@ CREATE TABLE Member(
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE Share(
-    id INT,
-    group_name VARCHAR (50),    
-    username VARCHAR (50),
+    id INT,                     # content id
+    group_name VARCHAR (50),    # group name  
+    username VARCHAR (50),      # group admin
     PRIMARY KEY (id, group_name, username),
     FOREIGN KEY (id) REFERENCES Content(id),
     FOREIGN KEY (group_name, username) REFERENCES FriendGroup(group_name, username)

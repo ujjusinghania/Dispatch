@@ -26,14 +26,12 @@ def messages():
 		return redirect(url_for('login'))
 	else:
 		friendGroup = ( request.args.get("groupSelected"), request.args.get("username_creator") )
-		print("friend group: {}{}".format(*friendGroup))
+		# print("friend group: {}{}".format(*friendGroup))
 		session['groupSelected'] = friendGroup
 		username = session['username']
-		print(friendGroup)
+		# print(friendGroup)
 
-		print("\n\n\nABOUT TO GET MESSAGES\n\n\n")
 		messages = getMessages()
-		print("\n\n\nJUST GOT MESSAGES\n\n\n")
 
 		return render_template('messages.html', messages=messages)
 
@@ -60,8 +58,6 @@ def getMessages():
 
 	cursor.close()
 
-	print("\n\n\nIN GET_MESSAGES: {}\n\n\n".format(messages))
-
 	# return messages
 	return render_template('getMessages.html', messages=messages)
 
@@ -82,7 +78,7 @@ def friendgroups():
 		cursor.execute(query, (username, username))
 		groups = cursor.fetchall()
 
-		print(groups)
+		# print(groups)
 		cursor.close()
 
 		return render_template('friendgroups.html', groups=groups)
@@ -250,7 +246,7 @@ def addMessage():
 	## primary key for friendgroup, but it should be the group creator 
 
 	message = request.form['userEnteredMessage']
-	print(message)
+	# print(message)
 
 	conn.commit()
 
@@ -266,7 +262,7 @@ def addMessage():
 								# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
 
-	print(query, session['groupSelected'])
+	# print(query, session['groupSelected'])
 
 	cursor.execute(query, session['groupSelected'])
 
@@ -276,7 +272,7 @@ def addMessage():
 	cursor.execute(query)
 
 	data = cursor.fetchone()
-	print(data)
+	# print(data)
 
 
 	# query = 'SELECT * FROM Content NATURAL JOIN TextContent WHERE id=LAST_INSERT_ID()'

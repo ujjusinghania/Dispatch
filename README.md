@@ -2,21 +2,42 @@
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
 ### Instructions for running the app
+OS X
 	0) navagate to Dispatch folder
 	1) run `export FLASK_APP=main.py`
 	2) run `export DB_PASS="YOUR_PASSWORD"`
 	3) run `export DP_PORT=YOUR_PORTNUMBER`
 	4) open MAMP/WAMP/LAMP and start the server
-	5) run `flask run --reload`
+	5) run `flask run`
 	6) do work
 
+Windows
+	0) navagate to Dispatch folder
+	1) run `set FLASK_APP=main.py`
+	2) run `set DB_PASS="YOUR_PASSWORD"`
+	3) run `set DP_PORT=YOUR_PORTNUMBER`
+	4) open MAMP/WAMP/LAMP and start the server
+	5) run `flask run`
+	6) do work
+
+
 ##### example:
+OS X
 ```
 export FLASK_APP=main.py
 export DB_PASS="root"
 export DB_PORT=8889
 flask run
 ```
+
+Windows
+```
+set FLASK_APP=main.py
+set DB_PASS="root"
+set DB_PORT=8889
+flask run
+```
+
 ### port numbers
 3306 for Windows, 8889 for MacOS
 
