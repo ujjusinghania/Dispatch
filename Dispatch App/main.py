@@ -102,7 +102,18 @@ def setting():
 	else:
 		return render_template('settings.html')
 
-@app.route('/settings/changepass')#, methods=['GET', 'POST'])
+@app.route('/settings/changecolor')
+def changecolor():		
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('changecolor.html')
+
+@app.route('/changecolorAuth')
+def changecolorAuth():
+	pass
+		
+@app.route('/settings/changepass')
 def changepass():
 	if (checkSess()):
 		return redirect(url_for('login'))
