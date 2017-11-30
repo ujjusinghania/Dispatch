@@ -10,9 +10,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= int(os.environ['DB_PORT']), #get the port from an env var
+                      #port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password=os.environ['DB_PASS'], #get the pswd from an env var
+                      password='',#os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -62,17 +62,16 @@ def friendgroups():
 		cursor.close()
 		return render_template('friendgroups.html', groups=groups)
 
-@app.route('/home/tag',methods=['GET'])
-def tags():
+@app.route('/home/tags',methods=['GET'])
+def tag():
   username = session['username']
   cursor = conn.cursor()
   query = 'SELECT username_taggee, content_name FROM tag NATURAL JOIN content WHERE username_taggee = %s'
   cursor.execute(query,(username))
-  tags =  cursor.fetchall()
-  print(tags)
+  tag =  cursor.fetchall()
+  print(tag)
   cursor.close()
-
-  return render_template('Tags.html',tags = tags)
+  return render_template('tags.html',tags = tag)
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
