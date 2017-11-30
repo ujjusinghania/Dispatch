@@ -4,38 +4,76 @@
     <meta charset="UTF-8">
     <title>Dispatch - Home</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
-<body>
-    <div class=content>
-        <p><font size='40em'>Hello {{session["fname"]}} {{session["lname"]}}.</font></p><br/>
-        <a href="https://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727" class="aw-widget-legal">
-            <!--
+    <body>
+        
+                <div class="topnav">
+                    <a href='/home/profile' style="text-decoration:none;">
+                        Profile
+                    </a>
+                    <a href='/home/friendhome' style="text-decoration:none;">
+                        Friends
+                    </a>
+                    <a href='/home/friendgroups' style="text-decoration:none;">
+                        Friend Groups
+                    </a>
+                    <a href='/home/tags' style="text-decoration:none;">
+                        Tags
+                    </a>
+                    <a href='/home/favorites' style="text-decoration:none;">
+                        Favorites
+                    </a>
+                    <a href='/home/medialibrary' style="text-decoration:none;">
+                        Media Library
+                    </a>
+                    <a href='/home/settings' style="text-decoration:none;">
+                        Settings
+                    </a>
+                    <a href='/logout' style="text-decoration:none;">
+                        Logout
+                    </a>
+                </div>
+
+        <div class=content>
+            <p>
+                <font size='40em'>Hello {{session["fname"]}} {{session["lname"]}}.</font>
+            </p>
+            <br/>
+            <a href="https://www.accuweather.com/en/us/new-york-ny/10007/weather-forecast/349727" class="aw-widget-legal">
+                <!--
             By accessing and/or using this code snippet, you agree to AccuWeather’s terms and conditions (in English) which can be found at https://www.accuweather.com/en/free-weather-widgets/terms and AccuWeather’s Privacy Statement (in English) which can be found at https://www.accuweather.com/en/privacy.
             -->
-            </a><div id="awcc1511291095490" class="aw-widget-current"  data-locationkey="" data-unit="f" data-language="en-us" data-useip="true" data-uid="awcc1511291095490"></div><script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
-        <a href='/home/profile' style="text-decoration:none;">
-            <p>Profile</p>
-        </a>
-        <a href='/home/friendgroups' style="text-decoration:none;">
-            <p>Friend Groups</p>
-        </a>
-        <a href='/home/tags' style="text-decoration:none;">
-            <p>Tags</p>
-        </a>
-        <a href='/home/favorites' style="text-decoration:none;">
-            <p>Favorites</p>
-        </a>
-        <a href='/home/medialibrary' style="text-decoration:none;">
-            <p>Media Library</p>
-        </a>
-        <a href='/home/settings' style="text-decoration:none;">
-            <p>Settings</p>
-        </a>
-		<a href='/logout' style="text-decoration:none;">
-            <p>Logout</p>
-        </a>
-    </div>
-</body>
+            </a>
+            <div id="awcc1511291095490" class="aw-widget-current" data-locationkey="" data-unit="f" data-language="en-us"
+                data-useip="true" data-uid="awcc1511291095490"></div>
+            <script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
+            <a href='/home/profile' style="text-decoration:none;">
+                <p>Profile</p>
+            </a>
+            <a href='/home/friendhome' style="text-decoration:none;">
+                <p>Friends</p>
+            </a>
+            <a href='/home/friendgroups' style="text-decoration:none;">
+                <p>Friend Groups</p>
+            </a>
+            <a href='/home/tags' style="text-decoration:none;">
+                <p>Tags</p>
+            </a>
+            <a href='/home/favorites' style="text-decoration:none;">
+                <p>Favorites</p>
+            </a>
+            <a href='/home/medialibrary' style="text-decoration:none;">
+                <p>Media Library</p>
+            </a>
+            <a href='/home/settings' style="text-decoration:none;">
+                <p>Settings</p>
+            </a>
+            <a href='/logout' style="text-decoration:none;">
+                <p>Logout</p>
+            </a>
+        </div>
+    </body>
 
 </html>

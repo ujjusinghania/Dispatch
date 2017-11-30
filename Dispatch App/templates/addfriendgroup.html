@@ -1,67 +1,95 @@
-<html> 
+<html>
 
-    <head>
-        <meta charset="UTF-8">
-        <title>Dispatch - Add New Friend Group</title>
-        <link rel="stylesheet" href="/static/styles/login_register.css" />
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Dispatch - Add New Friend Group</title>
+  <link rel="stylesheet" href="/static/styles/login_register.css" />
+  <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+</head>
 
-    <body>
-        
-          <body class="align">
-        
-            <p class="text--center">{{error}}</p>
-        
-            <div class="grid">
-        
-              <form action="/home/friendgroups/addfriendgroup/addtodatabase" method="POST" class="form login">
-        
-                <div class="form__field">
-                  <label for="group_name">
-                    <svg class="icon">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
-                    </svg>
-                    <span class="hidden">Group Name</span>
-                  </label>
-                  <input id="group_name" type="text" name="group_name" class="form__input" placeholder="Group Name" required>
-                </div>
-        
-                <div class="form__field">
-                  <label for="group_description">
-                    <svg class="icon">
-                      <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
-                    </svg>
-                    <span class="hidden">Group Description</span>
-                  </label>
-                  <input id="group_description" type="text" name="group_description" class="form__input" placeholder="Group Description" required>
-                </div>
-        
-                <div class="form__field">
-                  <input type="submit" value="Add Group">
-                </div>
-        
-              </form>
-        
-            </div>
-        
-            <svg xmlns="http://www.w3.org/2000/svg" class="icons">
-              <symbol id="arrow-right" viewBox="0 0 1792 1792">
-                <path d="M1600 960q0 54-37 91l-651 651q-39 37-91 37-51 0-90-37l-75-75q-38-38-38-91t38-91l293-293H245q-52 0-84.5-37.5T128 1024V896q0-53 32.5-90.5T245 768h704L656 474q-38-36-38-90t38-90l75-75q38-38 90-38 53 0 91 38l651 651q37 35 37 90z"
-                />
-              </symbol>
-              <symbol id="lock" viewBox="0 0 1792 1792">
-                <path d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z"
-                />
-              </symbol>
-              <symbol id="user" viewBox="0 0 1792 1792">
-                <path d="M1600 1405q0 120-73 189.5t-194 69.5H459q-121 0-194-69.5T192 1405q0-53 3.5-103.5t14-109T236 1084t43-97.5 62-81 85.5-53.5T538 832q9 0 42 21.5t74.5 48 108 48T896 971t133.5-21.5 108-48 74.5-48 42-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-320-893q0 159-112.5 271.5T896 896 624.5 783.5 512 512t112.5-271.5T896 128t271.5 112.5T1280 512z"
-                />
-              </symbol>
+<body>
+
+  <div class="topnav">
+    <a href='/home/profile' style="text-decoration:none;">
+      Profile
+    </a>
+    <a href='/home/friendhome' style="text-decoration:none;">
+      Friends
+    </a>
+    <a href='/home/friendgroups' style="text-decoration:none;">
+      Friend Groups
+    </a>
+    <a href='/home/tags' style="text-decoration:none;">
+      Tags
+    </a>
+    <a href='/home/favorites' style="text-decoration:none;">
+      Favorites
+    </a>
+    <a href='/home/medialibrary' style="text-decoration:none;">
+      Media Library
+    </a>
+    <a href='/home/settings' style="text-decoration:none;">
+      Settings
+    </a>
+    <a href='/logout' style="text-decoration:none;">
+      Logout
+    </a>
+  </div>
+
+  <body class="align">
+
+    <p class="text--center">{{error}}</p>
+
+    <div class="grid">
+
+      <form action="/home/friendgroups/addfriendgroup/addtodatabase" method="POST" class="form login">
+
+        <div class="form__field">
+          <label for="group_name">
+            <svg class="icon">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
             </svg>
-        
-          </body>
-        
-        
-        </body>
+            <span class="hidden">Group Name</span>
+          </label>
+          <input id="group_name" type="text" name="group_name" class="form__input" placeholder="Group Name" required>
+        </div>
+
+        <div class="form__field">
+          <label for="group_description">
+            <svg class="icon">
+              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
+            </svg>
+            <span class="hidden">Group Description</span>
+          </label>
+          <input id="group_description" type="text" name="group_description" class="form__input" placeholder="Group Description" required>
+        </div>
+
+        <div class="form__field">
+          <input type="submit" value="Add Group">
+        </div>
+
+      </form>
+
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" class="icons">
+      <symbol id="arrow-right" viewBox="0 0 1792 1792">
+        <path d="M1600 960q0 54-37 91l-651 651q-39 37-91 37-51 0-90-37l-75-75q-38-38-38-91t38-91l293-293H245q-52 0-84.5-37.5T128 1024V896q0-53 32.5-90.5T245 768h704L656 474q-38-36-38-90t38-90l75-75q38-38 90-38 53 0 91 38l651 651q37 35 37 90z"
+        />
+      </symbol>
+      <symbol id="lock" viewBox="0 0 1792 1792">
+        <path d="M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z"
+        />
+      </symbol>
+      <symbol id="user" viewBox="0 0 1792 1792">
+        <path d="M1600 1405q0 120-73 189.5t-194 69.5H459q-121 0-194-69.5T192 1405q0-53 3.5-103.5t14-109T236 1084t43-97.5 62-81 85.5-53.5T538 832q9 0 42 21.5t74.5 48 108 48T896 971t133.5-21.5 108-48 74.5-48 42-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-320-893q0 159-112.5 271.5T896 896 624.5 783.5 512 512t112.5-271.5T896 128t271.5 112.5T1280 512z"
+        />
+      </symbol>
+    </svg>
+
+  </body>
+
+
+</body>
 
 </html>

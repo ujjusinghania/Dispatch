@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Settings</title>
+    <title>Dispatch - Friends</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
@@ -36,18 +36,18 @@
         </a>
     </div>
     <div class=content>
-        <p>
-            <font size='40em'>General Settings.</font>
-        </p>
+        <span>
+            <font size='40em'>Your Friends Page, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
+            <span style='float:right'>Add Friends</span>
+        </a>
         <br/>
-        <a href='/settings/changecolor' style="text-decoration:none;">
-            <p>Change Color</p>
+        <a href='/home/friendhome/viewfriends' style="text-decoration:none;">
+            <p>All Friends</p>
         </a>
-        <a href='/settings/changepass' style="text-decoration:none;">
-            <p>Change Password</p>
-        </a>
-        <a href='/home' style="text-decoration:none;">
-            <p>Go Back Home</p>
+        <a href='/home/friendhome/friendrequest' style="text-decoration:none;">
+            <p>Outstanding Friend Requests</p>
         </a>
     </div>
 </body>

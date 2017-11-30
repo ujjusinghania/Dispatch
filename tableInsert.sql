@@ -33,6 +33,15 @@ INSERT INTO friendgroup VALUES 	('besties', 'AA', NULL);
 INSERT INTO member VALUES 		('GG','besties','AA');
 INSERT INTO member VALUES 		('HH','besties','AA');
 
+# creating friends and friend requests
+
+INSERT INTO friends VALUES ('AA', 'BB', TRUE);
+INSERT INTO friends VALUES ('CC', 'AA', FALSE);
+INSERT INTO friends VALUES ('EE', 'AA', FALSE);
+INSERT INTO friends VALUES ('DD', 'AA', TRUE);
+INSERT INTO friends VALUES ('AA', 'FF', TRUE);
+INSERT INTO friends VALUES ('GG', 'AA', TRUE);
+# Saving HH to demonstrate sending a friend request
 
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 -- # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
