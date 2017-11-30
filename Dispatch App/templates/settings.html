@@ -44,8 +44,14 @@
         </p>
         <br/>
         <a href='/settings/changecolor' style="text-decoration:none;">
-            <p>Change Color</p>
+            <span>Change Color</span>
         </a>
+		<form action="/changecolor">
+			Select your favorite color:
+			<input type="color" name="favcolor" value="#ff0000">
+			<input type="submit">
+		</form>
+
         <a href='/settings/changepass' style="text-decoration:none;">
             <p>Change Password</p>
         </a>

@@ -10,9 +10,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= 3306, #int(os.environ['DB_PORT']), #get the port from an env var
+                      port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= 'root', #os.environ['DB_PASS'], #get the pswd from an env var
+                      password= os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -106,16 +106,11 @@ def setting():
 	else:
 		return render_template('settings.html')
 
-@app.route('/settings/changecolor')
+@app.route('/changecolor', methods = ['GET', 'POST'])
 def changecolor():		
-	if (checkSess()):
-		return redirect(url_for('login'))
-	else:
-		return render_template('changecolor.html')
-
-@app.route('/changecolorAuth')
-def changecolorAuth():
-	pass
+	color = request.form['favcolor']
+	print color
+	return redirect(url_for('setting'))
 		
 @app.route('/settings/changepass')
 def changepass():
