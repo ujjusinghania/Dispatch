@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Your Tags</title>
+    <link rel="stylesheet" href="/static/styles/textStyle.css" />
+</head>
+
+<body>
+    <div class=content>
+        <span><font size='40em'>Your Tags, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
+        <span style='float:right'><font size='2em'><a href='/home' style="text-decoration:none;"><p>Go Back Home</p></a>
+        {% for tag in tag%}
+        <a href='/home/tags/?groupSelected='+{{tag.username_tagger}} style="text-decoration:none;"></a>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

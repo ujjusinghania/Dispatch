@@ -12,7 +12,7 @@ import os
 conn = pymysql.connect(host='localhost',
                       port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -62,14 +62,14 @@ def friendgroups():
 		cursor.close()
 		return render_template('friendgroups.html', groups=groups)
 
-@app.route('/home/tags',methods=['GET'])
+@app.route('/home/tag',methods=['GET'])
 def tags():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_taggee = %s'
+  query = 'SELECT username_taggee, content_name FROM tag NATURAL JOIN content WHERE username_taggee = %s'
   cursor.execute(query,(username))
   tags =  cursor.fetchall()
-  print(tag)
+  print(tags)
   cursor.close()
 
   return render_template('Tags.html',tags = tags)
@@ -247,6 +247,7 @@ def addFriendGroupAuth():
 		query = 'INSERT INTO member VALUES(%s, %s, %s)'
 		cursor.execute(query, (username, groupName, username))
 		return redirect(url_for('friendgroups'))
+		conn.commit()
 
 def md5(password):
 	# encode and hash password
