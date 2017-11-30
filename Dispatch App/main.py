@@ -17,7 +17,6 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-
 @app.route('/')
 def login():
 	return render_template('login.html')
@@ -104,7 +103,7 @@ def friendRequests():
 
 
 def checkSess():
-	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
+	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "" and session['color'] == "")
 	
 
 @app.route('/logout')
@@ -113,6 +112,7 @@ def logout():
 	session['username'] = ""
 	session['fname'] = ""
 	session['lname'] = ""
+	session['color'] = ""
 	return render_template('login.html', error="You have successfully logged out")
 
 
@@ -129,11 +129,11 @@ def home():
 
 
 @app.route('/home/settings')
-def setting(color="#ff000"):
+def setting():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		return render_template('settings.html', color=color)
+		return render_template('settings.html', color=session['color'])
 
 @app.route('/changecolor', methods = ['GET', 'POST'])
 def changecolor():		
@@ -141,6 +141,12 @@ def changecolor():
 	print(col)
 	
 	session['color'] = col
+	
+	cursor = conn.cursor()
+	query = 'UPDATE person SET color = %s WHERE username = %s'
+	cursor.execute(query, (session['color'], session['username']))
+	conn.commit()
+	
 	return redirect(url_for('setting'))
 		
 @app.route('/settings/changepass')
@@ -213,6 +219,7 @@ def loginAuth():
 		session['username'] = username
 		session['fname'] = data['first_name']
 		session['lname'] = data['last_name']
+		session['color'] = data['color']     # color is in the person table now
 		return redirect(url_for('home'))
 	else:
 		error = "Invalid Username or Password"
@@ -243,8 +250,8 @@ def registerAuth():
 	if(data):
 		return render_template('register.html', error="Username already taken.")
 
-	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
-	cursor.execute(query, (username, password_digest, fname, lname))
+	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s)'
+	cursor.execute(query, (username, password_digest, fname, lname, '#ea4c88'))
 	data = cursor.fetchone()
 	
 	# commit changes and close connetion
@@ -253,8 +260,8 @@ def registerAuth():
 	session['username'] = username
 	session['fname'] = fname
 	session['lname'] = lname
+	session['color'] = '#ea4c88'
 	return redirect(url_for('home'))
-	#return "Welcome Home!"
 
 
 @app.route('/home/friendgroups/addfriendgroup')
@@ -281,8 +288,8 @@ def addFriendGroupAuth():
 		query = 'INSERT INTO member VALUES(%s, %s, %s)'
 		cursor.execute(query, (username, groupName, username))
 		conn.commit()
-
 		return redirect(url_for('friendgroups'))
+
 
 
 # Functions pertaining to addition/deletion/viewing of Friends on the App. 

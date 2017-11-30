@@ -8,14 +8,14 @@ DELETE FROM share;
 DELETE FROM tag;
 
 #Initial user creation
-INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
-INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker');
-INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang');
-INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson');
-INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg');
-INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox');
-INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
-INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
+INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88');
+INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88');
+INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang', '#ea4c88');
+INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson', '#ea4c88');
+INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg', '#ea4c88');
+INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox', '#ea4c88');
+INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta', '#ea4c88');
+INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88');
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
