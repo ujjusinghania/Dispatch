@@ -17,8 +17,6 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-conn.autocommit = True
-
 @app.route('/')
 def login():
 	return render_template('login.html')
@@ -245,8 +243,8 @@ def addFriendGroupAuth():
 		cursor.execute(query, (groupName, username, groupDescription))
 		query = 'INSERT INTO member VALUES(%s, %s, %s)'
 		cursor.execute(query, (username, groupName, username))
-		return redirect(url_for('friendgroups'))
 		conn.commit()
+		return redirect(url_for('friendgroups'))
 
 
 # Functions pertaining to addition/deletion/viewing of Friends on the App. 
