@@ -10,9 +10,9 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= 3306, #int(os.environ['DB_PORT']), #get the port from an env var
+                      port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= 'root', #os.environ['DB_PASS'], #get the pswd from an env var
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -63,16 +63,20 @@ def friendgroups():
 		return render_template('friendgroups.html', groups=groups)
 
 @app.route('/home/tags',methods=['GET'])
-def tags():
+def tag():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_taggee = %s'
+  query = 'SELECT username_taggee, content_name FROM tag NATURAL JOIN content WHERE username_taggee = %s'
   cursor.execute(query,(username))
-  tags =  cursor.fetchall()
+  tag =  cursor.fetchall()
   print(tag)
   cursor.close()
+  return render_template('tags.html',tags = tag)
 
-  return render_template('Tags.html',tags = tags)
+@app.route('/home/friendRequests')
+def friendRequests():
+	username = session['username']
+	return render_template('friendRequests.html')
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
@@ -102,7 +106,18 @@ def setting():
 	else:
 		return render_template('settings.html')
 
-@app.route('/settings/changepass')#, methods=['GET', 'POST'])
+@app.route('/settings/changecolor')
+def changecolor():		
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('changecolor.html')
+
+@app.route('/changecolorAuth')
+def changecolorAuth():
+	pass
+		
+@app.route('/settings/changepass')
 def changepass():
 	if (checkSess()):
 		return redirect(url_for('login'))
@@ -236,6 +251,7 @@ def addFriendGroupAuth():
 		query = 'INSERT INTO member VALUES(%s, %s, %s)'
 		cursor.execute(query, (username, groupName, username))
 		return redirect(url_for('friendgroups'))
+		conn.commit()
 
 
 # Functions pertaining to addition/deletion/viewing of Friends on the App. 

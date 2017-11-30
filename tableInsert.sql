@@ -43,6 +43,11 @@ INSERT INTO friends VALUES ('AA', 'FF', TRUE);
 INSERT INTO friends VALUES ('GG', 'AA', TRUE);
 # Saving HH to demonstrate sending a friend request
 
+#Testing for Tag
+INSERT INTO content VALUES (1,'BB',NULL,NULL,"ASS",1)
+INSERT INTO tag VALUES (1,'BB','AA', NULL,NULL)
+
+
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 -- # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
 -- INSERT INTO content VALUES 
