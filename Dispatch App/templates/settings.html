@@ -43,20 +43,15 @@
             <font size='40em'>General Settings.</font>
         </p>
         <br/>
-        <a href='/settings/changecolor' style="text-decoration:none;">
-            <span>Change Color</span>
-        </a>
+        <p>Change Color: </p>
 		<form action="/changecolor">
-			Select your favorite color:
-			<input type="color" name="favcolor" value="#ff0000">
+			<span>Select your favorite color: </span>
+			<input type="color" name="favcolor" value={{color}}>
 			<input type="submit">
 		</form>
 
         <a href='/settings/changepass' style="text-decoration:none;">
             <p>Change Password</p>
-        </a>
-        <a href='/home' style="text-decoration:none;">
-            <p>Go Back Home</p>
         </a>
     </div>
 </body>
