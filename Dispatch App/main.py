@@ -77,7 +77,7 @@ def friendRequests():
 	return render_template('friendRequests.html')
 
 def checkSess():
-	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
+	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "" and session['color'] == "")
 	
 @app.route('/logout')
 def logout():
@@ -85,6 +85,7 @@ def logout():
 	session['username'] = ""
 	session['fname'] = ""
 	session['lname'] = ""
+	session['color'] = ""
 	return render_template('login.html', error="You have successfully logged out")
 
 def checkSess():
@@ -110,6 +111,12 @@ def changecolor():
 	print(col)
 	
 	session['color'] = col
+	
+	cursor = conn.cursor()
+	query = 'UPDATE person SET color = %s WHERE username = %s'
+	cursor.execute(query, (session['color'], session['username']))
+	conn.commit()
+	
 	return redirect(url_for('setting'))
 		
 @app.route('/settings/changepass')
@@ -179,7 +186,7 @@ def loginAuth():
 		session['username'] = username
 		session['fname'] = data['first_name']
 		session['lname'] = data['last_name']
-		session['color'] = "#ff0000" #data['color'] #color is in the person table now
+		session['color'] = data['color'] #color is in the person table now
 		return redirect(url_for('home'))
 	else:
 		error = "Invalid Username or Password"
@@ -210,8 +217,8 @@ def registerAuth():
 	if(data):
 		return render_template('register.html', error="Username already taken.")
 
-	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
-	cursor.execute(query, (username, password_digest, fname, lname))
+	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s)'
+	cursor.execute(query, (username, password_digest, fname, lname, '#ea4c88'))
 	data = cursor.fetchone()
 	
 	# commit changes and close connetion
@@ -220,8 +227,8 @@ def registerAuth():
 	session['username'] = username
 	session['fname'] = fname
 	session['lname'] = lname
+	session['color'] = '#ea4c88'
 	return redirect(url_for('home'))
-	#return "Welcome Home!"
 
 @app.route('/home/friendgroups/addfriendgroup')
 def addFriendGroup(): 
