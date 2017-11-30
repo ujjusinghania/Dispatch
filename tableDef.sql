@@ -4,6 +4,7 @@ CREATE TABLE Person
     password VARCHAR (50),
     first_name VARCHAR (50),
     last_name VARCHAR (50),
+	color VARCHAR (6),
     PRIMARY KEY (username)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;

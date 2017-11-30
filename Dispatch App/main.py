@@ -100,11 +100,11 @@ def home():
 		return render_template('home.html')
 
 @app.route('/home/settings')
-def setting(color="#ff000"):
+def setting():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		return render_template('settings.html', color=color)
+		return render_template('settings.html', color=session['color'])
 
 @app.route('/changecolor', methods = ['GET', 'POST'])
 def changecolor():		
@@ -167,7 +167,6 @@ def changepassAuth():
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-	
 	password_digest = md5(password)
 	
 	cursor = conn.cursor()
@@ -182,6 +181,7 @@ def loginAuth():
 		session['username'] = username
 		session['fname'] = data['first_name']
 		session['lname'] = data['last_name']
+		session['color'] = "#ff0000" #data['color'] #color is in the person table now
 		return redirect(url_for('home'))
 	else:
 		error = "Invalid Username or Password"
