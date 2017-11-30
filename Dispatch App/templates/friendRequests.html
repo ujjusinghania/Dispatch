@@ -4,12 +4,45 @@
     <meta charset="UTF-8">
     <title>Dispatch - Friend Requests</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
 <body>
+
+    <div class="topnav">
+        <a href='/home' style="text-decoration:none;">
+            Home
+        </a>
+        <a href='/home/profile' style="text-decoration:none;">
+            Profile
+        </a>
+        <a href='/home/friendhome' style="text-decoration:none;">
+            Friends
+        </a>
+        <a href='/home/friendgroups' style="text-decoration:none;">
+            Friend Groups
+        </a>
+        <a href='/home/tags' style="text-decoration:none;">
+            Tags
+        </a>
+        <a href='/home/favorites' style="text-decoration:none;">
+            Favorites
+        </a>
+        <a href='/home/medialibrary' style="text-decoration:none;">
+            Media Library
+        </a>
+        <a href='/home/settings' style="text-decoration:none;">
+            Settings
+        </a>
+        <a href='/logout' style="text-decoration:none;">
+            Logout
+        </a>
+    </div>
     <div class=content>
-        <span><font size='40em'>Your Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
-        <span style='float:right'><font size='2em'><a href='/home' style="text-decoration:none;"><p>Go Back Home</p></a>
+        <span>
+            <font size='40em'>Your Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <br/>
     </div>
 </body>
 
