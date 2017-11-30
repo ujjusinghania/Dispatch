@@ -100,16 +100,18 @@ def home():
 		return render_template('home.html')
 
 @app.route('/home/settings')
-def setting():
+def setting(color="#ff000"):
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		return render_template('settings.html')
+		return render_template('settings.html', color=color)
 
 @app.route('/changecolor', methods = ['GET', 'POST'])
 def changecolor():		
-	color = request.form['favcolor']
-	print color
+	col = request.args.get("favcolor")
+	print(col)
+	
+	session['color'] = col
 	return redirect(url_for('setting'))
 		
 @app.route('/settings/changepass')
