@@ -17,4 +17,4 @@ cat tableInsert.sql >> reset.sql
 /Applications/MAMP/Library/bin/mysql -u root -p Dispatch < reset.sql
 
 # delete the file
-# rm reset.sql
+rm reset.sql
