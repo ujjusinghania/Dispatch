@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session, url_for, redirect
 from flask import request
 import pymysql.cursors
 import hashlib
+
 app = Flask(__name__)
 
 # this is for pulling the port and database password from environment variables
@@ -15,6 +16,8 @@ conn = pymysql.connect(host='localhost',
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
+
+conn.autocommit = True # do we really want this?
 
 @app.route('/')
 def login():
@@ -83,6 +86,7 @@ def friendgroups():
 
 		return render_template('friendgroups.html', groups=groups)
 
+
 @app.route('/home/tags',methods=['GET'])
 def tags():
   username = session['username']
@@ -95,9 +99,11 @@ def tags():
 
   return render_template('Tags.html',tags = tags)
 
+
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
 	
+
 @app.route('/logout')
 def logout():
 	#clear session variables
@@ -106,15 +112,18 @@ def logout():
 	session['lname'] = ""
 	return render_template('login.html', error="You have successfully logged out")
 
+
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
 	
+
 @app.route('/home')
 def home():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
 		return render_template('home.html')
+
 
 @app.route('/home/settings')
 def setting():
@@ -123,13 +132,27 @@ def setting():
 	else:
 		return render_template('settings.html')
 
-@app.route('/settings/changepass')#, methods=['GET', 'POST'])
+@app.route('/settings/changecolor')
+def changecolor():		
+	if (checkSess()):
+		return redirect(url_for('login'))
+	else:
+		return render_template('changecolor.html')
+
+
+@app.route('/changecolorAuth')
+def changecolorAuth():
+	pass
+	
+
+@app.route('/settings/changepass')
 def changepass():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
 		return render_template('changepass.html')
 		
+
 @app.route('/changePassAuth', methods=['GET', 'POST'])
 def changepassAuth():
 	currpass = request.form['current_password']
@@ -172,6 +195,7 @@ def changepassAuth():
 		print(error)
 		return render_template('changepass.html', error=error)
 		
+
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
@@ -234,62 +258,31 @@ def registerAuth():
 	return redirect(url_for('home'))
 	#return "Welcome Home!"
 
+
 @app.route('/home/friendgroups/addfriendgroup')
 def addFriendGroup(): 
 	return render_template('addfriendgroup.html')
 
 
-@app.route('/addMessage', methods = ['GET', 'POST'])
-def addMessage():
-
-	## There is an error in this. I use the current logged in user as the 
-	## primary key for friendgroup, but it should be the group creator 
-
-	message = request.form['userEnteredMessage']
-	# print(message)
-
-	conn.commit()
-
+@app.route('/home/friendgroups/addfriendgroup/addtodatabase', methods=['GET', 'POST'])
+def addFriendGroupAuth(): 
 	cursor = conn.cursor()
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], "TextContent", False))
 
+	groupName = request.form['group_name']
+	groupDescription = request.form['group_description']
+	username = session['username']
 
-	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, (message))
-	
-
-								# content id, group name, group admin
-	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-
-	# print(query, session['groupSelected'])
-
-	cursor.execute(query, session['groupSelected'])
-
-
-
-	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	cursor.execute(query)
-
+	query = 'SELECT username, group_name FROM friendgroup WHERE username = %s AND group_name = %s'
+	cursor.execute(query, (username, groupName))
 	data = cursor.fetchone()
-	# print(data)
-
-
-	# query = 'SELECT * FROM Content NATURAL JOIN TextContent WHERE id=LAST_INSERT_ID()'
-	# cursor.execute(query)
-	
-	# data = cursor.fetchone()
-	# print(data)
-
-
-	# commit changes and close connetion
-	conn.commit()
-	cursor.close()
-
-	return redirect(url_for('messages')						+				
-		'?groupSelected='+session['groupSelected'][0]		+
-		'&username_creator='+session['groupSelected'][1]
-		)
+	if (data):
+		return render_template('addfriendgroup.html', error="You already own a FriendGroup called " + groupName)
+	else:
+		query = 'INSERT INTO friendgroup VALUES(%s, %s, %s)'
+		cursor.execute(query, (groupName, username, groupDescription))
+		query = 'INSERT INTO member VALUES(%s, %s, %s)'
+		cursor.execute(query, (username, groupName, username))
+		return redirect(url_for('friendgroups'))
 
 
 def md5(password):
@@ -299,6 +292,7 @@ def md5(password):
 	m.update(password)
 	password_digest = m.hexdigest()
 	return password_digest
+
 
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
