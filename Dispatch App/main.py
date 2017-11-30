@@ -12,7 +12,7 @@ import os
 conn = pymysql.connect(host='localhost',
                       port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -72,6 +72,11 @@ def tag():
   print(tag)
   cursor.close()
   return render_template('tags.html',tags = tag)
+
+@app.route('/home/friendRequests')
+def friendRequests():
+	username = session['username']
+	return render_template('friendRequests.html')
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
