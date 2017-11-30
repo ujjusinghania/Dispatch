@@ -17,7 +17,7 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-conn.autocommit = True # do we really want this?
+# conn.autocommit = True # do we really want this?
 
 @app.route('/')
 def login():
@@ -282,8 +282,45 @@ def addFriendGroupAuth():
 		cursor.execute(query, (groupName, username, groupDescription))
 		query = 'INSERT INTO member VALUES(%s, %s, %s)'
 		cursor.execute(query, (username, groupName, username))
+		conn.commit()
+
 		return redirect(url_for('friendgroups'))
 
+@app.route('/addMessage', methods = ['GET', 'POST'])
+def addMessage():
+
+	message = request.form['userEnteredMessage']
+	# print(message)
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], "TextContent", False))
+
+
+	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, (message))
+	
+								# content id, group name, group admin
+	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+
+	cursor.execute(query, session['groupSelected'])
+
+	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	cursor.execute(query)
+
+	data = cursor.fetchone()
+
+
+	# commit changes and close connetion
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('messages')						+				
+		'?groupSelected='+session['groupSelected'][0]		+
+		'&username_creator='+session['groupSelected'][1]
+		)
 
 def md5(password):
 	# encode and hash password
