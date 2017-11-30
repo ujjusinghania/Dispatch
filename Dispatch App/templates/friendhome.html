@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Your Tags</title>
+    <title>Dispatch - Friends</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
@@ -39,11 +39,19 @@
         </a>
     </div>
     <div class=content>
-        <span><font size='40em'>Your Tags, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
-        
-        {% for tags in tag%}
-        <a href='/home/tag/messages?tagSelected=+{{tags.username_taggee}}' style="text-decoration:none;"></a>
-        {% endfor %}
+        <span>
+            <font size='40em'>Your Friends Page, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
+            <span style='float:right'>Add Friends</span>
+        </a>
+        <br/>
+        <a href='/home/friendhome/viewfriends' style="text-decoration:none;">
+            <p>All Friends</p>
+        </a>
+        <a href='/home/friendhome/friendrequest' style="text-decoration:none;">
+            <p>Outstanding Friend Requests</p>
+        </a>
     </div>
 </body>
 

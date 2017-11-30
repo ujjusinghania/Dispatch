@@ -17,7 +17,6 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-# conn.autocommit = True # do we really want this?
 
 @app.route('/')
 def login():
@@ -88,16 +87,20 @@ def friendgroups():
 
 
 @app.route('/home/tags',methods=['GET'])
-def tags():
+def tag():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger, content_name FROM tags NATURAL JOIN content WHERE username_taggee = %s'
+  query = 'SELECT username_taggee, content_name FROM tag NATURAL JOIN content WHERE username_taggee = %s'
   cursor.execute(query,(username))
-  tags =  cursor.fetchall()
+  tag =  cursor.fetchall()
   print(tag)
   cursor.close()
+  return render_template('tags.html',tags = tag)
 
-  return render_template('Tags.html',tags = tags)
+@app.route('/home/friendRequests')
+def friendRequests():
+	username = session['username']
+	return render_template('friendRequests.html')
 
 
 def checkSess():
@@ -126,25 +129,20 @@ def home():
 
 
 @app.route('/home/settings')
-def setting():
+def setting(color="#ff000"):
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		return render_template('settings.html')
+		return render_template('settings.html', color=color)
 
-@app.route('/settings/changecolor')
+@app.route('/changecolor', methods = ['GET', 'POST'])
 def changecolor():		
-	if (checkSess()):
-		return redirect(url_for('login'))
-	else:
-		return render_template('changecolor.html')
-
-
-@app.route('/changecolorAuth')
-def changecolorAuth():
-	pass
+	col = request.args.get("favcolor")
+	print(col)
 	
-
+	session['color'] = col
+	return redirect(url_for('setting'))
+		
 @app.route('/settings/changepass')
 def changepass():
 	if (checkSess()):
@@ -285,6 +283,38 @@ def addFriendGroupAuth():
 		conn.commit()
 
 		return redirect(url_for('friendgroups'))
+
+
+# Functions pertaining to addition/deletion/viewing of Friends on the App. 
+
+@app.route('/home/friendhome')
+def viewFriendHome():
+	return render_template('friendhome.html')
+
+@app.route('/home/friendhome/addfriend')
+def addFriend():
+	return render_template('addfriend.html')
+
+@app.route('/home/friendhome/viewfriends')
+def viewFriends():
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s'
+	cursor.execute(query, (username))
+	requestSendFriends = cursor.fetchall()
+
+	# Finding friends who you received a friend request from. 
+	query = 'SELECT first_name, last_name FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s'
+	cursor.execute(query, (username))
+	requestReceiveFriends = cursor.fetchall()
+
+	return render_template('viewfriends.html', friends=requestReceiveFriends+requestSendFriends)
+
+@app.route('/home/friendhome/friendrequest')
+def viewFriendRequests():
+	return render_template('friendrequest.html')
 
 @app.route('/addMessage', methods = ['GET', 'POST'])
 def addMessage():
