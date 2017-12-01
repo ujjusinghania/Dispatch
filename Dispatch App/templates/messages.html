@@ -5,6 +5,29 @@
     <title>Dispatch - Messages</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        function getMessages() {
+            $(function() {
+              $("#input_box").focus();
+            });
+
+            $.ajax({
+              url: "{{ url_for('getMessages') }}",
+              success: function(response) {
+                $("#scrollBox").html(response);
+              },
+              error: function(xhr) {
+                //Do Something to handle error
+              }
+            });
+        };
+
+        window.setInterval(getMessages, 200);
+    </script>
+
 </head>
 
 <body>
@@ -40,22 +63,20 @@
     </div>
     <center class="content">
         <div class="textbox">
-            <b>{{session['groupSelected']}}</b>
+            <b>{{session['groupSelected'][1]}}'s {{session['groupSelected'][0]}}</b>
         </div>
 
 
         <br />
-        <div class="scrollBox">
-            {% for message in messages %}
-            <p>{{message.id}}</p>
-            {% endfor %}
+        <div id="scrollBox" class="scrollBox">
+
         </div>
 
         <form action="/addMessage" method="POST">
             <br />
             <div class="textbox">
-                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" />
-                <input type="submit" text="Send" class="sendButton" />
+                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages()" />
             </div>
         </form>
 

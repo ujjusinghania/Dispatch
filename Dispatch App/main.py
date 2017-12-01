@@ -22,28 +22,47 @@ conn = pymysql.connect(host='localhost',
 def login():
 	return render_template('login.html')
 
-@app.route('/home/friendgroups/messages', methods=['GET'])
+@app.route('/home/friendgroups/messages', methods=['GET', 'POST'])
 def messages():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		friendGroup = request.args.get("groupSelected")
-		print("friend group: "+friendGroup)
+		friendGroup = ( request.args.get("groupSelected"), request.args.get("username_creator") )
+		# print("friend group: {}{}".format(*friendGroup))
 		session['groupSelected'] = friendGroup
 		username = session['username']
-		print(friendGroup)
+		# print(friendGroup)
 
-		cursor = conn.cursor()
-		# Gets a list of all the content that the user has posted/is public. 
-		# Need to add list of content that is shared with groups the user is a part of. 
-		query = 'SELECT * FROM share NATURAL JOIN content WHERE group_name = %s AND (username = %s OR public = 1)'
-		cursor.execute(query, (username, friendGroup))
-		messages = cursor.fetchall() 
-		print(messages)
+		messages = getMessages()
 
-		cursor.close()
+		return render_template('messages.html', messages=messages)
 
-		return render_template('messages.html')
+
+@app.route('/home/friendgroups/getMessages')
+def getMessages():
+	cursor = conn.cursor()
+		
+	query = "SELECT Content.timest,									\
+					Content.id as ContentID,						\
+					Share.group_name,								\
+			        Share.username as group_admin,					\
+			        TextContent.text_content,						\
+			        Content.username as ContentOwner,				\
+			        Content.public									\
+				FROM Share 											\
+				JOIN Content ON Content.id = Share.id				\
+			    JOIN TextContent on Content.id = TextContent.id 	\
+			    WHERE group_name = %s  AND  Share.username = %s     "
+
+
+	cursor.execute(query, session['groupSelected'])
+	messages = cursor.fetchall() 
+
+	cursor.close()
+
+	# return messages
+	return render_template('getMessages.html', messages=messages)
+
 
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
@@ -54,12 +73,18 @@ def friendgroups():
 
 		# Gets a list of all the groups the user is a part of/is the admin of. 
 		cursor = conn.cursor()
-		query = 'SELECT DISTINCT group_name FROM member WHERE username = %s OR username_creator = %s'
+		query = 'SELECT DISTINCT group_name, username_creator 			\
+						FROM member 									\
+						WHERE username = %s OR username_creator = %s'
+
 		cursor.execute(query, (username, username))
 		groups = cursor.fetchall()
-		print(groups)
+
+		# print(groups)
 		cursor.close()
+
 		return render_template('friendgroups.html', groups=groups)
+
 
 @app.route('/home/tags',methods=['GET'])
 def tag():
@@ -77,26 +102,32 @@ def friendRequests():
 	username = session['username']
 	return render_template('friendRequests.html')
 
+
 def checkSess():
-	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
+	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "" and session['color'] == "")
 	
+
 @app.route('/logout')
 def logout():
 	#clear session variables
 	session['username'] = ""
 	session['fname'] = ""
 	session['lname'] = ""
+	session['color'] = ""
 	return render_template('login.html', error="You have successfully logged out")
+
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
 	
+
 @app.route('/home')
 def home():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
 		return render_template('home.html')
+
 
 @app.route('/home/settings')
 def setting():
@@ -111,6 +142,12 @@ def changecolor():
 	print(col)
 	
 	session['color'] = col
+	
+	cursor = conn.cursor()
+	query = 'UPDATE person SET color = %s WHERE username = %s'
+	cursor.execute(query, (session['color'], session['username']))
+	conn.commit()
+	
 	return redirect(url_for('setting'))
 		
 @app.route('/settings/changepass')
@@ -120,6 +157,7 @@ def changepass():
 	else:
 		return render_template('changepass.html')
 		
+
 @app.route('/changePassAuth', methods=['GET', 'POST'])
 def changepassAuth():
 	currpass = request.form['current_password']
@@ -162,10 +200,12 @@ def changepassAuth():
 		print(error)
 		return render_template('changepass.html', error=error)
 		
+
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
+	
 	password_digest = md5(password)
 	
 	cursor = conn.cursor()
@@ -180,7 +220,7 @@ def loginAuth():
 		session['username'] = username
 		session['fname'] = data['first_name']
 		session['lname'] = data['last_name']
-		session['color'] = "#ff0000" #data['color'] #color is in the person table now
+		session['color'] = data['color']     # color is in the person table now
 		return redirect(url_for('home'))
 	else:
 		error = "Invalid Username or Password"
@@ -211,8 +251,8 @@ def registerAuth():
 	if(data):
 		return render_template('register.html', error="Username already taken.")
 
-	query = 'INSERT INTO person VALUES (%s, %s, %s, %s)'
-	cursor.execute(query, (username, password_digest, fname, lname))
+	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s)'
+	cursor.execute(query, (username, password_digest, fname, lname, '#ea4c88'))
 	data = cursor.fetchone()
 	
 	# commit changes and close connetion
@@ -221,12 +261,14 @@ def registerAuth():
 	session['username'] = username
 	session['fname'] = fname
 	session['lname'] = lname
+	session['color'] = '#ea4c88'
 	return redirect(url_for('home'))
-	#return "Welcome Home!"
+
 
 @app.route('/home/friendgroups/addfriendgroup')
 def addFriendGroup(): 
 	return render_template('addfriendgroup.html')
+
 
 @app.route('/home/friendgroups/addfriendgroup/addtodatabase', methods=['GET', 'POST'])
 def addFriendGroupAuth(): 
@@ -249,6 +291,43 @@ def addFriendGroupAuth():
 		conn.commit()
 		return redirect(url_for('friendgroups'))
 
+
+@app.route('/addMessage', methods = ['GET', 'POST'])
+def addMessage():
+
+	message = request.form['userEnteredMessage']
+	# print(message)
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], "TextContent", False))
+
+
+	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, (message))
+	
+								# content id, group name, group admin
+	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+
+	cursor.execute(query, session['groupSelected'])
+
+	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	cursor.execute(query)
+
+	data = cursor.fetchone()
+
+
+	# commit changes and close connetion
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('messages')						+				
+		'?groupSelected='+session['groupSelected'][0]		+
+		'&username_creator='+session['groupSelected'][1]
+		)
+
 def md5(password):
 	# encode and hash password
 	m = hashlib.md5()
@@ -256,6 +335,7 @@ def md5(password):
 	m.update(password)
 	password_digest = m.hexdigest()
 	return password_digest
+
 
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
