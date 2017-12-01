@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, session, url_for, redirect
 from flask import request
 import pymysql.cursors
 import hashlib
-import friends
 
 app = Flask(__name__)
 
@@ -11,23 +10,28 @@ import os
 
 # Configure MySQL
 conn = pymysql.connect(host='localhost',
-                      port= int(os.environ['DB_PORT']), #get the port from an env var
-                      user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
-                      db='dispatch',
-                      charset='latin1',
-                      cursorclass=pymysql.cursors.DictCursor)
+                       # int(os.environ['DB_PORT']), #get the port from an env var
+                       port=3306,
+                       user='root',
+                       # os.environ['DB_PASS'], #get the pswd from an env var
+                       password='root',
+                       db='dispatch',
+                       charset='latin1',
+                       cursorclass=pymysql.cursors.DictCursor)
+
 
 @app.route('/')
 def login():
 	return render_template('login.html')
+
 
 @app.route('/home/friendgroups/messages', methods=['GET', 'POST'])
 def messages():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
-		friendGroup = ( request.args.get("groupSelected"), request.args.get("username_creator") )
+		friendGroup = (request.args.get("groupSelected"),
+		               request.args.get("username_creator"))
 		# print("friend group: {}{}".format(*friendGroup))
 		session['groupSelected'] = friendGroup
 		username = session['username']
@@ -41,7 +45,7 @@ def messages():
 @app.route('/home/friendgroups/getMessages')
 def getMessages():
 	cursor = conn.cursor()
-		
+
 	query = "SELECT Content.timest,									\
 					Content.id as ContentID,						\
 					Share.group_name,								\
@@ -54,9 +58,8 @@ def getMessages():
 			    JOIN TextContent on Content.id = TextContent.id 	\
 			    WHERE group_name = %s  AND  Share.username = %s     "
 
-
 	cursor.execute(query, session['groupSelected'])
-	messages = cursor.fetchall() 
+	messages = cursor.fetchall()
 
 	cursor.close()
 
@@ -71,7 +74,7 @@ def friendgroups():
 	else:
 		username = session['username']
 
-		# Gets a list of all the groups the user is a part of/is the admin of. 
+		# Gets a list of all the groups the user is a part of/is the admin of.
 		cursor = conn.cursor()
 		query = 'SELECT DISTINCT group_name, username_creator 			\
 						FROM member 									\
@@ -86,16 +89,17 @@ def friendgroups():
 		return render_template('friendgroups.html', groups=groups)
 
 
-@app.route('/home/tags',methods=['GET'])
+@app.route('/home/tags', methods=['GET'])
 def tag():
   username = session['username']
   cursor = conn.cursor()
   query = 'SELECT username_taggee, content_name FROM tag NATURAL JOIN content WHERE username_taggee = %s'
-  cursor.execute(query,(username))
-  tag =  cursor.fetchall()
+  cursor.execute(query, (username))
+  tag = cursor.fetchall()
   print(tag)
   cursor.close()
-  return render_template('tags.html',tags = tag)
+  return render_template('tags.html', tags=tag)
+
 
 @app.route('/home/friendRequests')
 def friendRequests():
@@ -105,7 +109,7 @@ def friendRequests():
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "" and session['color'] == "")
-	
+
 
 @app.route('/logout')
 def logout():
@@ -119,7 +123,7 @@ def logout():
 
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "")
-	
+
 
 @app.route('/home')
 def home():
@@ -136,27 +140,29 @@ def setting():
 	else:
 		return render_template('settings.html', color=session['color'])
 
-@app.route('/changecolor', methods = ['GET', 'POST'])
-def changecolor():		
+
+@app.route('/changecolor', methods=['GET', 'POST'])
+def changecolor():
 	col = request.args.get("favcolor")
 	print(col)
-	
+
 	session['color'] = col
-	
+
 	cursor = conn.cursor()
 	query = 'UPDATE person SET color = %s WHERE username = %s'
 	cursor.execute(query, (session['color'], session['username']))
 	conn.commit()
-	
+
 	return redirect(url_for('setting'))
-		
+
+
 @app.route('/settings/changepass')
 def changepass():
 	if (checkSess()):
 		return redirect(url_for('login'))
 	else:
 		return render_template('changepass.html')
-		
+
 
 @app.route('/changePassAuth', methods=['GET', 'POST'])
 def changepassAuth():
@@ -165,7 +171,7 @@ def changepassAuth():
 	confirmpass = request.form['confirm_password']
 
 	current_password_digest = md5(currpass)
-	
+
 	cursor = conn.cursor()
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (session['username'], current_password_digest))
@@ -173,7 +179,7 @@ def changepassAuth():
 	data = cursor.fetchone()
 	print(data)
 	cursor.close()
-	
+
 	if (data):
 		if (newpass != confirmpass):
 			error = "Passwords Do Not Match"
@@ -182,15 +188,15 @@ def changepassAuth():
 		else:
 			new_password_digest = md5(newpass)
 			confirm_password_digest = md5(confirmpass)
-			
+
 			cursor = conn.cursor()
 			query = 'UPDATE person SET password = %s WHERE username = %s'
 			cursor.execute(query, (new_password_digest, session['username']))
 			conn.commit()
-			
+
 			query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 			cursor.execute(query, (session['username'], new_password_digest))
-			
+
 			data1 = cursor.fetchone()
 			print(data1)
 			cursor.close()
@@ -199,15 +205,15 @@ def changepassAuth():
 		error = "Incorrect Password"
 		print(error)
 		return render_template('changepass.html', error=error)
-		
+
 
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
 	password = request.form['password']
-	
+
 	password_digest = md5(password)
-	
+
 	cursor = conn.cursor()
 	query = 'SELECT * FROM person WHERE username = %s AND password = %s'
 	cursor.execute(query, (username, password_digest))
@@ -228,11 +234,11 @@ def loginAuth():
 
 
 @app.route('/register')
-def register(): 
+def register():
     return render_template('register.html')
 
 
-@app.route('/registerAuth', methods = ['GET', 'POST'])
+@app.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
 	# get user input from form
 	username = request.form['username']
@@ -254,7 +260,7 @@ def registerAuth():
 	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s)'
 	cursor.execute(query, (username, password_digest, fname, lname, '#ea4c88'))
 	data = cursor.fetchone()
-	
+
 	# commit changes and close connetion
 	conn.commit()
 	cursor.close()
@@ -266,12 +272,12 @@ def registerAuth():
 
 
 @app.route('/home/friendgroups/addfriendgroup')
-def addFriendGroup(): 
+def addFriendGroup():
 	return render_template('addfriendgroup.html')
 
 
 @app.route('/home/friendgroups/addfriendgroup/addtodatabase', methods=['GET', 'POST'])
-def addFriendGroupAuth(): 
+def addFriendGroupAuth():
 	cursor = conn.cursor()
 
 	groupName = request.form['group_name']
@@ -292,7 +298,7 @@ def addFriendGroupAuth():
 		return redirect(url_for('friendgroups'))
 
 
-@app.route('/addMessage', methods = ['GET', 'POST'])
+@app.route('/addMessage', methods=['GET', 'POST'])
 def addMessage():
 
 	message = request.form['userEnteredMessage']
@@ -304,11 +310,10 @@ def addMessage():
 	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
 	cursor.execute(query, (session['username'], "TextContent", False))
 
-
 	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
 	cursor.execute(query, (message))
-	
-								# content id, group name, group admin
+
+	# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
 
 	cursor.execute(query, session['groupSelected'])
@@ -318,15 +323,46 @@ def addMessage():
 
 	data = cursor.fetchone()
 
-
 	# commit changes and close connetion
 	conn.commit()
 	cursor.close()
 
-	return redirect(url_for('messages')						+				
-		'?groupSelected='+session['groupSelected'][0]		+
-		'&username_creator='+session['groupSelected'][1]
-		)
+	return redirect(url_for('messages') +
+                 '?groupSelected=' + session['groupSelected'][0] +
+                 '&username_creator=' + session['groupSelected'][1]
+                 )
+
+# Functions pertaining to addition/deletion/viewing of Friends on the App. 
+
+@app.route('/home/friendhome')
+def viewFriendHome():
+	return render_template('friendhome.html')
+
+@app.route('/home/friendhome/addfriend')
+def addFriend():
+	return render_template('addfriend.html')
+
+@app.route('/home/friendhome/viewfriends')
+def viewFriends():
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s'
+	cursor.execute(query, (username))
+	requestSendFriends = cursor.fetchall()
+
+	# Finding friends who you received a friend request from. 
+	query = 'SELECT first_name, last_name FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s'
+	cursor.execute(query, (username))
+	requestReceiveFriends = cursor.fetchall()
+
+	return render_template('viewfriends.html', friends=requestReceiveFriends+requestSendFriends)
+
+@app.route('/home/friendhome/friendrequest')
+def viewFriendRequests():
+	return render_template('friendrequest.html')
+
 
 def md5(password):
 	# encode and hash password
@@ -342,6 +378,5 @@ app.secret_key = os.urandom(24)
 #debug = True -> you don't have to restart flask
 #for changes to go through, TURN OFF FOR PRODUCTION
 if __name__ == "__main__":
-	app.run('127.0.0.1', 5000, debug = True)
+	app.run('127.0.0.1', 5000, debug=True)
 app.run()
-
