@@ -8,14 +8,14 @@ DELETE FROM share;
 DELETE FROM tag;
 
 #Initial user creation
-INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
-INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker');
-INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang');
-INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson');
-INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg');
-INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox');
-INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
-INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper');
+INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88');
+INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88');
+INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang', '#ea4c88');
+INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson', '#ea4c88');
+INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg', '#ea4c88');
+INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox', '#ea4c88');
+INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta', '#ea4c88');
+INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88');
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
@@ -32,6 +32,20 @@ INSERT INTO member VALUES 		('EE','family', 'BB');
 INSERT INTO friendgroup VALUES 	('besties', 'AA', NULL);
 INSERT INTO member VALUES 		('GG','besties','AA');
 INSERT INTO member VALUES 		('HH','besties','AA');
+
+# creating friends and friend requests
+
+INSERT INTO friends VALUES ('AA', 'BB', TRUE);
+INSERT INTO friends VALUES ('CC', 'AA', FALSE);
+INSERT INTO friends VALUES ('EE', 'AA', FALSE);
+INSERT INTO friends VALUES ('DD', 'AA', TRUE);
+INSERT INTO friends VALUES ('AA', 'FF', TRUE);
+INSERT INTO friends VALUES ('GG', 'AA', TRUE);
+# Saving HH to demonstrate sending a friend request
+
+#Testing for Tag
+-- INSERT INTO content VALUES (1,'BB',NULL,NULL,"ASS",1);
+-- INSERT INTO tag VALUES (1,'BB','AA', NULL,NULL);
 
 
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​

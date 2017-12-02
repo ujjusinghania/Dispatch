@@ -4,31 +4,83 @@
     <meta charset="UTF-8">
     <title>Dispatch - Messages</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script>
+        function getMessages() {
+            $(function() {
+              $("#input_box").focus();
+            });
+
+            $.ajax({
+              url: "{{ url_for('getMessages') }}",
+              success: function(response) {
+                $("#scrollBox").html(response);
+              },
+              error: function(xhr) {
+                //Do Something to handle error
+              }
+            });
+        };
+
+        window.setInterval(getMessages, 200);
+    </script>
+
 </head>
 
-<body>  
-<center class="content">
-    <div class="textbox">
-        <b>{{session['groupSelected']}}</b>
+<body>
+
+    <div class="topnav">
+        <a href='/home' style="text-decoration:none;">
+            Home
+        </a>
+        <a href='/home/profile' style="text-decoration:none;">
+            Profile
+        </a>
+        <a href='/home/friendhome' style="text-decoration:none;">
+            Friends
+        </a>
+        <a href='/home/friendgroups' style="text-decoration:none;">
+            Friend Groups
+        </a>
+        <a href='/home/tags' style="text-decoration:none;">
+            Tags
+        </a>
+        <a href='/home/favorites' style="text-decoration:none;">
+            Favorites
+        </a>
+        <a href='/home/medialibrary' style="text-decoration:none;">
+            Media Library
+        </a>
+        <a href='/home/settings' style="text-decoration:none;">
+            Settings
+        </a>
+        <a href='/logout' style="text-decoration:none;">
+            Logout
+        </a>
     </div>
+    <center class="content">
+        <div class="textbox">
+            <b>{{session['groupSelected'][1]}}'s {{session['groupSelected'][0]}}</b>
+        </div>
 
 
         <br />
-        <div class="scrollBox">
-            {% for message in messages %} 
-                <p>{{message.id}}</p>
-            {% endfor %}
+        <div id="scrollBox" class="scrollBox">
+
         </div>
 
         <form action="/addMessage" method="POST">
             <br />
             <div class="textbox">
-                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" />
-                <input type="submit" text="Send" class="sendButton" />
+                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages()" />
             </div>
         </form>
 
-</center>
+    </center>
 </body>
 
 </html>

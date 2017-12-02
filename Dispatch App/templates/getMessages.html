@@ -1,0 +1,11 @@
+<table>
+{% for message in messages %} 
+    <tr>
+        <td> {{message.ContentOwner}}: </td>
+        <td> {{message.id}} </td>  
+        <td> {{message.text_content}} </td> 
+    </tr>
+{% endfor %}
+</table>
+
+<!-- in get messages:  "Blah" -->
