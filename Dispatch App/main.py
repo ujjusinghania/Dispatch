@@ -15,7 +15,7 @@ import os
 conn = pymysql.connect(host='localhost',
                       port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -94,12 +94,12 @@ def friendgroups():
 def tag():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_taggee FROM tag WHERE username_taggee = %s'
+  query = 'SELECT username_tagger FROM tag  WHERE username_taggee = %s'
   cursor.execute(query, (username))
-  tag = cursor.fetchall()
+  tags = cursor.fetchall()
   print(tag)
   cursor.close()
-  return render_template('tags.html', tags=tag)
+  return render_template('tags.html', tags=tags)
 
 
 @app.route('/home/friendRequests')

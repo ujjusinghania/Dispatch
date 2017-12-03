@@ -40,10 +40,9 @@
     </div>
     <div class=content>
         <span><font size='40em'>Your Tags, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
-        
-        {% for tag in tag%}
-        <a href='/home/tag/' style="text-decoration:none;"></a>
-         <p>{{tag.username_tagger}}</p>
+        {% for tag in tags%}
+        <p> User {{tag.username_tagger}} has tagged you <a href='/home' style="text-decoration: right;"> Accept </a> 
+        <a href='/home/settings' style="text-decoration: right;"> Decline </a> 
         {% endfor %}
     </div>
 </body>

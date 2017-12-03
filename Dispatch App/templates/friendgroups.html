@@ -39,13 +39,6 @@
         </a>
     </div>
     <div class=content>
-<<<<<<< HEAD
-        <span><font size='40em'>Your Groups, {{session["fname"]}} {{session["lname"]}}.</font></span><a href='/home/friendgroups/addfriendgroup' style="text-decoration:none;"><span style='float:right'>Add Group</span></a><br/><br/>
-        {% for group in groups%}
-        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}' style="text-decoration:none;">
-            <span>{{group.group_name}}</span>
-        </a><br/><br/>
-=======
         <span>
             <font size='40em'>Your Groups, {{session["fname"]}} {{session["lname"]}}.</font>
         </span>
@@ -56,7 +49,6 @@
         <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
             <p>{{group.group_name}} ({{group.username_creator}})</p>
         </a>
->>>>>>> 0bc930e62421555237d0cdfb6f82142756a3c449
         {% endfor %}
         <a href='/home' style="text-decoration:none;"><font size='3em'><span style='float:right'>Go Back Home</span></font></a>
     </div>
