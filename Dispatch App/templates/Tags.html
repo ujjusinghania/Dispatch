@@ -41,8 +41,9 @@
     <div class=content>
         <span><font size='40em'>Your Tags, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
         
-        {% for tags in tag%}
-        <a href='/home/tag/messages?tagSelected=+{{tags.username_taggee}}' style="text-decoration:none;"></a>
+        {% for tag in tag%}
+        <a href='/home/tag/' style="text-decoration:none;"></a>
+         <p>{{tag.username_tagger}}</p>
         {% endfor %}
     </div>
 </body>
