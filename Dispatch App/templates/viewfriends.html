@@ -47,7 +47,7 @@
         </a>
         <br/> {% for friend in friends %}
         <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <p>{{friend.first_name}} {{friend.last_name}}</p>
+        <p>{{friend.first_name}} {{friend.last_name}} {{friend.username}}</p>
         <!</a>
         {% endfor %}
     </div>

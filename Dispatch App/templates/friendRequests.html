@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
+<style>
+    a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+</style>
+
 <body>
 
     <div class="topnav">
@@ -39,7 +50,18 @@
         </a>
     </div>
     <div class=content>
-        <span><font size='40em'>Your Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
+        <span>
+            <font size='40em'>All Your Outstanding Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
+            <span style='float:right'>Add Friends</span>
+        </a>
+        <br/> {% for request in friendRequests %}
+        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
+        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/addfriend/acceptRequest?sentBy={{request.username}}' class='button'>Accept</a>
+            <a href='/home/friendhome/addfriend/declineRequest?sentBy={{request.username}}' class='button'>Decline</a></span><br/>
+        <!</a>
+        {% endfor %}
     </div>
 </body>
 
