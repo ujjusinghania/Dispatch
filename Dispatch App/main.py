@@ -5,13 +5,14 @@ import pymysql.cursors
 import hashlib
 from friends import friends_blueprint
 
-import sys
 
+# [temporary solution] This checks python version to decide what to import 
+import sys
 if sys.version_info[0] >= 3:
 	import urllib.parse
 else:
 	import urllib
-
+################################
 
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
@@ -67,8 +68,8 @@ def getMessages():
 	# 		    JOIN TextContent on Content.id = TextContent.id 	\
 	# 		    WHERE group_name = %s  AND  Share.username = %s     "
 
-	query = "SELECT Content.timest,									\
-						Content.id as ContentID,						\
+	query = "SELECT Content.timest,											\
+						Content.id as ContentID,							\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
@@ -81,25 +82,43 @@ def getMessages():
 				    LEFT JOIN TextContent on Content.id = TextContent.id	\
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
 				    WHERE group_name = %s  AND Share.username = %s  		\
-				    ORDER BY Content.id DESC						"      
+				    ORDER BY Content.id DESC								"      
 
 	cursor.execute(query, session['groupSelected'])
 	messages = cursor.fetchall()
 
-	cursor.close()
+
+
 # 
+	# print("\n\n\n\n\n\n\n\nmessages:")
 	# print(messages)
+	# print("\ncomments")
+	
 	# print([ u['url'] for u in messages ])
 	# print([ ("" if u['url']==None else urllib.parse.unquote(u['url']) ) for u in messages ])
 
-	for i, u in enumerate(messages):
-		if u['url'] != None:
-			messages[i]['url'] = urllib.parse.unquote(u['url'])
-		print(messages[i])
+	comments = {}
+	query = "SELECT * FROM Comment WHERE id=%s"
+	for i, _ in enumerate(messages):
+		if messages[i]['url'] != None:
+			messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+		
+		# print("\n message: ")
+		# print("\t", messages[i])
+		cursor.execute(query, messages[i]['ContentID'])
+		comments[ messages[i]['ContentID'] ] = cursor.fetchall()
+		# print("\n\t\tcomment", messages[i]['ContentID'], ":", comments[ messages[i]['ContentID'] ])
+	# print(comments)
+	# print("\n\n\n\n\n\n\n\n")
+
+	cursor.close()
+
+
+
 	# print(urllib.parse.unquote(messages['url']))
 
 	# return messages
-	return render_template('getMessages.html', messages=messages)
+	return render_template('getMessages.html', contents=messages, comments=comments)
 
 
 @app.route('/home/friendgroups', methods=['GET'])
@@ -401,6 +420,26 @@ def addPhoto():
                  '&username_creator=' + session['groupSelected'][1]
                  )
 
+@app.route('/comment', methods=['POST'])
+def comment():
+	content_id 		= request.form['ContentID']
+	username   		= request.form['commenter_name']
+	comment_text  	= request.form['comment_text']
+	# print(content_id, username, comment_text)
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Comment (id, username, comment_text) VALUES(%s, %s, %s)'
+	cursor.execute(query, (content_id, username, comment_text))
+
+	conn.commit()
+
+
+	return redirect(url_for('messages') +
+                 '?groupSelected=' + session['groupSelected'][0] +
+                 '&username_creator=' + session['groupSelected'][1]
+                 )
 
 def md5(password):
 	# encode and hash password
