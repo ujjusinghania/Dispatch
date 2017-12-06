@@ -9,19 +9,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script>
+        var update = true;
         function getMessages() {
-            $.ajax({
-              url: "{{ url_for('getMessages') }}",
-              success: function(response) {
-                $("#messages").html(response);
-              },
-              error: function(xhr) {
-                //Do Something to handle error
-              }
-            });
+            if(update) {
+                $.ajax({
+                  url: "{{ url_for('getMessages') }}",
+                  success: function(response) {
+                    $("#messages").html(response);
+                  },
+                  error: function(xhr) {
+                    //Do Something to handle error
+                  }
+                });
+            } // end if(update)
             // updateScroll();
         };
-        
+
         function updateScroll() {
             // element = document.getElementById("scrollBox");
             // if (element != null)
@@ -33,7 +36,7 @@
             $("#input_box").focus();
         });
 
-        // window.setInterval(getMessages, 200);
+        window.setInterval(getMessages, 200);
     </script>
 
 </head>
