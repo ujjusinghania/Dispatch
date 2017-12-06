@@ -28,6 +28,26 @@ def viewFriendHome():
 def addFriend():
 	return render_template('addfriend.html')
 
+@friends_blueprint.route('/home/friendhome/addfriend/auth', methods=['GET','POST'])
+def addFriendAuth():
+	searchFirstName = request.form['userSearchFirstName']
+	searchLastName = request.form['userSearchLastName']
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding all people that are like the user's entered string and that are not in
+	# the friends list already (pending request or already friends)
+
+	query = 'SELECT first_name, last_name, username FROM PERSON WHERE first_name LIKE %s AND last_name LIKE %s AND username != %s AND username NOT IN( SELECT DISTINCT friend_send_username FROM friends WHERE friend_receive_username = %s ) AND username NOT IN( SELECT DISTINCT friend_receive_username FROM friends WHERE friend_send_username = %s )'
+
+	cursor.execute(query, (searchFirstName+"%", searchLastName+"%", username, username, username))
+	people = cursor.fetchall()
+	cursor.close()
+
+	print (people)
+
+	return render_template('addfriend.html', peoplefound=people)
+
 @friends_blueprint.route('/home/friendhome/friendrequest')
 def viewFriendRequests():
 	username = session['username']
