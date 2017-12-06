@@ -3,7 +3,7 @@ Dispatch is the messaging application that we made for the Databases (CS-UY 3083
 
 ### Instructions for running the app
 OS X  
-  0) navagate to Dispatch folder  
+  1) navagate to Dispatch folder  
   1) run `export FLASK_APP=main.py`  
   2) run `export DB_PASS="YOUR_PASSWORD"`  
   3) run `export DP_PORT=YOUR_PORTNUMBER`  
@@ -12,7 +12,7 @@ OS X
   6) do work  
 
 Windows  
-  0) navagate to Dispatch folder  
+  1) navagate to Dispatch folder  
   1) run `set FLASK_APP=main.py`  
   2) run `set DB_PASS="YOUR_PASSWORD"`  
   3) run `set DP_PORT=YOUR_PORTNUMBER`  
