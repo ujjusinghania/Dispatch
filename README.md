@@ -53,11 +53,11 @@ flask run
 ### List of Features
   - Changing Admin (Only one at a time)
   - Generalized Content (actually displaying is a plus)
-    -> JPG
-    -> Music
-    -> Stickers
-    -> Gifs
-    -> Videos
+    * JPG
+    * Music
+    * Stickers
+    * Gifs
+    * Videos
   - Reactions to post
   - Color picker for an individual
   - Background
