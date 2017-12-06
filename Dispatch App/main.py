@@ -9,6 +9,8 @@ import sys
 
 if sys.version_info[0] >= 3:
 	import urllib.parse
+else:
+	import urllib
 
 
 app = Flask(__name__)
