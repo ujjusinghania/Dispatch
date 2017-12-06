@@ -13,7 +13,7 @@
         function getMessages() {
             if(update) {
                 $.ajax({
-                  url: "{{ url_for('getMessages') }}",
+                  url: "{{ url_for('content_blueprint.getMessages') }}",
                   success: function(response) {
                     $("#messages").html(response);
                   },
