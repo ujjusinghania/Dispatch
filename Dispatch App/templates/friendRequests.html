@@ -58,8 +58,8 @@
         </a>
         <br/> {% for request in friendRequests %}
         <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/addfriend/acceptRequest?sentBy={{request.username}}' class='button'>Accept</a>
-            <a href='/home/friendhome/addfriend/declineRequest?sentBy={{request.username}}' class='button'>Decline</a></span><br/>
+        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class='button'>Accept</a>
+            <a href='/home/friendhome/friendrequest/declineRequest?sentBy={{request.username}}' class='button'>Decline</a></span><br/>
         <!</a>
         {% endfor %}
     </div>
