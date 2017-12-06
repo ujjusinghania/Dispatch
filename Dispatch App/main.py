@@ -5,8 +5,10 @@ import pymysql.cursors
 import hashlib
 from friends import friends_blueprint
 
+import sys
 
-import urllib.parse
+if sys.version_info[0] >= 3:
+	import urllib.parse
 
 
 app = Flask(__name__)

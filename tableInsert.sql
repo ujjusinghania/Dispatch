@@ -51,6 +51,21 @@ INSERT INTO tag VALUES (1,'BB','AA', NULL,NULL);
 INSERT INTO tag VALUES (1,'CC','AA', NULL,NULL);
 
 
+
+# Testing for Content
+
+# message
+INSERT INTO Content (username, content_name, public) VALUES('DD', "TextContent", False);
+INSERT INTO TextContent VALUES(LAST_INSERT_ID(), 'hello');
+INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
+# picture
+INSERT INTO Content (username, content_name, public) VALUES('AA', "ImageContent", False);
+INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ffde24b89a56e6bbf894cb01699a1728c%2Ftenor.gif%3Fitemid%3D5957952');
+INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
+
+
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 -- # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
 -- INSERT INTO content VALUES 
