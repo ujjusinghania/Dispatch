@@ -5,6 +5,10 @@ import pymysql.cursors
 import hashlib
 from friends import friends_blueprint
 
+
+import urllib.parse
+
+
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 
@@ -47,22 +51,48 @@ def messages():
 def getMessages():
 	cursor = conn.cursor()
 
+	# query = "SELECT Content.timest,									\
+	# 				Content.id as ContentID,						\
+	# 				Share.group_name,								\
+	# 		        Share.username as group_admin,					\
+	# 		        TextContent.text_content,						\
+	# 		        Content.username as ContentOwner,				\
+	# 		        Content.public									\
+	# 			FROM Share 											\
+	# 			JOIN Content ON Content.id = Share.id				\
+	# 		    JOIN TextContent on Content.id = TextContent.id 	\
+	# 		    WHERE group_name = %s  AND  Share.username = %s     "
+
 	query = "SELECT Content.timest,									\
-					Content.id as ContentID,						\
-					Share.group_name,								\
-			        Share.username as group_admin,					\
-			        TextContent.text_content,						\
-			        Content.username as ContentOwner,				\
-			        Content.public									\
-				FROM Share 											\
-				JOIN Content ON Content.id = Share.id				\
-			    JOIN TextContent on Content.id = TextContent.id 	\
-			    WHERE group_name = %s  AND  Share.username = %s     "
+						Content.id as ContentID,						\
+						Share.group_name,									\
+				        Share.username as group_admin,						\
+				        Content.content_name,								\
+				        TextContent.text_content,							\
+	                    ImageContent.url,									\
+				        Content.username as ContentOwner,					\
+				        Content.public										\
+					FROM Share 												\
+					JOIN Content ON Content.id = Share.id					\
+				    LEFT JOIN TextContent on Content.id = TextContent.id	\
+	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+				    WHERE group_name = %s  AND Share.username = %s  		\
+				    ORDER BY Content.id DESC						"      
 
 	cursor.execute(query, session['groupSelected'])
 	messages = cursor.fetchall()
 
 	cursor.close()
+# 
+	# print(messages)
+	# print([ u['url'] for u in messages ])
+	# print([ ("" if u['url']==None else urllib.parse.unquote(u['url']) ) for u in messages ])
+
+	for i, u in enumerate(messages):
+		if u['url'] != None:
+			messages[i]['url'] = urllib.parse.unquote(u['url'])
+		print(messages[i])
+	# print(urllib.parse.unquote(messages['url']))
 
 	# return messages
 	return render_template('getMessages.html', messages=messages)
@@ -332,6 +362,41 @@ def addMessage():
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
                  )
+
+@app.route('/addPhoto', methods=['GET', 'POST'])
+def addPhoto():
+
+	url = urllib.parse.quote_plus( request.form['photo_url'] )
+	# print(message)
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], "ImageContent", False))
+
+	query = 'INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, (url))
+
+	# content id, group name, group admin
+	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+
+	cursor.execute(query, session['groupSelected'])
+
+	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	cursor.execute(query)
+
+	data = cursor.fetchone()
+
+	# commit changes and close connetion
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('messages') +
+                 '?groupSelected=' + session['groupSelected'][0] +
+                 '&username_creator=' + session['groupSelected'][1]
+                 )
+
 
 def md5(password):
 	# encode and hash password

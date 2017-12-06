@@ -3,7 +3,16 @@
     <tr>
         <td> {{message.ContentOwner}}: </td>
         <td> {{message.id}} </td>  
-        <td> {{message.text_content}} </td> 
+
+        <td> 
+        	{% if message.content_name == 'ImageContent' %}
+        		<img src='{{message.url}}' height='80em'>
+        	{% elif message.content_name == 'TextContent' %}
+        		{{message.text_content}} 
+        	{% endif %}
+        </td> 
+
+
     </tr>
 {% endfor %}
 </table>

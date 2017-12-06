@@ -26,9 +26,16 @@ CREATE TABLE TextContent (
     FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE ImageContent (
+    id INT,
+    url TEXT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE FileContent (
     id INT,                     # content id
-    file_path VARCHAR (100),    # path to content
+    file_path TEXT,    # path to content
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
