@@ -84,7 +84,7 @@ def viewFriends():
 
 	return render_template('viewfriends.html', friends=allFriends)
 	
-@friends_blueprint.route('/home/friendhome/addfriend/acceptRequest')
+@friends_blueprint.route('/home/friendhome/friendrequest/acceptRequest')
 def acceptFriendRequest():
 	sentByUsername = request.args.get('sentBy')
 	username = session['username']
@@ -97,7 +97,7 @@ def acceptFriendRequest():
 	cursor.close()
 	return redirect(url_for('.viewFriendRequests'))
 
-@friends_blueprint.route('/home/friendhome/addfriend/declineRequest')
+@friends_blueprint.route('/home/friendhome/friendrequest/declineRequest')
 def declineFriendRequest():
 	sentByUsername = request.args.get('sentBy')
 	username = session['username']
@@ -107,3 +107,14 @@ def declineFriendRequest():
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('.viewFriendRequests'))
+
+@friends_blueprint.route('/home/friendhome/addfriend/sendRequest')
+def sendFriendRequest():
+	sendToUsername = request.args.get('sendTo')
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'INSERT INTO friends VALUES(%s, %s, FALSE)'
+	cursor.execute(query, (username, sendToUsername))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('.addFriend'))

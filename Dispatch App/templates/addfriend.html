@@ -58,7 +58,7 @@
     </form>
 
     {% for people in peoplefound %}
-    <br/><br/><span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span><span style="float:right"><a href='/home/friendhome/addfriend/acceptRequest?sentBy={{request.username}}' class='button'>Send Request</a>
+    <br/><br/><span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span><span style="float:right"><a href='/home/friendhome/addfriend/sendRequest?sendTo={{people.username}}' class='button'>Send Request</a>
     {% endfor %}
 </div>
 </body>
