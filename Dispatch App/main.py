@@ -155,12 +155,6 @@ def tag():
   return render_template('tags.html', tags=tags)
 
 
-@app.route('/home/friendRequests')
-def friendRequests():
-	username = session['username']
-	return render_template('friendRequests.html')
-
-
 def checkSess():
 	return (session['username'] == "" and session['fname'] == "" and session['lname'] == "" and session['color'] == "")
 

@@ -1,0 +1,66 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Add Friend</title>
+    <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+</head>
+
+<style>
+    a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+</style>
+
+<body>
+
+    <div class="topnav">
+        <a href='/home' style="text-decoration:none;">
+            Home
+        </a>
+        <a href='/home/profile' style="text-decoration:none;">
+            Profile
+        </a>
+        <a href='/home/friendhome' style="text-decoration:none;">
+            Friends
+        </a>
+        <a href='/home/friendgroups' style="text-decoration:none;">
+            Friend Groups
+        </a>
+        <a href='/home/tags' style="text-decoration:none;">
+            Tags
+        </a>
+        <a href='/home/favorites' style="text-decoration:none;">
+            Favorites
+        </a>
+        <a href='/home/medialibrary' style="text-decoration:none;">
+            Media Library
+        </a>
+        <a href='/home/settings' style="text-decoration:none;">
+            Settings
+        </a>
+        <a href='/logout' style="text-decoration:none;">
+            Logout
+        </a>
+    </div>
+    <div class=content>
+    <form action="/home/friendhome/addfriend/auth?" method="POST">
+        <input type="text" style="width: 46%" placeholder="Search By First Name" name="userSearchFirstName" id="input_box" />
+        <input type="text" style="width: 46%" placeholder="Search By Last Name" name="userSearchLastName" id="input_box"
+        />
+        <input type="submit" text="Send" />
+    </form>
+
+    {% for people in peoplefound %}
+    <br/><br/><span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span><span style="float:right"><a href='/home/friendhome/addfriend/acceptRequest?sentBy={{request.username}}' class='button'>Send Request</a>
+    {% endfor %}
+</div>
+</body>
+
+</html>
