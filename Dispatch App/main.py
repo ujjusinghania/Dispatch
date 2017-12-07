@@ -23,7 +23,7 @@ import os
 conn = pymysql.connect(host='localhost',
                       port= int(os.environ['DB_PORT']), #get the port from an env var
                       user='root',
-                      password= os.environ['DB_PASS'], #get the pswd from an env var
+                      password=os.environ['DB_PASS'], #get the pswd from an env var
                       db='dispatch',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
@@ -128,13 +128,40 @@ def friendgroups():
 def tag():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger FROM tag  WHERE username_taggee = %s'
+  query = 'SELECT username_tagger \
+  		   FROM tag\
+  		   WHERE username_taggee = %s AND status = 0'
+
   cursor.execute(query, (username))
   tags = cursor.fetchall()
-  print(tag)
   cursor.close()
   return render_template('tags.html', tags=tags)
 
+@app.route('/home/tags/acceptTag')
+def acceptTag():
+	taggedByUsername = request.args.get('taggedBy')
+	taggedID = request.args.get('tagID')
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %d  AND status = FALSE'
+	cursor.execute(query,(username,taggedByUsername,taggedID))
+	query = 'INSERT INTO tag VALUES (%d,%s,%s,NULL,TRUE)'
+	cursor.execute(query,(taggedID,username,taggedByUsername))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('.tag'))
+
+@app.route('/home/tags/declineTag')
+def declineTag():
+	taggedByUsername = request.args.get('taggedBy')
+	taggedID = request.args.get('tagID')
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s  AND status = FALSE'
+	cursor.execute(query,(username,taggedByUsername))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('.tag'))
 
 @app.route('/home/friendRequests')
 def friendRequests():
