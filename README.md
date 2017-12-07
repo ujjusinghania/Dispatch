@@ -52,14 +52,14 @@ flask run
 
 ### List of Features
   - Changing Admin (Only one at a time)
-  - Generalized Content (actually displaying is a plus)
+  - ~~Generalized Content (actually displaying is a plus)
     * JPG
     * Music
     * Stickers
     * Gifs
-    * Videos
+    * Videos~~
   - Reactions to post
-  - Color picker for an individual
+  - ~~Color picker for an individual~~
   - Background
   - Statistics Page (Amount of texts sent)
   - Self Deleting Messages
@@ -67,7 +67,7 @@ flask run
   - Blocking People
   - Removing people from group
   - Starring Messages
-  - Friendlist (add/delete)
+  - ~~Friendlist (add/delete)~~
 
 ### Part 1 ER Diagram
 ![Part 1 ER](/docs/Part1_ER.png)
