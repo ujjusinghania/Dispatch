@@ -7,7 +7,6 @@ from content import content_blueprint
 
 import helpers
 
-
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
@@ -272,9 +271,6 @@ def addFriendGroupAuth():
 		cursor.execute(query, (username, groupName, username))
 		conn.commit()
 		return redirect(url_for('friendgroups'))
-
-
-
 
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
