@@ -1,0 +1,61 @@
+<html>
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>Dispatch - Add Group Member</title>
+        <link rel="stylesheet" href="/static/styles/textStyle.css" />
+        <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+    </head>
+    
+    <style>
+        a.button {
+        -webkit-appearance: button;
+        -moz-appearance: button;
+        appearance: button;
+    
+        text-decoration: none;
+        color: initial;
+    }
+    </style>
+    
+    <body>
+    
+        <div class="topnav">
+            <a href='/home' style="text-decoration:none;">
+                Home
+            </a>
+            <a href='/home/profile' style="text-decoration:none;">
+                Profile
+            </a>
+            <a href='/home/friendhome' style="text-decoration:none;">
+                Friends
+            </a>
+            <a href='/home/friendgroups' style="text-decoration:none;">
+                Friend Groups
+            </a>
+            <a href='/home/tags' style="text-decoration:none;">
+                Tags
+            </a>
+            <a href='/home/favorites' style="text-decoration:none;">
+                Favorites
+            </a>
+            <a href='/home/medialibrary' style="text-decoration:none;">
+                Media Library
+            </a>
+            <a href='/home/settings' style="text-decoration:none;">
+                Settings
+            </a>
+            <a href='/logout' style="text-decoration:none;">
+                Logout
+            </a>
+        </div>
+        <div class=content>
+            <span>
+                <font size='40em'>Adding Group Members To {{group_name}} Owned By {{session["fname"]}} {{session["lname"]}} ({{session["username"]}}).</font></span>
+            {% for nonmember in nonmembers %}
+            <br/><br/><span>{{nonmember.first_name}} {{nonmember.last_name}} {{nonmember.username}}</span><span style="float:right"><a href='/home/friendgroups/addMember/addMemberAuth?adding={{nonmember.username}}&to={{group_name}}' class='button'>Add</a></span>
+            {% endfor %}
+        </div>
+    </body>
+    
+    </html>

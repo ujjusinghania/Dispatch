@@ -7,7 +7,6 @@ from content import content_blueprint
 
 import helpers
 
-
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
@@ -315,8 +314,91 @@ def addFriendGroupAuth():
 		conn.commit()
 		return redirect(url_for('friendgroups'))
 
+@app.route('/home/friendgroups/addMember')
+def addMembersToGroup():
+	username = session['username']
+	groupName = request.args.get('groupSelected')
+	groupCreator = session['username']
+	cursor = conn.cursor()
 
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s AND username NOT IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestSendFriendsNotMembers = cursor.fetchall()
 
+	# Finding friends who you received a friend request from. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s AND username NOT IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestReceiveFriendsNotMembers = cursor.fetchall()
+	cursor.close()
+
+	notGroupMembers = []
+	for friend in requestReceiveFriendsNotMembers:
+		notGroupMembers.append(friend)
+	for friend in requestSendFriendsNotMembers:
+		notGroupMembers.append(friend)
+
+	print (notGroupMembers)
+	return render_template('addgroupmember.html', group_name = groupName, nonmembers=notGroupMembers )
+
+@app.route('/home/friendgroups/addMember/addMemberAuth')
+def addMembersAuth(): 
+	addingUsername = request.args.get('adding')
+	toGroup = request.args.get('to')
+
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'INSERT INTO member VALUES (%s, %s, %s)'
+	cursor.execute(query, (addingUsername, toGroup, username))
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('.addMembersToGroup', groupSelected=toGroup))
+
+@app.route('/home/friendgroups/deleteMember')
+def deleteMembersFromGroup():
+	username = session['username']
+	groupName = request.args.get('groupSelected')
+	groupCreator = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s AND username IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestSendFriendsMembers = cursor.fetchall()
+
+	# Finding friends who you received a friend request from. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s AND username IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestReceiveFriendsMembers = cursor.fetchall()
+	cursor.close()
+
+	groupMembers = []
+	for friend in requestReceiveFriendsMembers:
+		groupMembers.append(friend)
+	for friend in requestSendFriendsMembers:
+		groupMembers.append(friend)
+
+	print (groupMembers)
+	return render_template('deletegroupmember.html', group_name = groupName, members=groupMembers )
+
+@app.route('/home/friendgroups/deleteMember/deleteMemberAuth')
+def deleteMembersAuth(): 
+	deletingUsername = request.args.get('deleting')
+	fromGroup = request.args.get('from')
+
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'DELETE FROM member WHERE username = %s AND group_name = %s AND username_creator = %s'
+	cursor.execute(query, (deletingUsername, fromGroup, username))
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('.deleteMembersFromGroup', groupSelected=fromGroup))
 
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
