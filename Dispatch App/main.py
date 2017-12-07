@@ -6,6 +6,7 @@ from friends import friends_blueprint
 from content import content_blueprint
 
 import helpers
+import urllib.parse
 
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
