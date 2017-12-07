@@ -15,6 +15,7 @@ CREATE TABLE Content(
     timest TIMESTAMP,           # when this content was created
     content_name VARCHAR (50),  # ContentType?
     public BOOLEAN,             #
+    caption TEXT,               # textual description of content
     PRIMARY KEY (id),
     FOREIGN KEY (username) REFERENCES Person (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

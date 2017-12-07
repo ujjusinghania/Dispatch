@@ -5,7 +5,8 @@ import pymysql.cursors
 
 import helpers
 
-content_blueprint = Blueprint('content_blueprint',__name__)
+content_blueprint = Blueprint('content_blueprint', __name__)
+
 
 # [temporary solution] This checks python version to decide what to import 
 import sys
@@ -13,7 +14,7 @@ if sys.version_info[0] >= 3:
 	import urllib.parse
 else:
 	import urllib
-################################
+############################
 
 
 # this is for pulling the port and database password from environment variables
@@ -147,12 +148,13 @@ def getMessages():
 
 	query = "SELECT Content.timest,											\
 						Content.id as ContentID,							\
+						Content.caption,									\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-	                    ImageContent.url,									\
-				        Content.username as ContentOwner,					\
+						ImageContent.url,									\
+						Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
