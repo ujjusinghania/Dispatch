@@ -60,7 +60,7 @@
         <br/><br/><a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
             <span>{{group.group_name}} ({{group.username_creator}})</span></a>
             {% if session['username'] == group.username_creator %}
-            <span style="float:right"><a href='/home/friendgroups/addMember?groupSelected={{group.group_name}}' class='button'>Add Members</a></span>
+            <span style="float:right"><a href='/home/friendgroups/deleteMember?groupSelected={{group.group_name}}' class='button'>Remove Members </a><span></span></span><span style="float:right"><a href='/home/friendgroups/addMember?groupSelected={{group.group_name}}' class='button'>Add Members</a></span>
             {% endif %}
         {% endfor %}
     </div>
