@@ -28,8 +28,50 @@ conn = pymysql.connect(host='localhost',
 @app.route('/')
 def login():
 	return render_template('login.html')
+	
+@app.route('/home/medialibrary', methods=['GET'])
+def medialibrary():
+	if (helpers.checkSess()):
+		return redirect(url_for('login'))
+	else:
+		cursor = conn.cursor()
+
+		query = "SELECT Content.timest,											\
+						Content.id as ContentID,							\
+						Share.group_name,									\
+				        Share.username as group_admin,						\
+				        Content.content_name,								\
+				        TextContent.text_content,							\
+	                    ImageContent.url,									\
+				        Content.username as ContentOwner,					\
+				        Content.public										\
+					FROM Share 												\
+					JOIN Content ON Content.id = Share.id					\
+				    LEFT JOIN TextContent on Content.id = TextContent.id	\
+	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+				    WHERE Content.id IN								  		\
+				    (SELECT id FROM Share WHERE (group_name, username) IN	\
+				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
+				    OR Content.public='1'									\
+					ORDER BY Content.id DESC								"      
+					
+		cursor.execute(query, session['username'])
+		messages = cursor.fetchall()
 
 
+		comments = {}
+		query = "SELECT * FROM Comment WHERE id=%s"
+		for i, _ in enumerate(messages):
+			if messages[i]['url'] != None:
+				messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+
+			cursor.execute(query, messages[i]['ContentID'])
+			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
+
+		cursor.close()
+
+		return render_template("media.html", contents=messages, comments=comments)
+		
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
 	if (helpers.checkSess()):

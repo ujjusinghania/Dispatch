@@ -60,7 +60,7 @@ def addMessage():
 	conn.commit()
 	cursor.close()
 
-	return redirect(url_for('messages') +
+	return redirect(url_for('content_blueprint.messages') +
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
                  )
