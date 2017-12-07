@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
+<style>
+    a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+</style>
+
 <body>
 
     <div class="topnav">
@@ -46,9 +57,11 @@
             <span style='float:right'>Add Group</span>
         </a>
         <br/> {% for group in groups%}
-        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
-            <p>{{group.group_name}} ({{group.username_creator}})</p>
-        </a>
+        <br/><br/><a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
+            <span>{{group.group_name}} ({{group.username_creator}})</span></a>
+            {% if session['username'] == group.username_creator %}
+            <span style="float:right"><a href='/home/friendgroups/deleteMember?groupSelected={{group.group_name}}' class='button'>Remove Members </a><span></span></span><span style="float:right"><a href='/home/friendgroups/addMember?groupSelected={{group.group_name}}' class='button'>Add Members</a></span>
+            {% endif %}
         {% endfor %}
     </div>
 </body>

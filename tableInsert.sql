@@ -50,8 +50,9 @@ INSERT INTO friends VALUES ('GG', 'AA', TRUE);
 -- INSERT INTO content VALUES (1,'BB',NULL,NULL,"ASS",1);
 INSERT INTO Content (username, content_name, public) VALUES('BB', "TextContent", FALSE);
 INSERT INTO TextContent VALUES(LAST_INSERT_ID(), "ASS");
-INSERT INTO tag VALUES (1,'BB','AA', NULL,NULL);
-INSERT INTO tag VALUES (1,'CC','AA', NULL,NULL);
+INSERT INTO tag VALUES (1,'BB','AA', NULL,0);
+INSERT INTO tag VALUES (2,'CC','AA', NULL,0);
+INSERT INTO tag VALUES (1,'DD','AA', NULL,1);
 
 
 

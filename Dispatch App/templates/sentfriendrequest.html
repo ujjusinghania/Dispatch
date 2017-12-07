@@ -57,9 +57,7 @@
             <span style='float:right'>Add Friends</span>
         </a>
         <br/> {% for request in friendRequests %}
-        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/sentfriendrequest/recallRequest?sentTo={{request.username}}' class='button'>Recall</a>
-        <!</a>
+        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/sentfriendrequest/recallRequest?sentTo={{request.username}}' class='button'>Recall</a></span>
         {% endfor %}
     </div>
 </body>

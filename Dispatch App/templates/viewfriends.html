@@ -6,7 +6,16 @@
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
+<style>
+    a.button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
 
+    text-decoration: none;
+    color: initial;
+}
+</style>
 <body>
 
     <div class="topnav">
@@ -46,9 +55,7 @@
             <span style='float:right'>Add Friends</span>
         </a>
         <br/> {% for friend in friends %}
-        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <p>{{friend.first_name}} {{friend.last_name}} {{friend.username}}</p>
-        <!</a>
+        <br/><br/><span>{{friend.first_name}} {{friend.last_name}} ({{friend.username}})</span><span style="float:right"><a href='/home/friendhome/viewfriends/defriend?defriendID={{request.username}}' class='button'>Defriend</a></span>        
         {% endfor %}
     </div>
 </body>
