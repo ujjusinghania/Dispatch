@@ -19,17 +19,20 @@ INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88');
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
+INSERT INTO member VALUES ('AA', 'family', 'AA');
 INSERT INTO member VALUES ('CC', 'family', 'AA');
 INSERT INTO member VALUES ('DD', 'family', 'AA');
 INSERT INTO member VALUES ('EE', 'family', 'AA');
 
 # inserting bob into family
 INSERT INTO friendgroup VALUES 	('family', 'BB', NULL);
+INSERT INTO member VALUES 		('BB','family', 'BB');
 INSERT INTO member VALUES 		('FF','family', 'BB');
 INSERT INTO member VALUES 		('EE','family', 'BB');
 
 # inserting ann into besties
 INSERT INTO friendgroup VALUES 	('besties', 'AA', NULL);
+INSERT INTO member VALUES 		('AA','besties','AA');
 INSERT INTO member VALUES 		('GG','besties','AA');
 INSERT INTO member VALUES 		('HH','besties','AA');
 
@@ -55,12 +58,12 @@ INSERT INTO tag VALUES (1,'CC','AA', NULL,NULL);
 # Testing for Content
 
 # message
-INSERT INTO Content (username, content_name, public) VALUES('DD', "TextContent", False);
+INSERT INTO Content (username, content_name, caption, public) VALUES('DD', "TextContent", "This is the caption", False);
 INSERT INTO TextContent VALUES(LAST_INSERT_ID(), 'hello');
 INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
 
 # picture
-INSERT INTO Content (username, content_name, public) VALUES('AA', "ImageContent", False);
+INSERT INTO Content (username, content_name, caption, public) VALUES('AA', "ImageContent", "bear cap", False);
 INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ffde24b89a56e6bbf894cb01699a1728c%2Ftenor.gif%3Fitemid%3D5957952');
 INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
 
