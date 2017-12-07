@@ -1,40 +1,112 @@
-<table border="1">
-{% for content in contents %} 
-    <tr>
-        <td> {{content.ContentOwner}}: </td>
-        <td> {{content.ContentID}} </td>  
-        <td> 
-        	<!-- display content -->
-        	{% if content.content_name == 'ImageContent' %}
-        		<img src='{{content.url}}' height='80em'>
-        	{% elif content.content_name == 'TextContent' %}
-        		{{content.text_content}} 
-        	{% endif %}
+<html>
 
-        	<!-- display comments -->
-        	{% if comments is defined %}
-        	<ul>
-        		{% for comment in comments[ content.ContentID ] %}
-        			<li>{{comment.username}}: {{comment.comment_text}}</li>
-        		{% endfor %}
-        	</ul>
-        	{% endif %}
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Messages</title>
+    <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+</head>
 
-        	<!-- comment form -->
-        	<form style="display: none;" id="commentForm{{content.ContentID}}" action="/comment" method="POST">
-	            <br />
-	            <div class="textbox">
-	                <input type="text" style="width: 92%" placeholder="Comment text..." name="comment_text" id="comment_box{{content.ContentID}}" />
-	                <input type="hidden" value={{content.ContentID}} name='ContentID'>
-	                <input type="hidden" value={{session['username']}} name='commenter_name'>
-	                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();update=true;" />
-	            </div>
-	        </form>
+<body>
 
-        </td> 
-        <td>
-        	<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
-        </td>
-    </tr>
-{% endfor %}
-</table>
+    <div class="topnav">
+        <a href='/home' style="text-decoration:none;">
+            Home
+        </a>
+        <a href='/home/profile' style="text-decoration:none;">
+            Profile
+        </a>
+        <a href='/home/friendhome' style="text-decoration:none;">
+            Friends
+        </a>
+        <a href='/home/friendgroups' style="text-decoration:none;">
+            Friend Groups
+        </a>
+        <a href='/home/tags' style="text-decoration:none;">
+            Tags
+        </a>
+        <a href='/home/favorites' style="text-decoration:none;">
+            Favorites
+        </a>
+        <a href='/home/medialibrary' style="text-decoration:none;">
+            Media Library
+        </a>
+        <a href='/home/settings' style="text-decoration:none;">
+            Settings
+        </a>
+        <a href='/logout' style="text-decoration:none;">
+            Logout
+        </a>
+    </div>
+    <center class="content">
+        <div class="textbox">
+            <span>{{session['username']}}'s Content </span>
+        </div>
+
+        <br />
+        <div id="scrollBox" class="scrollBox">
+            <div id="messages"> 
+				<table border="1">
+					{% for content in contents %} 
+				<tr>
+				<td> {{content.ContentOwner}}: </td>
+				<td> {{content.ContentID}} </td>  
+				<td> 
+					<!-- display content -->
+					{% if content.content_name == 'ImageContent' %}
+						<img src='{{content.url}}' height='80em'>
+						{% elif content.content_name == 'TextContent' %}
+						{{content.text_content}} 
+					{% endif %}
+		
+					<!-- display comments -->
+					{% if comments is defined %}
+					<ul>
+						{% for comment in comments[ content.ContentID ] %}
+							<li>{{comment.username}}: {{comment.comment_text}}</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+
+					<!-- comment form -->
+					<form style="display: none;" id="commentForm{{content.ContentID}}" action="/comment" method="POST">
+						<br />
+						<div class="textbox">
+							<input type="text" style="width: 92%" placeholder="Comment text..." name="comment_text" id="comment_box{{content.ContentID}}" />
+							<input type="hidden" value={{content.ContentID}} name='ContentID'>
+							<input type="hidden" value={{session['username']}} name='commenter_name'>
+							<input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();update=true;" />
+						</div>
+					</form>
+
+				</td> 
+				<td>
+					<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
+				</td>
+			</tr>
+			{% endfor %}
+			</table>
+
+            </div>
+        </div>
+
+        <form action="/addMessage" method="POST">
+            <br />
+            <div class="textbox">
+                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
+            </div>
+        </form>
+
+        <form action="/addPhoto" method="POST">
+            <br />
+            <div class="textbox">
+                <input type="text" style="width: 92%" placeholder="Enter the url of the image you'd like to share..." name="photo_url" id="input_box" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
+            </div>
+        </form>
+
+    </center>
+</body>
+
+</html>
