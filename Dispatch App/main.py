@@ -272,6 +272,49 @@ def addFriendGroupAuth():
 		conn.commit()
 		return redirect(url_for('friendgroups'))
 
+@app.route('/home/friendgroups/addMember')
+def addMembersToGroup():
+	username = session['username']
+	groupName = request.args.get('groupSelected')
+	groupCreator = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s AND username NOT IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestSendFriendsNotMembers = cursor.fetchall()
+
+	# Finding friends who you received a friend request from. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s AND username NOT IN (SELECT username FROM member WHERE group_name = %s AND username_creator = %s)'
+	cursor.execute(query, (username, groupName, groupCreator))
+	requestReceiveFriendsNotMembers = cursor.fetchall()
+	cursor.close()
+
+	notGroupMembers = []
+	for friend in requestReceiveFriendsNotMembers:
+		notGroupMembers.append(friend)
+	for friend in requestSendFriendsNotMembers:
+		notGroupMembers.append(friend)
+
+	print (notGroupMembers)
+	return render_template('addgroupmember.html', group_name = groupName, nonmembers=notGroupMembers )
+
+@app.route('/home/friendgroups/addMember/addMemberAuth')
+def addMembersAuth(): 
+	addingUsername = request.args.get('adding')
+	toGroup = request.args.get('to')
+
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'INSERT INTO member VALUES (%s, %s, %s)'
+	cursor.execute(query, (addingUsername, toGroup, username))
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('.addMembersToGroup', groupSelected=toGroup))
+
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
 #debug = True -> you don't have to restart flask
