@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Add Friend</title>
+    <title>Dispatch - Outgoing Friend Requests</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
@@ -50,17 +50,18 @@
         </a>
     </div>
     <div class=content>
-    <form action="/home/friendhome/addfriend/auth?" method="POST">
-        <input type="text" style="width: 46%" placeholder="Search By First Name" name="userSearchFirstName" id="input_box" />
-        <input type="text" style="width: 46%" placeholder="Search By Last Name" name="userSearchLastName" id="input_box"
-        />
-        <input type="submit" text="Send" />
-    </form>
-
-    {% for people in peoplefound %}
-    <br/><br/><span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span><span style="float:right"><a href='/home/friendhome/addfriend/sendRequest?sendTo={{people.username}}' class='button'>Send Request</a>
-    {% endfor %}
-</div>
+        <span>
+            <font size='40em'>All Your Outgoing Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
+            <span style='float:right'>Add Friends</span>
+        </a>
+        <br/> {% for request in friendRequests %}
+        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
+        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/sentfriendrequest/recallRequest?sentTo={{request.username}}' class='button'>Recall</a>
+        <!</a>
+        {% endfor %}
+    </div>
 </body>
 
 </html>

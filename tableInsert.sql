@@ -65,6 +65,9 @@ INSERT INTO Content (username, content_name, public) VALUES('AA', "ImageContent"
 INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ffde24b89a56e6bbf894cb01699a1728c%2Ftenor.gif%3Fitemid%3D5957952');
 INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
 
+# comment
+INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'DD', "the comment text :-)");
+INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'AA', "I know right?");
 
 
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​

@@ -9,16 +9,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script>
+        var update = true;
         function getMessages() {
-            $.ajax({
-              url: "{{ url_for('getMessages') }}",
-              success: function(response) {
-                $("#messages").html(response);
-              },
-              error: function(xhr) {
-                //Do Something to handle error
-              }
-            });
+            if(update) {
+                $.ajax({
+                  url: "{{ url_for('content_blueprint.getMessages') }}",
+                  success: function(response) {
+                    $("#messages").html(response);
+                  },
+                  error: function(xhr) {
+                    //Do Something to handle error
+                  }
+                });
+            } // end if(update)
             // updateScroll();
         };
 

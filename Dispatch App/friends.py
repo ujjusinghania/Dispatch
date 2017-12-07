@@ -28,6 +28,26 @@ def viewFriendHome():
 def addFriend():
 	return render_template('addfriend.html')
 
+@friends_blueprint.route('/home/friendhome/addfriend/auth', methods=['GET','POST'])
+def addFriendAuth():
+	searchFirstName = request.form['userSearchFirstName']
+	searchLastName = request.form['userSearchLastName']
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding all people that are like the user's entered string and that are not in
+	# the friends list already (pending request or already friends)
+
+	query = 'SELECT first_name, last_name, username FROM PERSON WHERE first_name LIKE %s AND last_name LIKE %s AND username != %s AND username NOT IN (SELECT DISTINCT friend_send_username FROM friends WHERE friend_receive_username = %s) AND username NOT IN( SELECT DISTINCT friend_receive_username FROM friends WHERE friend_send_username = %s )'
+
+	cursor.execute(query, (searchFirstName+"%", searchLastName+"%", username, username, username))
+	people = cursor.fetchall()
+	cursor.close()
+
+	print (people)
+
+	return render_template('addfriend.html', peoplefound=people)
+
 @friends_blueprint.route('/home/friendhome/friendrequest')
 def viewFriendRequests():
 	username = session['username']
@@ -64,7 +84,7 @@ def viewFriends():
 
 	return render_template('viewfriends.html', friends=allFriends)
 	
-@friends_blueprint.route('/home/friendhome/addfriend/acceptRequest')
+@friends_blueprint.route('/home/friendhome/friendrequest/acceptRequest')
 def acceptFriendRequest():
 	sentByUsername = request.args.get('sentBy')
 	username = session['username']
@@ -77,7 +97,7 @@ def acceptFriendRequest():
 	cursor.close()
 	return redirect(url_for('.viewFriendRequests'))
 
-@friends_blueprint.route('/home/friendhome/addfriend/declineRequest')
+@friends_blueprint.route('/home/friendhome/friendrequest/declineRequest')
 def declineFriendRequest():
 	sentByUsername = request.args.get('sentBy')
 	username = session['username']
@@ -87,3 +107,38 @@ def declineFriendRequest():
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('.viewFriendRequests'))
+
+@friends_blueprint.route('/home/friendhome/addfriend/sendRequest')
+def sendFriendRequest():
+	sendToUsername = request.args.get('sendTo')
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'INSERT INTO friends VALUES(%s, %s, FALSE)'
+	cursor.execute(query, (username, sendToUsername))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('.addFriend'))
+
+@friends_blueprint.route('/home/friendhome/sentfriendrequest')
+def viewSentFriendRequests(): 
+	username = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = FALSE AND friend_send_username = %s'
+	cursor.execute(query, (username))
+	frequests = cursor.fetchall()
+	cursor.close()
+	return render_template('sentfriendrequest.html', friendRequests=frequests)
+
+@friends_blueprint.route('/home/friendhome/sentfriendrequest/recallRequest')
+def recallRequest():
+	sender = session['username']
+	cursor = conn.cursor()
+	receiver = request.args.get('sentTo')
+	query = 'DELETE FROM friends WHERE friend_send_username = %s AND friend_receive_username = %s AND accepted_request = FALSE'
+	cursor.execute(query, (sender, receiver))
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('.viewSentFriendRequests'))

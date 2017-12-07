@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Friend Requests</title>
+    <title>Dispatch - Imcoming Friend Requests</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
@@ -51,15 +51,15 @@
     </div>
     <div class=content>
         <span>
-            <font size='40em'>All Your Outstanding Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
+            <font size='40em'>All Your Incoming Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
         </span>
         <a href='/home/friendhome/addfriend' style="text-decoration:none;">
             <span style='float:right'>Add Friends</span>
         </a>
         <br/> {% for request in friendRequests %}
         <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/addfriend/acceptRequest?sentBy={{request.username}}' class='button'>Accept</a>
-            <a href='/home/friendhome/addfriend/declineRequest?sentBy={{request.username}}' class='button'>Decline</a></span><br/>
+        <br/><br/><span>{{request.first_name}} {{request.last_name}} {{request.username}}</span><span style="float:right"><a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class='button'>Accept</a>
+            <a href='/home/friendhome/friendrequest/declineRequest?sentBy={{request.username}}' class='button'>Decline</a></span><br/>
         <!</a>
         {% endfor %}
     </div>

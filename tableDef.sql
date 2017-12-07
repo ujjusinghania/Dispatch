@@ -55,7 +55,7 @@ ALTER TABLE friendgroup ADD INDEX(username);
 
 CREATE TABLE Comment
 (
-    id INT,
+    id INT,                         # content_id
     username VARCHAR (50),
     timest TIMESTAMP,
     comment_text VARCHAR (250),
