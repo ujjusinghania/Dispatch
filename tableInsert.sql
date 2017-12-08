@@ -89,6 +89,11 @@ INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'DD', 
 INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'AA', "I know right?");
 
 
+# favorite
+INSERT INTO Favorite (id, username) VALUES(LAST_INSERT_ID(), 'DD');
+INSERT INTO Favorite (id, username) VALUES(LAST_INSERT_ID(), 'AA');
+INSERT INTO Favorite (id, username) VALUES(3, 'AA');
+
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 -- # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.
 -- INSERT INTO content VALUES 

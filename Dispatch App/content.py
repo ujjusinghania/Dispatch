@@ -109,6 +109,41 @@ def messages():
 		return render_template('messages.html', messages=messages)
 
 
+@content_blueprint.route('/home/favorites')
+def favorites():
+	cursor = conn.cursor()
+
+	query = "SELECT timest,										\
+		Favorite.id as ContentID,								\
+        Content.username as ContentOwner,						\
+        Content.caption,										\
+        Content.content_name,									\
+        TextContent.text_content,								\
+		ImageContent.url as img_url,							\
+		VideoContent.url as video_url,							\
+		AudioContent.url as audio_url,							\
+		Content.username as ContentOwner,						\
+        Content.public											\
+        public 													\
+	FROM Favorite 												\
+	JOIN Content ON Content.id = Favorite.id 					\
+    LEFT JOIN TextContent  ON Content.id = TextContent.id 		\
+    LEFT JOIN AudioContent ON Content.id = AudioContent.id 		\
+    LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
+    LEFT JOIN ImageContent ON Content.id = ImageContent.id 		\
+    WHERE Content.username = %s; 								"
+
+	cursor.execute(query, session['username'])
+	favs = cursor.fetchall()
+
+	cursor.close()
+
+	favs = unquote(favs)
+
+	return render_template('getMessages.html', contents=favs)
+
+
+
 @content_blueprint.route('/home/friendgroups/getMessages')
 def getMessages():
 	cursor = conn.cursor()
@@ -138,10 +173,21 @@ def getMessages():
 	messages = cursor.fetchall()
 
 
-	comments = {}
-	query = "SELECT * FROM Comment WHERE id=%s"
+	# comments = {}
+	# query = "SELECT * FROM Comment WHERE id=%s"
+	messages = unquote(messages)
+
+		# cursor.execute(query, messages[i]['ContentID'])
+		# comments[ messages[i]['ContentID'] ] = cursor.fetchall()
+
+	cursor.close()
+
+	return render_template('getMessages.html', contents=messages, comments=comments)
+
+
+
+def unquote(messages):
 	for i, _ in enumerate(messages):
-		# print(messages[i])
 		if messages[i]['img_url']   != None:
 			messages[i]['img_url']   = urllib.parse.unquote( messages[i]['img_url'] )
 
@@ -150,11 +196,6 @@ def getMessages():
 
 		if messages[i]['audio_url'] != None:
 			messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+	return messages
 
 
-		cursor.execute(query, messages[i]['ContentID'])
-		comments[ messages[i]['ContentID'] ] = cursor.fetchall()
-
-	cursor.close()
-
-	return render_template('getMessages.html', contents=messages, comments=comments)
