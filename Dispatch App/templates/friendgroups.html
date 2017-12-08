@@ -61,6 +61,8 @@
             <span>{{group.group_name}} ({{group.username_creator}})</span></a>
             {% if session['username'] == group.username_creator %}
             <span style="float:right"><a href='/home/friendgroups/deleteMember?groupSelected={{group.group_name}}' class='button'>Remove Members </a><span></span></span><span style="float:right"><a href='/home/friendgroups/addMember?groupSelected={{group.group_name}}' class='button'>Add Members</a></span>
+            {% else %}
+            <span style="float:right"><a href='/home/friendgroups/leaveGroup?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' class='button'>Leave Group </a></span>
             {% endif %}
         {% endfor %}
     </div>

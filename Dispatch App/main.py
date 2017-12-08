@@ -400,6 +400,22 @@ def deleteMembersAuth():
 
 	return redirect(url_for('.deleteMembersFromGroup', groupSelected=fromGroup))
 
+@app.route('/home/friendgroups/leaveGroup')
+def leaveGroup(): 
+	username_creator = request.args.get('username_creator')
+	fromGroup = request.args.get('groupSelected')
+
+	leavingUsername = session['username']
+	cursor = conn.cursor()
+
+	# Finding friends who you sent a friend request to. 
+	query = 'DELETE FROM member WHERE username = %s AND group_name = %s AND username_creator = %s'
+	cursor.execute(query, (leavingUsername, fromGroup, username_creator))
+	conn.commit()
+	cursor.close()
+
+	return redirect(url_for('.friendgroups'))
+
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
 #debug = True -> you don't have to restart flask
