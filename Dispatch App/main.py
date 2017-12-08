@@ -6,7 +6,11 @@ from friends import friends_blueprint
 from content import content_blueprint
 
 import helpers
-import urllib.parse
+import sys
+if sys.version_info[0] >= 3:
+	import urllib.parse
+else:
+	import urllib
 
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)

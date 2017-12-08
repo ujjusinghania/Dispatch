@@ -44,8 +44,6 @@ def addFriendAuth():
 	people = cursor.fetchall()
 	cursor.close()
 
-	print (people)
-
 	return render_template('addfriend.html', peoplefound=people)
 
 @friends_blueprint.route('/home/friendhome/friendrequest')
