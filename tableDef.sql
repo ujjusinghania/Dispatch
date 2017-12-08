@@ -36,10 +36,25 @@ CREATE TABLE ImageContent (
 
 CREATE TABLE FileContent (
     id INT,                     # content id
-    file_path TEXT,    # path to content
+    file_path TEXT,             # path to content
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE VideoContent (
+    id INT,                     # content id
+    url TEXT,             # path to content
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE AudioContent (
+    id INT,                     # content id
+    url TEXT,             # path to content
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Content (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 
 CREATE TABLE FriendGroup
@@ -109,4 +124,18 @@ CREATE TABLE Friends (
     FOREIGN KEY (friend_send_username) REFERENCES Person(username)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE Favorite (
+    id INT,
+    username VARCHAR (50),
+    PRIMARY KEY (id, username),
+    FOREIGN KEY (id) REFERENCES Content(id),
+    FOREIGN KEY (username) REFERENCES Person(username)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+
+
 

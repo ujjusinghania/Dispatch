@@ -16,12 +16,16 @@ html *
 }
 
 body {  
-        background-color: #2c3338;
-    }
+    background-color: #2c3338;
+}
         
 .content {
-        padding: 80px;
-        margin: auto;
-        }
+    padding: 80px;
+    margin: auto;
+}
+
+.textbox {
+    color: white;
+}
 
         

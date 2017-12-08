@@ -30,75 +30,45 @@ conn = pymysql.connect(host='localhost',
                       cursorclass=pymysql.cursors.DictCursor)
 
 # Functions pertaining to content
-
-
-@content_blueprint.route('/addMessage', methods=['GET', 'POST'])
-def addMessage():
-
-	message = request.form['userEnteredMessage']
-	# print(message)
-
+@content_blueprint.route('/addContent', methods=['GET', 'POST'])
+def addContent():
+	content 		= request.form['input_text']
+	content_type 	= request.form['content_type']
+	is_public 		= request.form.get('is_public') != None
 	conn.commit()
+
 
 	cursor = conn.cursor()
 	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], "TextContent", False))
+	cursor.execute(query, (session['username'], content_type, is_public))
+	
+	query = {
+		'TextContent' : 'INSERT INTO TextContent  VALUES(LAST_INSERT_ID(), %s)',
+		'ImageContent': 'INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), %s)',
+		'VideoContent': 'INSERT INTO VideoContent VALUES(LAST_INSERT_ID(), %s)',
+		'AudioContent': 'INSERT INTO AudioContent VALUES(LAST_INSERT_ID(), %s)'
+	}[content_type]
 
-	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, (message))
+	cursor.execute(query, content)
 
-	# content id, group name, group admin
-	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-
-	cursor.execute(query, session['groupSelected'])
-
-	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	cursor.execute(query)
-
-	data = cursor.fetchone()
-
-	# commit changes and close connetion
-	conn.commit()
-	cursor.close()
-
-	return redirect(url_for('content_blueprint.messages') +
-                 '?groupSelected=' + session['groupSelected'][0] +
-                 '&username_creator=' + session['groupSelected'][1]
-                 )
-
-@content_blueprint.route('/addPhoto', methods=['GET', 'POST'])
-def addPhoto():
-
-	url = urllib.parse.quote_plus( request.form['photo_url'] )
-	# print(message)
-
-	conn.commit()
-
-	cursor = conn.cursor()
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], "ImageContent", False))
-
-	query = 'INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, (url))
 
 	# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-
 	cursor.execute(query, session['groupSelected'])
-
-	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	cursor.execute(query)
-
-	data = cursor.fetchone()
-
-	# commit changes and close connetion
-	conn.commit()
+	
+	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	# cursor.execute(query)
+	
+	# data = cursor.fetchone()
 	cursor.close()
-
+	conn.commit()
+	
+	
 	return redirect(url_for('content_blueprint.messages') +
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
-                 )
+                )
+
 
 @content_blueprint.route('/comment', methods=['POST'])
 def comment():
@@ -120,9 +90,6 @@ def comment():
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
                  )
-
-
-
 
 
 
@@ -153,13 +120,17 @@ def getMessages():
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-						ImageContent.url,									\
+						ImageContent.url as img_url,						\
+						VideoContent.url as video_url,						\
+						AudioContent.url as audio_url,						\
 						Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
-				    LEFT JOIN TextContent on Content.id = TextContent.id	\
-	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+				    LEFT JOIN TextContent  ON Content.id = TextContent.id	\
+	                LEFT JOIN ImageContent ON Content.id = ImageContent.id	\
+	                LEFT JOIN VideoContent ON Content.id = VideoContent.id	\
+	                LEFT JOIN AudioContent ON Content.id = AudioContent.id	\
 				    WHERE group_name = %s  AND Share.username = %s  		\
 				    ORDER BY Content.id DESC								"      
 
@@ -170,8 +141,16 @@ def getMessages():
 	comments = {}
 	query = "SELECT * FROM Comment WHERE id=%s"
 	for i, _ in enumerate(messages):
-		if messages[i]['url'] != None:
-			messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+		# print(messages[i])
+		if messages[i]['img_url']   != None:
+			messages[i]['img_url']   = urllib.parse.unquote( messages[i]['img_url'] )
+
+		if messages[i]['video_url'] != None:
+			messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
+
+		if messages[i]['audio_url'] != None:
+			messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+
 
 		cursor.execute(query, messages[i]['ContentID'])
 		comments[ messages[i]['ContentID'] ] = cursor.fetchall()
