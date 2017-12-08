@@ -1,6 +1,13 @@
 # Dispatch
 Dispatch is the messaging application that we made for the Databases (CS-UY 3083) Project. 
 
+
+TODO:
+
+
+
+
+
 ### Instructions for running the app
 OS X  
   1) navagate to Dispatch folder  
