@@ -39,18 +39,14 @@ def addContent():
 
 
 	cursor = conn.cursor()
+
+	# insert base content object
 	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
 	cursor.execute(query, (session['username'], content_type, is_public))
 	
-	query = {
-		'TextContent' : 'INSERT INTO TextContent  VALUES(LAST_INSERT_ID(), %s)',
-		'ImageContent': 'INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), %s)',
-		'VideoContent': 'INSERT INTO VideoContent VALUES(LAST_INSERT_ID(), %s)',
-		'AudioContent': 'INSERT INTO AudioContent VALUES(LAST_INSERT_ID(), %s)'
-	}[content_type]
-
+	# insert spacific type
+	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
 	cursor.execute(query, content)
-
 
 	# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
@@ -171,14 +167,17 @@ def getMessages():
 
 	cursor.execute(query, session['groupSelected'])
 	messages = cursor.fetchall()
-
-
-	# comments = {}
-	# query = "SELECT * FROM Comment WHERE id=%s"
 	messages = unquote(messages)
 
-		# cursor.execute(query, messages[i]['ContentID'])
-		# comments[ messages[i]['ContentID'] ] = cursor.fetchall()
+
+	# get comments 
+	comments = {} #dict for comments 
+	query = "SELECT * FROM Comment WHERE id=%s"
+
+	# loop through all the messages and store the comments for each one in a dict
+	for i in range(len(messages)):
+		cursor.execute(query, messages[i]['ContentID'])
+		comments[ messages[i]['ContentID'] ] = cursor.fetchall()
 
 	cursor.close()
 
