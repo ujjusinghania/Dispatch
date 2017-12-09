@@ -40,7 +40,7 @@
         	</ul>
         	{% endif %}
 
-            {% if content.caption is not none %}
+            {% if content.caption is not none or content.caption == "" %}
                 ({{content.caption}})
             {% endif %}
 
