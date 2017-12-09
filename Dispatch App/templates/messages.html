@@ -5,21 +5,28 @@
     <title>Dispatch - Messages</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+    <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
     <script>
         var update = true;
         function getMessages() {
-            if(update) {
+            if (update) {
                 $.ajax({
-                  url: "{{ url_for('content_blueprint.getMessages') }}",
-                  success: function(response) {
-                    $("#messages").html(response);
-                  },
-                  error: function(xhr) {
-                    //Do Something to handle error
-                  }
+                    url: "{{ url_for('content_blueprint.getMessages') }}",
+                    success: function (response) {
+                        $("#messages").html(response);
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
                 });
             } // end if(update)
             // updateScroll();
@@ -32,7 +39,7 @@
         }
 
         getMessages();
-        $(function() {
+        $(function () {
             $("#input_box").focus();
         });
 
@@ -43,7 +50,9 @@
 
 <body>
 
-    {% include 'topnav.html' %}
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script> {% include 'topnav.html' %}
 
     <center class="content">
         <div class="textbox">
@@ -53,35 +62,37 @@
 
         <br />
         <div id="scrollBox" class="scrollBox">
-            <div id="messages"> 
+            <div id="messages">
             </div>
         </div>
 
         <div class="textbox">
-        <form action="/addContent" method="POST">
-            <input type="text" style="width: 92%" placeholder="What's going on...? (enter some text or a url)" name="input_text" id="input_box" /> <br />
+            <form action="/addContent" method="POST">
+                <input type="text" style="width: 92%" placeholder="Enter a message or post a URL" name="input_text" id="input_box"
+                />
+                <br />
 
-            <input type="checkbox" id="is_public" name="is_public">
-            <label for="is_public">public?</label>
+                <input type="checkbox" id="indeterminate-checkbox" name="is_public">
+                <label for="is_public">Make Public?</label>
 
-            <input type="radio" id="choice1" name="content_type" value="TextContent" checked="checked">
-            <label for="choice1">just some words</label>
+                <input type="radio" id="choice1" name="content_type" value="TextContent" checked="checked">
+                <label for="choice1">Posting Text?</label>
 
-            <input type="radio" id="choice2" name="content_type" value="ImageContent">
-            <label for="choice2">an image</label>
+                <input type="radio" id="choice2" name="content_type" value="ImageContent">
+                <label for="choice2">Posting Images?</label>
 
-            <input type="radio" id="choice3" name="content_type" value="VideoContent">
-            <label for="choice3">a video</label>
+                <input type="radio" id="choice3" name="content_type" value="VideoContent">
+                <label for="choice3">Posting Video?</label>
 
-            <input type="radio" id="choice4" name="content_type" value="AudioContent">
-            <label for="choice4">sound</label>
+                <input type="radio" id="choice4" name="content_type" value="AudioContent">
+                <label for="choice4">Posting Audio?</label>
 
-            <input type="submit" value="Post" class="sendButton" />
-        </form>
+                <input type="submit" value="Post" class="sendButton" />
+            </form>
         </div>
 
 
-       <!--  <form action="/addMessage" method="POST">
+        <!--  <form action="/addMessage" method="POST">
             <br />
             <div class="textbox">
                 <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
