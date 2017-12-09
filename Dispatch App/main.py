@@ -183,6 +183,17 @@ def changepassAuth():
 		return render_template('changepass.html', error=error)
 
 
+@app.route('/home/profile',methods=['GET'])
+def profile():
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'SELECT username, color FROM person WHERE username = %s'
+	cursor.execute(query, (username))
+	profs = cursor.fetchall()
+	cursor.close()
+	return render_template('profile.html',profs=profs)
+
+
 @app.route('/loginAuth', methods=['GET', 'POST'])
 def loginAuth():
 	username = request.form['username']
@@ -276,9 +287,10 @@ def addFriendGroupAuth():
 
 
 
+
 app.secret_key = os.urandom(24)
 #Run the app on localhost port 5000
-#debug = True -> you don't have to restart flask
+#debug = True -> you don't have to restart flask 
 #for changes to go through, TURN OFF FOR PRODUCTION
 if __name__ == "__main__":
 	app.run('127.0.0.1', 5000, debug=True)
