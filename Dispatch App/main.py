@@ -48,7 +48,7 @@ def addPublicContent():
 
 	# insert base content object
 	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], content_type, is_public))
+	cursor.execute(query, (session['username'], content_type, '1'))
 	
 	# insert spacific type
 	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
@@ -68,6 +68,24 @@ def addPublicContent():
 	
 	return redirect(url_for('medialibrary'))		
 
+@app.route('/PublicComment', methods=['POST'])
+def PublicComment():
+	content_id 		= request.form['ContentID']
+	username   		= request.form['commenter_name']
+	comment_text  	= request.form['comment_text']
+
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Comment (id, username, comment_text) VALUES(%s, %s, %s)'
+	cursor.execute(query, (content_id, username, comment_text))
+
+	conn.commit()
+
+
+	return redirect(url_for('medialibrary'))
+	
 @app.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
 	if (helpers.checkSess()):
