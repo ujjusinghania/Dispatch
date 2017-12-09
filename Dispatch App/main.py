@@ -34,7 +34,40 @@ def login(error = None):
 		return render_template('login.html')
 	else:
 		return render_template('login.html', error=error)
+
+# Functions pertaining to content
+@app.route('/addPublicContent', methods=['GET', 'POST'])
+def addPublicContent():
+	content 		= request.form['input_text']
+	content_type 	= request.form['content_type']
+	is_public 		= request.form.get('is_public') != None
+	conn.commit()
+
+
+	cursor = conn.cursor()
+
+	# insert base content object
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public))
 	
+	# insert spacific type
+	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, content)
+
+	# content id, group name, group admin
+	#query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+	#cursor.execute(query, session['groupSelected'])
+	
+	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	# cursor.execute(query)
+	
+	# data = cursor.fetchone()
+	cursor.close()
+	conn.commit()
+	
+	
+	return redirect(url_for('medialibrary'))		
+
 @app.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
 	if (helpers.checkSess()):
@@ -51,6 +84,7 @@ def medialibrary():
 				        TextContent.text_content,							\
 	                    ImageContent.url as img_url,						\
 						AudioContent.url as audio_url,						\
+						VideoContent.url as video_url,						\
 				        Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
@@ -58,6 +92,7 @@ def medialibrary():
 				    LEFT JOIN TextContent on Content.id = TextContent.id	\
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
 					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
+					LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
 				    WHERE Content.id IN								  		\
 				    (SELECT id FROM Share WHERE (group_name, username) IN	\
 				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
@@ -76,6 +111,8 @@ def medialibrary():
 				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
 			elif messages[i]['audio_url'] != None:
 				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+			if messages[i]['video_url'] != None:
+				messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
