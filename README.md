@@ -76,5 +76,10 @@ flask run
   - Starring Messages
   - ~~Friendlist (add/delete)~~
 
+### CSS and HTML References
+-   Materialize (http://materializecss.com)
+
 ### Part 1 ER Diagram
 ![Part 1 ER](/docs/Part1_ER.png)
+
+
