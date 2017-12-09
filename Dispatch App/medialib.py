@@ -29,28 +29,21 @@ conn = pymysql.connect(host='localhost',
 def addPublicContent():
 	content 		= request.form['input_text']
 	content_type 	= request.form['content_type']
-	is_public 		= request.form.get('is_public') != None
-	conn.commit()
+	caption			= request.form['caption_box']
 
+	if (content == ""):
+		return redirect(url_for('.medialibrary'))
 
 	cursor = conn.cursor()
 
 	# insert base content object
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], content_type, '1'))
-	
+	query = 'INSERT INTO Content (username, content_name, public, caption) VALUES(%s, %s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, '1', caption))
+
 	# insert spacific type
 	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
 	cursor.execute(query, content)
 
-	# content id, group name, group admin
-	#query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-	#cursor.execute(query, session['groupSelected'])
-	
-	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	# cursor.execute(query)
-	
-	# data = cursor.fetchone()
 	cursor.close()
 	conn.commit()
 
@@ -82,37 +75,52 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT 										\
-    Content.timest,												\
-    Content.id AS ContentID,									\
-    SHARE.group_name,											\
-    SHARE.username AS group_admin,								\
-    Content.content_name,										\
-    TextContent.text_content,									\
-    ImageContent.url AS img_url,								\
-    AudioContent.url AS audio_url,								\
-    VideoContent.url AS video_url,								\
-    Content.username AS ContentOwner,							\
-    Content.public 												\
-FROM SHARE														\
-JOIN Content ON Content.id = SHARE.id							\
-LEFT JOIN TextContent ON Content.id = TextContent.id 			\
-LEFT JOIN ImageContent ON Content.id = ImageContent.id 			\
-LEFT JOIN AudioContent ON Content.id = AudioContent.id 			\
-LEFT JOIN VideoContent ON Content.id = VideoContent.id			\
-WHERE															\
-    Content.public = '1'										\
-    OR Content.id IN 											\
-    (SELECT id													\
-     FROM Share													\
-     WHERE (group_name, username) IN							\
-     	(SELECT group_name, username_creator 					\
-         FROM member											\
-         WHERE username = 'AA' OR username_creator = 'AA'))							"
+		query = (SELECT 										 
+    Content.timest,												 
+    Content.id AS ContentID,									 							 
+    Content.content_name,										 
+    TextContent.text_content,									 
+    ImageContent.url AS img_url,								 
+    AudioContent.url AS audio_url,								 
+    VideoContent.url AS video_url,								 
+    Content.username AS ContentOwner,							 
+    Content.public 												 
+FROM SHARE														 
+JOIN Content ON Content.id = SHARE.id							 
+LEFT JOIN TextContent ON Content.id = TextContent.id 			 
+LEFT JOIN ImageContent ON Content.id = ImageContent.id 			 
+LEFT JOIN AudioContent ON Content.id = AudioContent.id 			 
+LEFT JOIN VideoContent ON Content.id = VideoContent.id			 
+WHERE															 
+    Content.id IN 											 
+    (SELECT id													 
+     FROM Share													 
+     WHERE (group_name, username) IN							 
+     	(SELECT group_name, username_creator 					 
+         FROM member											 
+         WHERE username = 'AA' OR username_creator = 'AA'))			 
+		 ORDER BY Content.id ASC)
+UNION 
+(SELECT Content.timest,												 
+    Content.id AS ContentID,									 							 
+    Content.content_name,										 
+    TextContent.text_content,									 
+    ImageContent.url AS img_url,								 
+    AudioContent.url AS audio_url,								 
+    VideoContent.url AS video_url,								 
+    Content.username AS ContentOwner,							 
+    Content.public
+FROM Content						 
+LEFT JOIN TextContent ON Content.id = TextContent.id 			 
+LEFT JOIN ImageContent ON Content.id = ImageContent.id 			 
+LEFT JOIN AudioContent ON Content.id = AudioContent.id 			 
+LEFT JOIN VideoContent ON Content.id = VideoContent.id
+ WHERE Content.public = 1)
 					
 		cursor.execute(query, (session['username'], session['username']))
-		messages = cursor.fetchall()
+		messages1 = cursor.fetchall()
 
+		query = ""
 
 		comments = {}
 		query = "SELECT * FROM Comment WHERE id= %s"

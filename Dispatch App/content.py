@@ -38,7 +38,7 @@ def addContent():
 	is_public 		= request.form.get('is_public') != None
 	conn.commit()
 
-	if (content == "" or content_type == "" or caption == ""):
+	if (content == ""):
 		return redirect(url_for('content_blueprint.messages') +
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
@@ -102,7 +102,7 @@ def comment():
 	username   		= request.form['commenter_name']
 	comment_text  	= request.form['comment_text']
 
-	if (comment_text == "" or username == "" or content_id == ""):
+	if (comment_text == ""):
 		return redirect(url_for('content_blueprint.messages') +
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
