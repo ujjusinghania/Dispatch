@@ -58,8 +58,20 @@ p{
          <span><font size='40em'>Your Profile, {{session["fname"]}} {{session["lname"]}}.</font></span><br/>
          {% for prof in profs %}
          <p> Username: {{prof.username}} </p>
-         <p> Color: {{prof.color}} </p>
+         <P> Profile Pic: </P>
+         <p> <img src={{prof.url}}> </p>
          {% endfor %}
+    </div>
+    <div class=textbox>
+        <form action="/addContentToProfile" method="POST">
+            <input type="text" style="width: 92%" placeholder="Change Your Profile Picture Here! (enter a url)" name="input_text" id="input_box" /> <br />
+
+            <input type="hidden" id="is_public" name="is_public" value='True'>
+
+            <input type="hidden" id="choice2" name="content_type" value="ImageContent">
+
+            <input type="submit" value="Post" class="sendButton" />
+        </form>
     </div>
 </body>
 
