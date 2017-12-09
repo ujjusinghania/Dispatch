@@ -91,8 +91,9 @@ def addContentToProfile():
 	query = 'UPDATE person SET profilePic = LAST_INSERT_ID() WHERE username = %s'
 	cursor.execute(query,session['username'])
 
-	cursor.close()
 	conn.commit()
+	cursor.close()
+
 
 	return redirect(url_for('profile'))
 

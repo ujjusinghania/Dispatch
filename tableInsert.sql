@@ -8,14 +8,19 @@ DELETE FROM share;
 DELETE FROM tag;
 
 #Initial user creation
-INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88',NULL);
-INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88',NULL);
-INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang', '#ea4c88',NULL);
-INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson', '#ea4c88',NULL);
-INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg', '#ea4c88',NULL);
-INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox', '#ea4c88',NULL);
-INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta', '#ea4c88',NULL);
-INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88',NULL);
+INSERT INTO person VALUES ('BoatyMcBoatFace',md5('root'),'Boaty','McBoatFace','#ea4c88', NULL);
+
+INSERT INTO Content (id, username, content_name, caption, public) VALUES(1, 'BoatyMcBoatFace', "ImageContent", "grumps...", TRUE);
+INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http://arrkenterprises.com/wp-content/uploads/2015/02/empty-profile-pic.png');
+
+INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88',1);
+INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88',1);
+INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang', '#ea4c88',1);
+INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson', '#ea4c88',1);
+INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg', '#ea4c88',1);
+INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox', '#ea4c88',1);
+INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta', '#ea4c88',1);
+INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88',1);
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
@@ -44,19 +49,7 @@ INSERT INTO friends VALUES ('EE', 'AA', FALSE);
 INSERT INTO friends VALUES ('DD', 'AA', TRUE);
 INSERT INTO friends VALUES ('AA', 'FF', TRUE);
 INSERT INTO friends VALUES ('GG', 'AA', TRUE);
-# Saving HH to demonstrate sending a friend request
 
-#Testing for Tag
--- INSERT INTO content VALUES (1,'BB',NULL,NULL,"ASS",1);
--- INSERT INTO Content (username, content_name, public) VALUES('BB', "TextContent", FALSE);
--- INSERT INTO TextContent VALUES(LAST_INSERT_ID(), "ASS");
--- INSERT INTO tag VALUES (1,'BB','AA', NULL,0);
--- INSERT INTO tag VALUES (2,'CC','AA', NULL,0);
--- INSERT INTO tag VALUES (1,'DD','AA', NULL,1);
-
-
-
-# Testing for Content
 
 # message
 INSERT INTO Content (username, content_name, caption, public) VALUES('DD', "TextContent", "This is the caption", False);
