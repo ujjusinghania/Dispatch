@@ -55,7 +55,7 @@ def sendFriendRequest():
 	cursor.execute(query, (username, sendToUsername))
 	conn.commit()
 	cursor.close()
-	return redirect(url_for('.addFriendAuth'), )
+	return redirect(url_for('.addFriendAuth'))
 
 @friends_blueprint.route('/home/friendhome/friendrequest')
 def viewFriendRequests():
