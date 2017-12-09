@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch - Tagging Friends</title>
+    <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+
+</head>
+
+</style>
+
+<body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
+
+    {% include 'topnav.html' %}
+
+    <div class=content>
+        <span>
+            <font size='40em'>Tag Friends in Content, {{session["fname"]}} {{session["lname"]}}.</font>
+        </span>
+        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
+            <span style='float:right'>Add Friends</span>
+        </a>
+        <br/> {% for request in friendRequests %}
+        <br/>
+        <br/>
+        <span>{{request.username}}</span>
+        <span style="float:right">
+            <a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Accept</a>
+            <a href='/home/friendhome/friendrequest/declineRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Decline</a>
+        </span>
+        <br/>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
