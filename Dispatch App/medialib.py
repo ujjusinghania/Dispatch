@@ -75,7 +75,7 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT															\
+		query = "(SELECT														\
 					Content.timest,												\
 				    Content.id AS ContentID,									\
 				    Content.content_name,										\
@@ -98,7 +98,7 @@ def medialibrary():
 				     WHERE (group_name, username) IN							\
 				     	(SELECT group_name, username_creator 					\
 				         FROM member											\
-				         WHERE username = 'AA' OR username_creator = 'AA'))		\
+				         WHERE username = %s OR username_creator = %s))			\
 						 ORDER BY Content.id ASC)								\
 				UNION 															\
 				(SELECT Content.timest,											\
@@ -118,7 +118,7 @@ def medialibrary():
 							WHERE Content.public = 1)						    "
 
 		cursor.execute(query, (session['username'], session['username'])) 
-		messages1 = cursor.fetchall() 
+		messages = cursor.fetchall() 
 
 		query = ""
 
