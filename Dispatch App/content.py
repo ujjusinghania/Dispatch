@@ -34,6 +34,7 @@ conn = pymysql.connect(host='localhost',
 def addContent():
 	content 		= request.form['input_text']
 	content_type 	= request.form['content_type']
+	caption			= request.form['caption_box']
 	is_public 		= request.form.get('is_public') != None
 	conn.commit()
 
@@ -41,8 +42,8 @@ def addContent():
 	cursor = conn.cursor()
 
 	# insert base content object
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], content_type, is_public))
+	query = 'INSERT INTO Content (username, content_name, public, caption) VALUES(%s, %s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public, caption))
 	
 	# insert spacific type
 	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
