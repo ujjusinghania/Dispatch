@@ -53,9 +53,8 @@ def addPublicContent():
 	# data = cursor.fetchone()
 	cursor.close()
 	conn.commit()
-	
-	
-	return redirect(url_for('medialibrary'))		
+
+	return redirect(url_for('.medialibrary'))		
 
 @media_blueprint.route('/PublicComment', methods=['POST'])
 def PublicComment():
@@ -73,7 +72,7 @@ def PublicComment():
 	conn.commit()
 
 
-	return redirect(url_for('medialibrary'))
+	return redirect(url_for('.medialibrary'))
 	
 @media_blueprint.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
@@ -83,35 +82,40 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT Content.timest,										\
-						Content.id as ContentID,							\
-						Share.group_name,									\
-				        Share.username as group_admin,						\
-				        Content.content_name,								\
-				        TextContent.text_content,							\
-	                    ImageContent.url as img_url,						\
-						AudioContent.url as audio_url,						\
-						VideoContent.url as video_url,						\
-				        Content.username as ContentOwner,					\
-				        Content.public										\
-					FROM Share 												\
-					JOIN Content ON Content.id = Share.id					\
-				    LEFT JOIN TextContent on Content.id = TextContent.id	\
-	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
-					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
-					LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
-				    WHERE Content.id IN								  		\
-				    (SELECT id FROM Share WHERE (group_name, username) IN	\
-				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
-				    OR Content.public='1'									\
-					ORDER BY Content.id DESC								"      
+		query = "SELECT
+    Content.timest,
+    Content.id AS ContentID,
+    SHARE.group_name,
+    SHARE.username AS group_admin,
+    Content.content_name,
+    TextContent.text_content,
+    ImageContent.url AS img_url,
+    AudioContent.url AS audio_url,
+    VideoContent.url AS video_url,
+    Content.username AS ContentOwner,
+    Content.public
+FROM SHARE
+JOIN Content ON Content.id = SHARE.id
+LEFT JOIN TextContent ON Content.id = TextContent.id
+LEFT JOIN ImageContent ON Content.id = ImageContent.id
+LEFT JOIN AudioContent ON Content.id = AudioContent.id
+LEFT JOIN VideoContent ON Content.id = VideoContent.id
+WHERE
+    Content.public = '1'
+    OR Content.id IN 
+    (SELECT id
+     FROM Share
+     WHERE (group_name, username) IN
+     	(SELECT group_name, username_creator 
+         FROM member
+         WHERE username = 'AA' OR username_creator = 'AA'))							"      
 					
-		cursor.execute(query, session['username'])
+		cursor.execute(query, (session['username'], session['username']))
 		messages = cursor.fetchall()
 
 
 		comments = {}
-		query = "SELECT * FROM Comment WHERE id=%s"
+		query = "SELECT * FROM Comment WHERE id= %s"
 		for i, _ in enumerate(messages):
 			print(messages[i])
 			if messages[i]['img_url'] != None:
@@ -125,5 +129,7 @@ def medialibrary():
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
 
 		cursor.close()
+
+		print(messages)
 
 		return render_template("media.html", contents=messages, comments=comments)

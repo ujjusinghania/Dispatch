@@ -228,7 +228,7 @@ def getMessages():
 	                LEFT JOIN VideoContent ON Content.id = VideoContent.id	\
 	                LEFT JOIN AudioContent ON Content.id = AudioContent.id	\
 				    WHERE group_name = %s  AND Share.username = %s  		\
-				    ORDER BY Content.id DESC								"      
+				    ORDER BY Content.id ASC								"      
 
 	cursor.execute(query, session['groupSelected'])
 	messages = cursor.fetchall()
