@@ -19,35 +19,9 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-    <div class="topnav">
-        <a href='/home' style="text-decoration:none;">
-            Home
-        </a>
-        <a href='/home/profile' style="text-decoration:none;">
-            Profile
-        </a>
-        <a href='/home/friendhome' style="text-decoration:none;">
-            Friends
-        </a>
-        <a href='/home/friendgroups' style="text-decoration:none;">
-            Friend Groups
-        </a>
-        <a href='/home/tags' style="text-decoration:none;">
-            Tags
-        </a>
-        <a href='/home/favorites' style="text-decoration:none;">
-            Favorites
-        </a>
-        <a href='/home/medialibrary' style="text-decoration:none;">
-            Media Library
-        </a>
-        <a href='/home/settings' style="text-decoration:none;">
-            Settings
-        </a>
-        <a href='/logout' style="text-decoration:none;">
-            Logout
-        </a>
-    </div>
+    
+    {% include 'topnav.html' %}
+
     <div class=content>
         <span>
             <font size='40em'>All Your Outgoing Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
