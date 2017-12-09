@@ -112,13 +112,14 @@ def friendgroups():
 def tag():
   username = session['username']
   cursor = conn.cursor()
-  query = 'SELECT username_tagger \
+  query = 'SELECT username_tagger,id \
   		   FROM tag\
   		   WHERE username_taggee = %s AND status = 0'
 
   cursor.execute(query, (username))
   tags = cursor.fetchall()
   cursor.close()
+  print(tags)
   return render_template('tags.html', tags=tags)
 
 @app.route('/home/tags/acceptTag')
@@ -127,9 +128,9 @@ def acceptTag():
 	taggedID = request.args.get('tagID')
 	username = session['username']
 	cursor = conn.cursor()
-	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %d  AND status = FALSE'
+	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %s  AND status = FALSE'
 	cursor.execute(query,(username,taggedByUsername,taggedID))
-	query = 'INSERT INTO tag VALUES (%d,%s,%s,NULL,TRUE)'
+	query = 'INSERT INTO tag VALUES (%s,%s,%s,NULL,TRUE)'
 	cursor.execute(query,(taggedID,username,taggedByUsername))
 	conn.commit()
 	cursor.close()
@@ -243,8 +244,10 @@ def changepassAuth():
 def profile():
 	username = session['username']
 	cursor = conn.cursor()
-	query = 'SELECT username, color FROM person WHERE username = %s'
-	cursor.execute(query, (username))
+	query = 'SELECT username, color, url \
+			 FROM person JOIN ImageContent ON ImageContent.id = person.profilePic  \
+			 WHERE username = %s'
+	cursor.execute(query, session['username'])
 	profs = cursor.fetchall()
 	cursor.close()
 	return render_template('profile.html',profs=profs)
