@@ -13,7 +13,7 @@ ALTER TABLE person ADD INDEX(username);
 CREATE TABLE Content(
     id INT AUTO_INCREMENT,
     username VARCHAR (50),      # the owner of this content
-    timest TIMESTAMP,           # when this content was created
+    timest TIMESTAMP DEFAULT CURRENT_TIMESTAMP,           # when this content was created
     content_name VARCHAR (50),  # ContentType?
     public BOOLEAN,             #
     caption TEXT,               # textual description of content
@@ -74,7 +74,7 @@ CREATE TABLE Comment
 (
     id INT,                         # content_id
     username VARCHAR (50),
-    timest TIMESTAMP,
+    timest TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     comment_text VARCHAR (250),
     PRIMARY KEY (id, username, timest),
     FOREIGN KEY (id) REFERENCES Content(id) ON DELETE CASCADE,
@@ -108,7 +108,7 @@ CREATE TABLE Tag (
     id INT,
     username_tagger VARCHAR (50),
     username_taggee VARCHAR (50),
-    timest TIMESTAMP,
+    timest TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN,
     PRIMARY KEY (id, username_tagger, username_taggee),
     FOREIGN KEY (id) REFERENCES Content(id) ON DELETE CASCADE,
