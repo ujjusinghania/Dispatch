@@ -16,16 +16,6 @@ app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
 
-
-# [temporary solution] This checks python version to decide what to import 
-import sys
-if sys.version_info[0] >= 3:
-	import urllib.parse
-else:
-	import urllib
-############################
-
-
 # this is for pulling the port and database password from environment variables
 import os
 
