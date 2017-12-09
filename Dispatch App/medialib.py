@@ -53,9 +53,8 @@ def addPublicContent():
 	# data = cursor.fetchone()
 	cursor.close()
 	conn.commit()
-	
-	
-	return redirect(url_for('medialibrary'))		
+
+	return redirect(url_for('.medialibrary'))		
 
 @media_blueprint.route('/PublicComment', methods=['POST'])
 def PublicComment():
@@ -73,7 +72,7 @@ def PublicComment():
 	conn.commit()
 
 
-	return redirect(url_for('medialibrary'))
+	return redirect(url_for('.medialibrary'))
 	
 @media_blueprint.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
@@ -100,18 +99,17 @@ def medialibrary():
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
 					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
 					LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
-				    WHERE Content.id IN								  		\
+				    WHERE Content.public='1' OR Content.id IN								  		\
 				    (SELECT id FROM Share WHERE (group_name, username) IN	\
-				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
-				    OR Content.public='1'									\
-					ORDER BY Content.id DESC								"      
+				    (SELECT group_name, username_creator FROM Member WHERE username = %s OR username_creator = %s)) \
+					ORDER BY Content.id ASC								"      
 					
-		cursor.execute(query, session['username'])
+		cursor.execute(query, (session['username'], session['username']))
 		messages = cursor.fetchall()
 
 
 		comments = {}
-		query = "SELECT * FROM Comment WHERE id=%s"
+		query = "SELECT * FROM Comment WHERE id= %s"
 		for i, _ in enumerate(messages):
 			print(messages[i])
 			if messages[i]['img_url'] != None:
@@ -125,5 +123,7 @@ def medialibrary():
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
 
 		cursor.close()
+
+		print(messages)
 
 		return render_template("media.html", contents=messages, comments=comments)
