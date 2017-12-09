@@ -91,22 +91,27 @@
             </div>
         </div>
 
-        <form action="/addMessage" method="POST">
-            <br />
-            <div class="textbox">
-                <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
-                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
-            </div>
-        </form>
+                <div class="textbox">
+        <form action="/addPublicContent" method="POST">
+            <input type="text" style="width: 92%" placeholder="What's going on...? (enter some text or a url)" name="input_text" id="input_box" /> <br />
 
-        <form action="/addPhoto" method="POST">
-            <br />
-            <div class="textbox">
-                <input type="text" style="width: 92%" placeholder="Enter the url of the image you'd like to share..." name="photo_url" id="input_box"
-                />
-                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
-            </div>
+            <input type="hidden" id="is_public" name="is_public" value = 'True'>
+
+            <input type="radio" id="choice1" name="content_type" value="TextContent" checked="checked">
+            <label for="choice1">just some words</label>
+
+            <input type="radio" id="choice2" name="content_type" value="ImageContent">
+            <label for="choice2">an image</label>
+
+            <input type="radio" id="choice3" name="content_type" value="VideoContent">
+            <label for="choice3">a video</label>
+
+            <input type="radio" id="choice4" name="content_type" value="AudioContent">
+            <label for="choice4">sound</label>
+
+            <input type="submit" value="Post" class="sendButton" />
         </form>
+        </div>
 
     </center>
 </body>
