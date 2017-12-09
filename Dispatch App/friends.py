@@ -46,17 +46,6 @@ def addFriendAuth():
 
 	return render_template('addfriend.html', peoplefound=people)
 
-@friends_blueprint.route('/home/friendhome/addfriend/sendRequest')
-def sendFriendRequest():
-	sendToUsername = request.args.get('sendTo')
-	username = session['username']
-	cursor = conn.cursor()
-	query = 'INSERT INTO friends VALUES(%s, %s, FALSE)'
-	cursor.execute(query, (username, sendToUsername))
-	conn.commit()
-	cursor.close()
-	return redirect(url_for('.addFriendAuth'), )
-
 @friends_blueprint.route('/home/friendhome/friendrequest')
 def viewFriendRequests():
 	username = session['username']
@@ -116,6 +105,17 @@ def declineFriendRequest():
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('.viewFriendRequests'))
+
+@friends_blueprint.route('/home/friendhome/addfriend/sendRequest')
+def sendFriendRequest():
+	sendToUsername = request.args.get('sendTo')
+	username = session['username']
+	cursor = conn.cursor()
+	query = 'INSERT INTO friends VALUES(%s, %s, FALSE)'
+	cursor.execute(query, (username, sendToUsername))
+	conn.commit()
+	cursor.close()
+	return redirect(url_for('.addFriend'))
 
 @friends_blueprint.route('/home/friendhome/sentfriendrequest')
 def viewSentFriendRequests(): 
