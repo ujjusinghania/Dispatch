@@ -135,8 +135,3 @@ CREATE TABLE Favorite (
     FOREIGN KEY (username) REFERENCES Person(username) ON DELETE CASCADE
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-
-
-
