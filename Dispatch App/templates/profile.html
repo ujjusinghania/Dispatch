@@ -2,6 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-control" content="no-cache" />
     <title>Dispatch - Profile</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
@@ -59,8 +60,8 @@ p{
          {% for prof in profs %}
          <p> Username: {{prof.username}} </p>
          <P> Profile Pic: </P>
-         <p> <img src={{prof.url}}> </p>
-         <h1 style="background-color:{{prof.color}};">Color</h1>
+         <p> <img src= '{{prof.url}}' width=200 height=200> </p>
+         <h1 style="background-color:{{prof.color}};"> Your Color </h1>
          {% endfor %}
     </div>
     <div class=textbox>
