@@ -17,35 +17,9 @@
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-    <div class="topnav">
-        <a href='/home' style="text-decoration:none;">
-            Home
-        </a>
-        <a href='/home/profile' style="text-decoration:none;">
-            Profile
-        </a>
-        <a href='/home/friendhome' style="text-decoration:none;">
-            Friends
-        </a>
-        <a href='/home/friendgroups' style="text-decoration:none;">
-            Friend Groups
-        </a>
-        <a href='/home/tags' style="text-decoration:none;">
-            Tags
-        </a>
-        <a href='/home/favorites' style="text-decoration:none;">
-            Favorites
-        </a>
-        <a href='/home/medialibrary' style="text-decoration:none;">
-            Media Library
-        </a>
-        <a href='/home/settings' style="text-decoration:none;">
-            Settings
-        </a>
-        <a href='/logout' style="text-decoration:none;">
-            Logout
-        </a>
-    </div>
+    
+    {% include 'topnav.html' %}      
+
     <center class="content">
         <div class="textbox">
             <span>{{session['username']}}'s Content </span>
@@ -62,16 +36,36 @@
                         <td>
                             <!-- display content -->
                             {% if content.content_name == 'ImageContent' %}
-                            <img src='{{content.url}}' height='80em'> {% elif content.content_name == 'TextContent' %} {{content.text_content}} {% endif %}
-
-                            <!-- display comments -->
+								<img src='{{content.img_url}}' height='80em'>
+							{% elif content.content_name == 'TextContent' %}
+								{{content.text_content}} 
+							{% elif content.content_name == 'AudioContent' %}
+								<audio controls>
+									<source src="{{content.audio_url}}" type="audio/wav">
+									<source src="{{content.audio_url}}" type="audio/mpeg">
+									<source src="{{content.audio_url}}" type="audio/ogg">
+									<source src="{{content.audio_url}}" type="audio/mp3">
+									Your browser does not support the audio element.
+								</audio>
+							{% elif content.content_name == 'VideoContent' %}
+								<video height='80em' controls>
+									<source src="{{content.video_url}}" type="video/mp4">
+									<source src="{{content.video_url}}" type="video/ogg">
+									Your browser does not support HTML5 video.
+								</video>
+			
+							{% else %}
+								<B>UNKNOWN TYPE!!!!! THIS SHOULDN'T HAPPEN</B>
+							{% endif %}
+                            
+							<!-- display comments -->
                             {% if comments is defined %}
                             <ul>
                                 {% for comment in comments[ content.ContentID ] %}
                                 <li>{{comment.username}}: {{comment.comment_text}}</li>
                                 {% endfor %}
                             </ul>
-                            {% endif %}
+							{% endif %}
 
                             <!-- comment form -->
                             <form style="display: none;" id="commentForm{{content.ContentID}}" action="/comment" method="POST">

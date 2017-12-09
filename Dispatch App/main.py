@@ -41,20 +41,23 @@ def medialibrary():
 		return redirect(url_for('login'))
 	else:
 		cursor = conn.cursor()
-
-		query = "SELECT Content.timest,											\
+		
+		#Query gets all the content that the user can view (public content and content in groups user is part of)
+		query = "SELECT Content.timest,										\
 						Content.id as ContentID,							\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-	                    ImageContent.url,									\
+	                    ImageContent.url as img_url,						\
+						AudioContent.url as audio_url,						\
 				        Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
 				    LEFT JOIN TextContent on Content.id = TextContent.id	\
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
 				    WHERE Content.id IN								  		\
 				    (SELECT id FROM Share WHERE (group_name, username) IN	\
 				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
@@ -68,8 +71,11 @@ def medialibrary():
 		comments = {}
 		query = "SELECT * FROM Comment WHERE id=%s"
 		for i, _ in enumerate(messages):
-			if messages[i]['url'] != None:
-				messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+			print(messages[i])
+			if messages[i]['img_url'] != None:
+				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
+			elif messages[i]['audio_url'] != None:
+				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
