@@ -5,20 +5,19 @@
     <title>Dispatch - Add Friend</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
-<style>
-    a.button {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-
-    text-decoration: none;
-    color: initial;
-}
-</style>
-
 <body>
+
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 
     <div class="topnav">
         <a href='/home' style="text-decoration:none;">
@@ -50,17 +49,22 @@
         </a>
     </div>
     <div class=content>
-    <form action="/home/friendhome/addfriend/auth?" method="POST">
-        <input type="text" style="width: 46%" placeholder="Search By First Name" name="userSearchFirstName" id="input_box" />
-        <input type="text" style="width: 46%" placeholder="Search By Last Name" name="userSearchLastName" id="input_box"
-        />
-        <input type="submit" text="Send" />
-    </form>
+        <form action="/home/friendhome/addfriend/auth?" method="POST">
+            <input type="text" style="width: 46%" placeholder="Search By First Name" name="userSearchFirstName" id="input_box" />
+            <input type="text" style="width: 46%" placeholder="Search By Last Name" name="userSearchLastName" id="input_box" />
+            <input type="submit" text="Send" />
+        </form>
 
-    {% for people in peoplefound %}
-    <br/><br/><span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span><span style="float:right"><a href='/home/friendhome/addfriend/sendRequest?sendTo={{people.username}}' class='button'>Send Request</a>
-    {% endfor %}
-</div>
+        {% for people in peoplefound %}
+        <br/>
+        <br/>
+        <span>{{people.first_name}} {{people.last_name}} ({{people.username}})</span>
+        <span style="float:right">
+            <a class="waves-effect waves-light btn" href='/home/friendhome/addfriend/sendRequest?sendTo={{people.username}}'
+                class="waves-effect waves-light btn">Send Request</a>
+        </span>
+        {% endfor %}
+    </div>
 </body>
 
 </html>

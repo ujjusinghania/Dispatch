@@ -5,7 +5,8 @@ import pymysql.cursors
 
 import helpers
 
-content_blueprint = Blueprint('content_blueprint',__name__)
+content_blueprint = Blueprint('content_blueprint', __name__)
+
 
 # [temporary solution] This checks python version to decide what to import 
 import sys
@@ -13,7 +14,7 @@ if sys.version_info[0] >= 3:
 	import urllib.parse
 else:
 	import urllib
-################################
+############################
 
 
 # this is for pulling the port and database password from environment variables
@@ -29,75 +30,41 @@ conn = pymysql.connect(host='localhost',
                       cursorclass=pymysql.cursors.DictCursor)
 
 # Functions pertaining to content
-
-
-@content_blueprint.route('/addMessage', methods=['GET', 'POST'])
-def addMessage():
-
-	message = request.form['userEnteredMessage']
-	# print(message)
-
+@content_blueprint.route('/addContent', methods=['GET', 'POST'])
+def addContent():
+	content 		= request.form['input_text']
+	content_type 	= request.form['content_type']
+	is_public 		= request.form.get('is_public') != None
 	conn.commit()
 
-	cursor = conn.cursor()
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], "TextContent", False))
 
-	query = 'INSERT INTO TextContent VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, (message))
+	cursor = conn.cursor()
+
+	# insert base content object
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public))
+	
+	# insert spacific type
+	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, content)
 
 	# content id, group name, group admin
 	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-
 	cursor.execute(query, session['groupSelected'])
-
-	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	cursor.execute(query)
-
-	data = cursor.fetchone()
-
-	# commit changes and close connetion
-	conn.commit()
+	
+	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	# cursor.execute(query)
+	
+	# data = cursor.fetchone()
 	cursor.close()
-
-	return redirect(url_for('messages') +
-                 '?groupSelected=' + session['groupSelected'][0] +
-                 '&username_creator=' + session['groupSelected'][1]
-                 )
-
-@content_blueprint.route('/addPhoto', methods=['GET', 'POST'])
-def addPhoto():
-
-	url = urllib.parse.quote_plus( request.form['photo_url'] )
-	# print(message)
-
 	conn.commit()
-
-	cursor = conn.cursor()
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], "ImageContent", False))
-
-	query = 'INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, (url))
-
-	# content id, group name, group admin
-	query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-
-	cursor.execute(query, session['groupSelected'])
-
-	query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	cursor.execute(query)
-
-	data = cursor.fetchone()
-
-	# commit changes and close connetion
-	conn.commit()
-	cursor.close()
-
+	
+	
 	return redirect(url_for('content_blueprint.messages') +
                  '?groupSelected=' + session['groupSelected'][0] +
                  '&username_creator=' + session['groupSelected'][1]
-                 )
+                )
+
 
 @content_blueprint.route('/comment', methods=['POST'])
 def comment():
@@ -122,9 +89,6 @@ def comment():
 
 
 
-
-
-
 @content_blueprint.route('/home/friendgroups/messages', methods=['GET', 'POST'])
 def messages():
 	if (helpers.checkSess()):
@@ -141,39 +105,96 @@ def messages():
 		return render_template('messages.html', messages=messages)
 
 
+@content_blueprint.route('/home/favorites')
+def favorites():
+	cursor = conn.cursor()
+
+	query = "SELECT timest,										\
+		Favorite.id as ContentID,								\
+        Content.username as ContentOwner,						\
+        Content.caption,										\
+        Content.content_name,									\
+        TextContent.text_content,								\
+		ImageContent.url as img_url,							\
+		VideoContent.url as video_url,							\
+		AudioContent.url as audio_url,							\
+		Content.username as ContentOwner,						\
+        Content.public											\
+        public 													\
+	FROM Favorite 												\
+	JOIN Content ON Content.id = Favorite.id 					\
+    LEFT JOIN TextContent  ON Content.id = TextContent.id 		\
+    LEFT JOIN AudioContent ON Content.id = AudioContent.id 		\
+    LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
+    LEFT JOIN ImageContent ON Content.id = ImageContent.id 		\
+    WHERE Content.username = %s; 								"
+
+	cursor.execute(query, session['username'])
+	favs = cursor.fetchall()
+
+	cursor.close()
+
+	favs = unquote(favs)
+
+	return render_template('getMessages.html', contents=favs)
+
+
+
 @content_blueprint.route('/home/friendgroups/getMessages')
 def getMessages():
 	cursor = conn.cursor()
 
 	query = "SELECT Content.timest,											\
 						Content.id as ContentID,							\
+						Content.caption,									\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-	                    ImageContent.url,									\
-				        Content.username as ContentOwner,					\
+						ImageContent.url as img_url,						\
+						VideoContent.url as video_url,						\
+						AudioContent.url as audio_url,						\
+						Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
-				    LEFT JOIN TextContent on Content.id = TextContent.id	\
-	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+				    LEFT JOIN TextContent  ON Content.id = TextContent.id	\
+	                LEFT JOIN ImageContent ON Content.id = ImageContent.id	\
+	                LEFT JOIN VideoContent ON Content.id = VideoContent.id	\
+	                LEFT JOIN AudioContent ON Content.id = AudioContent.id	\
 				    WHERE group_name = %s  AND Share.username = %s  		\
 				    ORDER BY Content.id DESC								"      
 
 	cursor.execute(query, session['groupSelected'])
 	messages = cursor.fetchall()
+	messages = unquote(messages)
 
 
-	comments = {}
+	# get comments 
+	comments = {} #dict for comments 
 	query = "SELECT * FROM Comment WHERE id=%s"
-	for i, _ in enumerate(messages):
-		if messages[i]['url'] != None:
-			messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
 
+	# loop through all the messages and store the comments for each one in a dict
+	for i in range(len(messages)):
 		cursor.execute(query, messages[i]['ContentID'])
 		comments[ messages[i]['ContentID'] ] = cursor.fetchall()
 
 	cursor.close()
 
 	return render_template('getMessages.html', contents=messages, comments=comments)
+
+
+
+def unquote(messages):
+	for i, _ in enumerate(messages):
+		if messages[i]['img_url']   != None:
+			messages[i]['img_url']   = urllib.parse.unquote( messages[i]['img_url'] )
+
+		if messages[i]['video_url'] != None:
+			messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
+
+		if messages[i]['audio_url'] != None:
+			messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+	return messages
+
+

@@ -19,17 +19,20 @@ INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88');
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
+INSERT INTO member VALUES ('AA', 'family', 'AA');
 INSERT INTO member VALUES ('CC', 'family', 'AA');
 INSERT INTO member VALUES ('DD', 'family', 'AA');
 INSERT INTO member VALUES ('EE', 'family', 'AA');
 
 # inserting bob into family
 INSERT INTO friendgroup VALUES 	('family', 'BB', NULL);
+INSERT INTO member VALUES 		('BB','family', 'BB');
 INSERT INTO member VALUES 		('FF','family', 'BB');
 INSERT INTO member VALUES 		('EE','family', 'BB');
 
 # inserting ann into besties
 INSERT INTO friendgroup VALUES 	('besties', 'AA', NULL);
+INSERT INTO member VALUES 		('AA','besties','AA');
 INSERT INTO member VALUES 		('GG','besties','AA');
 INSERT INTO member VALUES 		('HH','besties','AA');
 
@@ -45,30 +48,51 @@ INSERT INTO friends VALUES ('GG', 'AA', TRUE);
 
 #Testing for Tag
 -- INSERT INTO content VALUES (1,'BB',NULL,NULL,"ASS",1);
-INSERT INTO Content (username, content_name, public) VALUES('BB', "TextContent", FALSE);
-INSERT INTO TextContent VALUES(LAST_INSERT_ID(), "ASS");
-INSERT INTO tag VALUES (1,'BB','AA', NULL,0);
-INSERT INTO tag VALUES (2,'CC','AA', NULL,0);
-INSERT INTO tag VALUES (1,'DD','AA', NULL,1);
+-- INSERT INTO Content (username, content_name, public) VALUES('BB', "TextContent", FALSE);
+-- INSERT INTO TextContent VALUES(LAST_INSERT_ID(), "ASS");
+-- INSERT INTO tag VALUES (1,'BB','AA', NULL,0);
+-- INSERT INTO tag VALUES (2,'CC','AA', NULL,0);
+-- INSERT INTO tag VALUES (1,'DD','AA', NULL,1);
 
 
 
 # Testing for Content
 
 # message
-INSERT INTO Content (username, content_name, public) VALUES('DD', "TextContent", False);
+INSERT INTO Content (username, content_name, caption, public) VALUES('DD', "TextContent", "This is the caption", False);
 INSERT INTO TextContent VALUES(LAST_INSERT_ID(), 'hello');
 INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
 
-# picture
-INSERT INTO Content (username, content_name, public) VALUES('AA', "ImageContent", False);
+# gif
+INSERT INTO Content (username, content_name, caption, public) VALUES('AA', "ImageContent", "bear cap", False);
 INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ffde24b89a56e6bbf894cb01699a1728c%2Ftenor.gif%3Fitemid%3D5957952');
 INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
+# still image
+INSERT INTO Content (username, content_name, caption, public) VALUES('DD', "ImageContent", "grumps...", False);
+INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fnews.nationalgeographic.com%2Fcontent%2Fdam%2Fnews%2Fphotos%2F000%2F755%2F75552.ngsversion.1422285553360.adapt.1900.1.jpg');
+INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
+# video
+INSERT INTO Content (username, content_name, caption, public) VALUES('AA', "VideoContent", "Penguin Caption", True);
+INSERT INTO VideoContent VALUES(LAST_INSERT_ID(), 'https%3A%2F%2Fmedia.tenor.com%2Fvideos%2Fdcd24af8d7904877548cf632beeca4eb%2Fmp4');
+INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
+# audio
+INSERT INTO Content (username, content_name, caption, public) VALUES('AA', "AudioContent", "Audio Caption", True);
+INSERT INTO AudioContent VALUES(LAST_INSERT_ID(), 'https://ccrma.stanford.edu/~jos/wav/pno-cs.wav');
+INSERT INTO Share VALUES(LAST_INSERT_ID(), 'Family', 'AA');
+
 
 # comment
 INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'DD', "the comment text :-)");
 INSERT INTO Comment (id, username, comment_text) VALUES(LAST_INSERT_ID(), 'AA', "I know right?");
 
+
+# favorite
+INSERT INTO Favorite (id, username) VALUES(LAST_INSERT_ID(), 'DD');
+INSERT INTO Favorite (id, username) VALUES(LAST_INSERT_ID(), 'AA');
+INSERT INTO Favorite (id, username) VALUES(3, 'AA');
 
 -- # Ann​ ​posted​ ​a​ ​content​ ​item​ ​with​ ​ID=1,​ ​caption​ ​=​ ​“Whiskers”,​ ​
 -- # is​ ​pub​ ​=​ ​False,​ ​and​ ​shared​ ​it with​ ​her​ ​“family”​ ​FriendGroup.

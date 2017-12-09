@@ -5,9 +5,20 @@
     <title>Dispatch - Your Friend Groups</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
 
     <div class="topnav">
         <a href='/home' style="text-decoration:none;">
@@ -46,10 +57,23 @@
             <span style='float:right'>Add Group</span>
         </a>
         <br/> {% for group in groups%}
-        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}' style="text-decoration:none;">
-            <p>{{group.group_name}} ({{group.username_creator}})</p>
+        <br/>
+        <br/>
+        <a href='/home/friendgroups/messages?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}'
+            style="text-decoration:none;">
+            <span>{{group.group_name}} ({{group.username_creator}})</span>
         </a>
-        {% endfor %}
+        {% if session['username'] == group.username_creator %}
+        <span style="float:right">
+            <a href='/home/friendgroups/deleteMember?groupSelected={{group.group_name}}' class="waves-effect waves-light btn">Remove Members </a>
+            <a href='/home/friendgroups/addMember?groupSelected={{group.group_name}}' class="waves-effect waves-light btn">Add Members</a>
+        </span>
+        {% else %}
+        <span style="float:right">
+            <a href='/home/friendgroups/leaveGroup?groupSelected={{group.group_name}}&username_creator={{group.username_creator}}'
+                class="waves-effect waves-light btn">Leave Group </a>
+        </span>
+        {% endif %} {% endfor %}
     </div>
 </body>
 

@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <title>Dispatch - All Friends</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
 <body>
-
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/materialize.min.js"></script>
     <div class="topnav">
         <a href='/home' style="text-decoration:none;">
             Home
@@ -46,9 +54,12 @@
             <span style='float:right'>Add Friends</span>
         </a>
         <br/> {% for friend in friends %}
-        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
-        <p>{{friend.first_name}} {{friend.last_name}} {{friend.username}}</p>
-        <!</a>
+        <br/>
+        <br/>
+        <span>{{friend.first_name}} {{friend.last_name}} ({{friend.username}})</span>
+        <span style="float:right">
+            <a href='/home/friendhome/viewfriends/defriend?defriendID={{request.username}}' class="waves-effect waves-light btn">Defriend</a>
+        </span>
         {% endfor %}
     </div>
 </body>

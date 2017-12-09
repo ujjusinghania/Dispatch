@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Incoming Friend Requests</title>
+    <title>Dispatch - Add Group Member</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/materialize.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -13,13 +13,10 @@
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
 </head>
 
-</style>
-
 <body>
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
-
     <div class="topnav">
         <a href='/home' style="text-decoration:none;">
             Home
@@ -51,22 +48,15 @@
     </div>
     <div class=content>
         <span>
-            <font size='40em'>All Your Incoming Friend Requests, {{session["fname"]}} {{session["lname"]}}.</font>
+            <font size='40em'>Deleting Group Members From {{group_name}} Owned By {{session["fname"]}} {{session["lname"]}} ({{session["username"]}}).</font>
         </span>
-        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
-            <span style='float:right'>Add Friends</span>
-        </a>
-        <br/> {% for request in friendRequests %}
-        <!<a href='/home/friendhome/viewfriends' style="text-decoration:none;">
+        {% for member in members %}
         <br/>
         <br/>
-        <span>{{request.first_name}} {{request.last_name}} {{request.username}}</span>
+        <span>{{member.first_name}} {{member.last_name}} {{member.username}}</span>
         <span style="float:right">
-            <a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Accept</a>
-            <a href='/home/friendhome/friendrequest/declineRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Decline</a>
+            <a href='/home/friendgroups/deleteMember/deleteMemberAuth?deleting={{member.username}}&from={{group_name}}' class="waves-effect waves-light btn">Remove</a>
         </span>
-        <br/>
-        <!</a>
         {% endfor %}
     </div>
 </body>
