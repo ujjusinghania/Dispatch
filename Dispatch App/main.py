@@ -40,8 +40,11 @@ conn = pymysql.connect(host='localhost',
 
 
 @app.route('/')
-def login():
-	return render_template('login.html')
+def login(error = None):
+	if (error == None):
+		return render_template('login.html')
+	else:
+		return render_template('login.html')
 	
 @app.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
@@ -441,6 +444,22 @@ def leaveGroup():
 	cursor.close()
 
 	return redirect(url_for('.friendgroups'))
+
+@app.route('/settings/deleteAccount')
+def deleteAccount(): 
+	username = session['username']
+	cursor = conn.cursor()
+
+	query = 'DELETE FROM person WHERE username = %s'
+	cursor.execute(query, (username))
+	conn.commit()
+
+	session['username'] = ""
+	session['fname'] = ""
+	session['lname'] = ""
+	session['color'] = ""
+
+	return redirect(url_for('.login', error='Your account has been successfully Dispatched.'))
 
 
 app.secret_key = os.urandom(24)
