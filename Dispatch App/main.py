@@ -49,7 +49,8 @@ def medialibrary():
 		return redirect(url_for('login'))
 	else:
 		cursor = conn.cursor()
-
+		
+		#Query gets all the content that the user can view (public content and content in groups user is part of)
 		query = "SELECT Content.timest,											\
 						Content.id as ContentID,							\
 						Share.group_name,									\
@@ -57,12 +58,14 @@ def medialibrary():
 				        Content.content_name,								\
 				        TextContent.text_content,							\
 	                    ImageContent.url,									\
+						AudioContent.url as audio_url,						\
 				        Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
 				    LEFT JOIN TextContent on Content.id = TextContent.id	\
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
 				    WHERE Content.id IN								  		\
 				    (SELECT id FROM Share WHERE (group_name, username) IN	\
 				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
