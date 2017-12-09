@@ -160,7 +160,7 @@ def favorites():
 
 	favs = unquote(favs)
 
-	return render_template('getMessages.html', contents=favs)
+	return render_template('favorites.html', contents=favs)
 
 
 
