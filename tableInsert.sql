@@ -11,7 +11,7 @@ DELETE FROM tag;
 INSERT INTO person VALUES ('BoatyMcBoatFace',md5('root'),'Boaty','McBoatFace','#ea4c88', NULL);
 
 INSERT INTO Content (id, username, content_name, caption, public) VALUES(1, 'BoatyMcBoatFace', "ImageContent", "grumps...", TRUE);
-INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http://arrkenterprises.com/wp-content/uploads/2015/02/empty-profile-pic.png');
+-- INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http://arrkenterprises.com/wp-content/uploads/2015/02/empty-profile-pic.png');
 
 INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88',1);
 INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88',1);

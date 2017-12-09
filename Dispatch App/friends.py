@@ -32,6 +32,7 @@ def addFriend():
 def addFriendAuth():
 	searchFirstName = request.form['userSearchFirstName']
 	searchLastName = request.form['userSearchLastName']
+
 	username = session['username']
 	cursor = conn.cursor()
 
@@ -55,7 +56,7 @@ def sendFriendRequest():
 	cursor.execute(query, (username, sendToUsername))
 	conn.commit()
 	cursor.close()
-	return redirect(url_for('.addFriendAuth'))
+	return redirect(url_for('.addFriend'))
 
 @friends_blueprint.route('/home/friendhome/friendrequest')
 def viewFriendRequests():
