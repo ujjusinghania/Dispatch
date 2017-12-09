@@ -82,33 +82,33 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT
-    Content.timest,
-    Content.id AS ContentID,
-    SHARE.group_name,
-    SHARE.username AS group_admin,
-    Content.content_name,
-    TextContent.text_content,
-    ImageContent.url AS img_url,
-    AudioContent.url AS audio_url,
-    VideoContent.url AS video_url,
-    Content.username AS ContentOwner,
-    Content.public
-FROM SHARE
-JOIN Content ON Content.id = SHARE.id
-LEFT JOIN TextContent ON Content.id = TextContent.id
-LEFT JOIN ImageContent ON Content.id = ImageContent.id
-LEFT JOIN AudioContent ON Content.id = AudioContent.id
-LEFT JOIN VideoContent ON Content.id = VideoContent.id
-WHERE
-    Content.public = '1'
-    OR Content.id IN 
-    (SELECT id
-     FROM Share
-     WHERE (group_name, username) IN
-     	(SELECT group_name, username_creator 
-         FROM member
-         WHERE username = 'AA' OR username_creator = 'AA'))							"      
+		query = "SELECT 										\
+    Content.timest,												\
+    Content.id AS ContentID,									\
+    SHARE.group_name,											\
+    SHARE.username AS group_admin,								\
+    Content.content_name,										\
+    TextContent.text_content,									\
+    ImageContent.url AS img_url,								\
+    AudioContent.url AS audio_url,								\
+    VideoContent.url AS video_url,								\
+    Content.username AS ContentOwner,							\
+    Content.public 												\
+FROM SHARE														\
+JOIN Content ON Content.id = SHARE.id							\
+LEFT JOIN TextContent ON Content.id = TextContent.id 			\
+LEFT JOIN ImageContent ON Content.id = ImageContent.id 			\
+LEFT JOIN AudioContent ON Content.id = AudioContent.id 			\
+LEFT JOIN VideoContent ON Content.id = VideoContent.id			\
+WHERE															\
+    Content.public = '1'										\
+    OR Content.id IN 											\
+    (SELECT id													\
+     FROM Share													\
+     WHERE (group_name, username) IN							\
+     	(SELECT group_name, username_creator 					\
+         FROM member											\
+         WHERE username = 'AA' OR username_creator = 'AA'))							"
 					
 		cursor.execute(query, (session['username'], session['username']))
 		messages = cursor.fetchall()
