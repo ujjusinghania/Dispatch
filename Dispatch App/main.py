@@ -38,10 +38,12 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-
 @app.route('/')
-def login():
-	return render_template('login.html')
+def login(error = None):
+	if (error == None):
+		return render_template('login.html')
+	else:
+		return render_template('login.html', error=error)
 	
 @app.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
@@ -105,7 +107,6 @@ def friendgroups():
 		cursor.execute(query, (username, username))
 		groups = cursor.fetchall()
 
-		# print(groups)
 		cursor.close()
 
 		return render_template('friendgroups.html', groups=groups)
@@ -212,13 +213,11 @@ def changepassAuth():
 	cursor.execute(query, (session['username'], current_password_digest))
 
 	data = cursor.fetchone()
-	print(data)
 	cursor.close()
 
 	if (data):
 		if (newpass != confirmpass):
 			error = "Passwords Do Not Match"
-			print(error)
 			return render_template('changepass.html', error=error)
 		else:
 			new_password_digest = helpers.md5(newpass)
@@ -233,7 +232,6 @@ def changepassAuth():
 			cursor.execute(query, (session['username'], new_password_digest))
 
 			data1 = cursor.fetchone()
-			print(data1)
 			cursor.close()
 			return redirect(url_for('setting'))
 	else:
@@ -367,7 +365,6 @@ def addMembersToGroup():
 	for friend in requestSendFriendsNotMembers:
 		notGroupMembers.append(friend)
 
-	print (notGroupMembers)
 	return render_template('addgroupmember.html', group_name = groupName, nonmembers=notGroupMembers )
 
 @app.route('/home/friendgroups/addMember/addMemberAuth')
@@ -410,7 +407,6 @@ def deleteMembersFromGroup():
 	for friend in requestSendFriendsMembers:
 		groupMembers.append(friend)
 
-	print (groupMembers)
 	return render_template('deletegroupmember.html', group_name = groupName, members=groupMembers )
 
 @app.route('/home/friendgroups/deleteMember/deleteMemberAuth')
@@ -444,6 +440,23 @@ def leaveGroup():
 	cursor.close()
 
 	return redirect(url_for('.friendgroups'))
+
+@app.route('/settings/deleteAccount')
+def deleteAccount(): 
+	username = session['username']
+	cursor = conn.cursor()
+
+	query = 'DELETE FROM person WHERE username = %s'
+	cursor.execute(query, (username))
+	conn.commit()
+	cursor.close()
+
+	session['username'] = ""
+	session['fname'] = ""
+	session['lname'] = ""
+	session['color'] = ""
+
+	return redirect(url_for('.login', error='Your account has been successfully Dispatched.'))
 
 
 app.secret_key = os.urandom(24)
