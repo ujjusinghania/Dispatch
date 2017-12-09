@@ -119,9 +119,9 @@ def medialibrary():
 							WHERE Content.public = 1)) AS contentSet 			\
 							ORDER BY contentSet.contentID ASC				 "
 
-		cursor.execute(query, (session['username'], session['username'])) 
+		cursor.execute(query, (session['username'], session['username']))
+		conn.commit()
 		messages = cursor.fetchall() 
-
 		query = ""
 
 		comments = {}
