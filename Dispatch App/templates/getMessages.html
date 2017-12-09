@@ -60,7 +60,7 @@
         	<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
         </td>
 
-        <td>{% if content.public %} public {% else %} private {% endif %}</td>
+        <td>{% if content.public %} <img src="/static/imgs/unlock.png" alt="Smiley face" height="32" width="32"> {% else %} <img src="/static/imgs/lock.png" alt="Smiley face" height="32" width="32"> {% endif %}</td>
     </tr>
 {% endfor %}
 </table>
