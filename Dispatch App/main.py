@@ -53,13 +53,13 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT Content.timest,											\
+		query = "SELECT Content.timest,										\
 						Content.id as ContentID,							\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-	                    ImageContent.url,									\
+	                    ImageContent.url as img_url,						\
 						AudioContent.url as audio_url,						\
 				        Content.username as ContentOwner,					\
 				        Content.public										\
@@ -81,8 +81,11 @@ def medialibrary():
 		comments = {}
 		query = "SELECT * FROM Comment WHERE id=%s"
 		for i, _ in enumerate(messages):
-			if messages[i]['url'] != None:
-				messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+			print(messages[i])
+			if messages[i]['img_url'] != None:
+				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
+			elif messages[i]['audio_url'] != None:
+				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
