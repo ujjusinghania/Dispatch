@@ -149,7 +149,7 @@ def addFavorite():
 	query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
 
 	cursor.execute(query, (request.args.get("content_id"), session['username']))
-	# favs = cursor.fetchall()
+
 	cursor.close()
 	conn.commit()	
 

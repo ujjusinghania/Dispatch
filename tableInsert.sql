@@ -10,17 +10,17 @@ DELETE FROM tag;
 #Initial user creation
 INSERT INTO person VALUES ('BoatyMcBoatFace',md5('root'),'Boaty','McBoatFace','#ea4c88', NULL);
 
-INSERT INTO Content (id, username, content_name, caption, public) VALUES(1, 'BoatyMcBoatFace', "ImageContent", "grumps...", TRUE);
-INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http://arrkenterprises.com/wp-content/uploads/2015/02/empty-profile-pic.png');
+INSERT INTO Content (id, username, content_name, caption, public) VALUES(0, 'BoatyMcBoatFace', "ImageContent", "default pic", TRUE);
+INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http%3A%2F%2Farrkenterprises.com%2Fwp-content%2Fuploads%2F2015%2F02%2Fempty-profile-pic.png');        #thisone
 
-INSERT INTO person VALUES ('AA', md5('AA'), 'Ann', 'Anderson', '#ea4c88',1);
-INSERT INTO person VALUES ('BB', md5('BB'), 'Bob', 'Baker', '#ea4c88',1);
-INSERT INTO person VALUES ('CC', md5('CC'), 'Cathy', 'Chang', '#ea4c88',1);
-INSERT INTO person VALUES ('DD', md5('DD'), 'David', 'Davidson', '#ea4c88',1);
-INSERT INTO person VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg', '#ea4c88',1);
-INSERT INTO person VALUES ('FF', md5('FF'), 'Fred', 'Fox', '#ea4c88',1);
-INSERT INTO person VALUES ('GG', md5('GG'), 'Gina', 'Gupta', '#ea4c88',1);
-INSERT INTO person VALUES ('HH', md5('HH'), 'Helen', 'Harper', '#ea4c88',1);
+INSERT INTO person (username, password, first_name, last_name) VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('BB', md5('BB'), 'Bob', 'Baker');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('CC', md5('CC'), 'Cathy', 'Chang');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('DD', md5('DD'), 'David', 'Davidson');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('EE', md5('EE'), 'Ellen', 'Ellenberg');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('FF', md5('FF'), 'Fred', 'Fox');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('GG', md5('GG'), 'Gina', 'Gupta');
+INSERT INTO person (username, password, first_name, last_name) VALUES ('HH', md5('HH'), 'Helen', 'Harper');
 
 #inserting ann into family
 INSERT INTO friendgroup VALUES ('family', 'AA', NULL);
