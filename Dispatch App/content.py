@@ -129,6 +129,26 @@ def messages():
 
 		return render_template('messages.html', messages=messages)
 
+@content_blueprint.route('/addFavorite')
+def addFavorite():
+
+	conn.commit()
+	cursor = conn.cursor()
+
+	query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
+
+	cursor.execute(query, (request.args.get("content_id"), session['username']))
+	# favs = cursor.fetchall()
+	cursor.close()
+	conn.commit()	
+
+
+	return redirect(url_for('content_blueprint.messages') +
+                 '?groupSelected=' + session['groupSelected'][0] +
+                 '&username_creator=' + session['groupSelected'][1]
+                 )
+
+
 
 @content_blueprint.route('/home/favorites')
 def favorites():
