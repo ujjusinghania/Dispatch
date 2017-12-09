@@ -4,6 +4,7 @@ from flask import Blueprint
 import pymysql.cursors
 from friends import friends_blueprint
 from content import content_blueprint
+from medialib import media_blueprint
 
 import helpers
 import sys
@@ -15,6 +16,7 @@ else:
 app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
+app.register_blueprint(media_blueprint)
 
 # this is for pulling the port and database password from environment variables
 import os
@@ -34,92 +36,6 @@ def login(error = None):
 		return render_template('login.html')
 	else:
 		return render_template('login.html', error=error)
-
-# Functions pertaining to content
-@app.route('/addPublicContent', methods=['GET', 'POST'])
-def addPublicContent():
-	content 		= request.form['input_text']
-	content_type 	= request.form['content_type']
-	is_public 		= request.form.get('is_public') != None
-	conn.commit()
-
-
-	cursor = conn.cursor()
-
-	# insert base content object
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], content_type, is_public))
-	
-	# insert spacific type
-	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
-	cursor.execute(query, content)
-
-	# content id, group name, group admin
-	#query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
-	#cursor.execute(query, session['groupSelected'])
-	
-	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
-	# cursor.execute(query)
-	
-	# data = cursor.fetchone()
-	cursor.close()
-	conn.commit()
-	
-	
-	return redirect(url_for('medialibrary'))		
-
-@app.route('/home/medialibrary', methods=['GET'])
-def medialibrary():
-	if (helpers.checkSess()):
-		return redirect(url_for('login'))
-	else:
-		cursor = conn.cursor()
-		
-		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT Content.timest,										\
-						Content.id as ContentID,							\
-						Share.group_name,									\
-				        Share.username as group_admin,						\
-				        Content.content_name,								\
-				        TextContent.text_content,							\
-	                    ImageContent.url as img_url,						\
-						AudioContent.url as audio_url,						\
-						VideoContent.url as video_url,						\
-				        Content.username as ContentOwner,					\
-				        Content.public										\
-					FROM Share 												\
-					JOIN Content ON Content.id = Share.id					\
-				    LEFT JOIN TextContent on Content.id = TextContent.id	\
-	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
-					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
-					LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
-				    WHERE Content.id IN								  		\
-				    (SELECT id FROM Share WHERE (group_name, username) IN	\
-				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
-				    OR Content.public='1'									\
-					ORDER BY Content.id DESC								"      
-					
-		cursor.execute(query, session['username'])
-		messages = cursor.fetchall()
-
-
-		comments = {}
-		query = "SELECT * FROM Comment WHERE id=%s"
-		for i, _ in enumerate(messages):
-			print(messages[i])
-			if messages[i]['img_url'] != None:
-				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
-			elif messages[i]['audio_url'] != None:
-				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
-			if messages[i]['video_url'] != None:
-				messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
-
-			cursor.execute(query, messages[i]['ContentID'])
-			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
-
-		cursor.close()
-
-		return render_template("media.html", contents=messages, comments=comments)
 		
 @app.route('/home/friendgroups', methods=['GET'])
 def friendgroups():
@@ -269,8 +185,7 @@ def changepassAuth():
 		error = "Incorrect Password"
 		print(error)
 		return render_template('changepass.html', error=error)
-
-
+	
 @app.route('/home/profile',methods=['GET'])
 def profile():
 	username = session['username']

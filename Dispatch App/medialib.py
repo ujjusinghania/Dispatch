@@ -54,9 +54,8 @@ def PublicComment():
 	content_id 		= request.form['ContentID']
 	username   		= request.form['commenter_name']
 	comment_text  	= request.form['comment_text']
-	
-	if (comment_text == ""):
-		return redirect(url_for('.medialibrary'))
+
+
 	conn.commit()
 
 	cursor = conn.cursor()
