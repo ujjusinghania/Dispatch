@@ -142,3 +142,17 @@ def medialibrary():
 		cursor.close()
 
 		return render_template("media.html", contents=messages, comments=comments)
+
+@media_blueprint.route('/addMediaFavorite')
+def addFavorite():
+
+	conn.commit()
+	cursor = conn.cursor()
+
+	query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
+
+	cursor.execute(query, (request.args.get("content_id"), session['username']))
+	# favs = cursor.fetchall()
+	cursor.close()
+	conn.commit()
+	return redirect(url_for('.medialibrary'))
