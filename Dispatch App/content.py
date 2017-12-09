@@ -151,16 +151,26 @@ def favorites():
     LEFT JOIN AudioContent ON Content.id = AudioContent.id 		\
     LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
     LEFT JOIN ImageContent ON Content.id = ImageContent.id 		\
-    WHERE Content.username = %s; 								"
+    WHERE Favorite.username = %s; 								"
 
 	cursor.execute(query, session['username'])
 	favs = cursor.fetchall()
+	favs = unquote(favs)
+
+
+	print(favs)
+	# get comments 
+	comments = {} #dict for comments 
+	query = "SELECT * FROM Comment WHERE id=%s"
+
+	# loop through all the messages and store the comments for each one in a dict
+	for i in range(len(favs)):
+		cursor.execute(query, favs[i]['ContentID'])
+		comments[ favs[i]['ContentID'] ] = cursor.fetchall()
 
 	cursor.close()
 
-	favs = unquote(favs)
-
-	return render_template('favorites.html', contents=favs)
+	return render_template('favorites.html', contents=favs, comments=comments)
 
 
 

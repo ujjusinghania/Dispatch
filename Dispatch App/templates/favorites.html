@@ -5,6 +5,47 @@
     <title>Dispatch - Favorites</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/topNavBar.css" />
+
+    <link rel="stylesheet" href="/static/styles/materialize.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/static/styles/materialize.min.css" media="screen,projection" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    
+        <script>
+            var update = true;
+            function getMessages() {
+                if (update) {
+                    $.ajax({
+                        url: "{{ url_for('content_blueprint.getMessages') }}",
+                        success: function (response) {
+                            $("#messages").html(response);
+                        },
+                        error: function (xhr) {
+                            //Do Something to handle error
+                        }
+                    });
+                } // end if(update)
+                // updateScroll();
+            };
+    
+            function updateScroll() {
+                // element = document.getElementById("scrollBox");
+                // if (element != null)
+                //     element.scrollTop = element.scrollHeight;
+            }
+    
+            getMessages();
+            $(function () {
+                $("#input_box").focus();
+            });
+    
+            // window.setInterval(getMessages, 200);
+        </script>
+
 </head>
 
 <body>
