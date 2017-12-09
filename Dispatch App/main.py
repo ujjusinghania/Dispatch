@@ -16,16 +16,6 @@ app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
 
-
-# [temporary solution] This checks python version to decide what to import 
-import sys
-if sys.version_info[0] >= 3:
-	import urllib.parse
-else:
-	import urllib
-############################
-
-
 # this is for pulling the port and database password from environment variables
 import os
 
@@ -38,31 +28,71 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-
 @app.route('/')
-def login():
-	return render_template('login.html')
+def login(error = None):
+	if (error == None):
+		return render_template('login.html')
+	else:
+		return render_template('login.html', error=error)
+
+# Functions pertaining to content
+@app.route('/addPublicContent', methods=['GET', 'POST'])
+def addPublicContent():
+	content 		= request.form['input_text']
+	content_type 	= request.form['content_type']
+	is_public 		= request.form.get('is_public') != None
+	conn.commit()
+
+
+	cursor = conn.cursor()
+
+	# insert base content object
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public))
 	
+	# insert spacific type
+	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, content)
+
+	# content id, group name, group admin
+	#query = 'INSERT INTO Share VALUES(LAST_INSERT_ID(), %s, %s)'
+	#cursor.execute(query, session['groupSelected'])
+	
+	# query = 'SELECT * FROM Share WHERE id=LAST_INSERT_ID()'
+	# cursor.execute(query)
+	
+	# data = cursor.fetchone()
+	cursor.close()
+	conn.commit()
+	
+	
+	return redirect(url_for('medialibrary'))		
+
 @app.route('/home/medialibrary', methods=['GET'])
 def medialibrary():
 	if (helpers.checkSess()):
 		return redirect(url_for('login'))
 	else:
 		cursor = conn.cursor()
-
-		query = "SELECT Content.timest,											\
+		
+		#Query gets all the content that the user can view (public content and content in groups user is part of)
+		query = "SELECT Content.timest,										\
 						Content.id as ContentID,							\
 						Share.group_name,									\
 				        Share.username as group_admin,						\
 				        Content.content_name,								\
 				        TextContent.text_content,							\
-	                    ImageContent.url,									\
+	                    ImageContent.url as img_url,						\
+						AudioContent.url as audio_url,						\
+						VideoContent.url as video_url,						\
 				        Content.username as ContentOwner,					\
 				        Content.public										\
 					FROM Share 												\
 					JOIN Content ON Content.id = Share.id					\
 				    LEFT JOIN TextContent on Content.id = TextContent.id	\
 	                LEFT JOIN ImageContent on Content.id = ImageContent.id	\
+					LEFT JOIN AudioContent ON Content.id = AudioContent.id 	\
+					LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
 				    WHERE Content.id IN								  		\
 				    (SELECT id FROM Share WHERE (group_name, username) IN	\
 				    (SELECT group_name, username_creator FROM Member WHERE username = %s)) \
@@ -76,8 +106,13 @@ def medialibrary():
 		comments = {}
 		query = "SELECT * FROM Comment WHERE id=%s"
 		for i, _ in enumerate(messages):
-			if messages[i]['url'] != None:
-				messages[i]['url'] = urllib.parse.unquote( messages[i]['url'] )
+			print(messages[i])
+			if messages[i]['img_url'] != None:
+				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
+			elif messages[i]['audio_url'] != None:
+				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+			if messages[i]['video_url'] != None:
+				messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
@@ -102,7 +137,6 @@ def friendgroups():
 		cursor.execute(query, (username, username))
 		groups = cursor.fetchall()
 
-		# print(groups)
 		cursor.close()
 
 		return render_template('friendgroups.html', groups=groups)
@@ -210,13 +244,11 @@ def changepassAuth():
 	cursor.execute(query, (session['username'], current_password_digest))
 
 	data = cursor.fetchone()
-	print(data)
 	cursor.close()
 
 	if (data):
 		if (newpass != confirmpass):
 			error = "Passwords Do Not Match"
-			print(error)
 			return render_template('changepass.html', error=error)
 		else:
 			new_password_digest = helpers.md5(newpass)
@@ -231,7 +263,6 @@ def changepassAuth():
 			cursor.execute(query, (session['username'], new_password_digest))
 
 			data1 = cursor.fetchone()
-			print(data1)
 			cursor.close()
 			return redirect(url_for('setting'))
 	else:
@@ -367,7 +398,6 @@ def addMembersToGroup():
 	for friend in requestSendFriendsNotMembers:
 		notGroupMembers.append(friend)
 
-	print (notGroupMembers)
 	return render_template('addgroupmember.html', group_name = groupName, nonmembers=notGroupMembers )
 
 @app.route('/home/friendgroups/addMember/addMemberAuth')
@@ -410,7 +440,6 @@ def deleteMembersFromGroup():
 	for friend in requestSendFriendsMembers:
 		groupMembers.append(friend)
 
-	print (groupMembers)
 	return render_template('deletegroupmember.html', group_name = groupName, members=groupMembers )
 
 @app.route('/home/friendgroups/deleteMember/deleteMemberAuth')
@@ -444,6 +473,23 @@ def leaveGroup():
 	cursor.close()
 
 	return redirect(url_for('.friendgroups'))
+
+@app.route('/settings/deleteAccount')
+def deleteAccount(): 
+	username = session['username']
+	cursor = conn.cursor()
+
+	query = 'DELETE FROM person WHERE username = %s'
+	cursor.execute(query, (username))
+	conn.commit()
+	cursor.close()
+
+	session['username'] = ""
+	session['fname'] = ""
+	session['lname'] = ""
+	session['color'] = ""
+
+	return redirect(url_for('.login', error='Your account has been successfully Dispatched.'))
 
 
 app.secret_key = os.urandom(24)

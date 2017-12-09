@@ -56,7 +56,7 @@ def viewFriendRequests():
 	cursor.execute(query, (username))
 	frequests = cursor.fetchall()
 	cursor.close()
-	return render_template('friendrequests.html', friendRequests=frequests)
+	return render_template('friendRequests.html', friendRequests=frequests)
 	
 @friends_blueprint.route('/home/friendhome/viewfriends')
 def viewFriends():
