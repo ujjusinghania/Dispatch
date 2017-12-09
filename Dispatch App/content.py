@@ -65,6 +65,30 @@ def addContent():
                  '&username_creator=' + session['groupSelected'][1]
                 )
 
+@content_blueprint.route('/addContentToProfile',methods=['POST'])
+def addContentToProfile():
+	content 		= request.form['input_text']
+	content_type 	= request.form['content_type']
+	is_public 		= request.form.get('is_public') != None
+	conn.commit()
+
+	cursor=conn.cursor()
+
+    # insert base content object
+	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public))
+	
+	# insert spacific type
+	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
+	cursor.execute(query, content)
+
+	query = 'UPDATE person SET profilePic = LAST_INSERT_ID() WHERE username = %s'
+	cursor.execute(query,session['username'])
+
+	cursor.close()
+	conn.commit()
+
+	return redirect(url_for('profile'))
 
 @content_blueprint.route('/comment', methods=['POST'])
 def comment():

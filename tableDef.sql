@@ -4,6 +4,7 @@ CREATE TABLE Person(
     first_name VARCHAR (50),
     last_name VARCHAR (50),
 	color VARCHAR (7),
+    profilePic INT,
     PRIMARY KEY (username)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE person ADD INDEX(username);
