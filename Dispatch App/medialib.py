@@ -84,7 +84,8 @@ def medialibrary():
 				    AudioContent.url AS audio_url,								\
 				    VideoContent.url AS video_url,								\
 				    Content.username AS ContentOwner,							\
-				    Content.public 												\
+				    Content.public,												\
+       			 	Content.caption												\
 				FROM SHARE														\
 				JOIN Content ON Content.id = SHARE.id							\
 				LEFT JOIN TextContent ON Content.id = TextContent.id 			\
@@ -108,7 +109,8 @@ def medialibrary():
 				    AudioContent.url AS audio_url,								\
 				    VideoContent.url AS video_url,								\
 				    Content.username AS ContentOwner,							\
-				    Content.public 												\
+				    Content.public, 											\
+					Content.caption												\
 				FROM Content 													\
 				LEFT JOIN TextContent ON Content.id = TextContent.id 			\
 				LEFT JOIN ImageContent ON Content.id = ImageContent.id 			\
@@ -135,9 +137,8 @@ def medialibrary():
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
-
+			print (cursor.fetchall())
+ 
 		cursor.close()
-
-		print(messages)
 
 		return render_template("media.html", contents=messages, comments=comments)
