@@ -30,13 +30,12 @@
         <a href='/home/friendhome/addfriend' style="text-decoration:none;">
             <span style='float:right'>Add Friends</span>
         </a>
-        <br/> {% for request in friendRequests %}
+        <br/> {% for possibleTag in possibleTags %}
         <br/>
         <br/>
-        <span>{{request.username}}</span>
+        <span>{{possibleTag.first_name}} {{possibleTag.last_name}} {{possibleTag.username}}</span>
         <span style="float:right">
             <a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Accept</a>
-            <a href='/home/friendhome/friendrequest/declineRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Decline</a>
         </span>
         <br/>
         {% endfor %}
