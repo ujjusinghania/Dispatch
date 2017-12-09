@@ -26,7 +26,76 @@
         <br />
         <div id="scrollBox" class="scrollBox">
             <div id="messages">
-                {% include 'getMessages.html' %}
+                <table border="1" id='messageTable'>
+                    <tr><th>Timestamp</th><th>Owner</th><th>ContentID</th><th>Content</th><th>React</th><th>Privacy</th>
+                    {% for content in contents %} 
+                        <tr>
+                            <!-- <td> {{content.caption}} </td> -->
+                            <td> {{content.timest}} </td>
+                            <td> {{content.ContentOwner}}: </td>
+                            <td> {{content.ContentID}} </td>  
+                            <td> 
+                                <!-- display content -->
+                                {% if content.content_name == 'ImageContent' %}
+                                    <img src='{{content.img_url}}' height='80em'>
+                                {% elif content.content_name == 'TextContent' %}
+                                    {{content.text_content}} 
+                                {% elif content.content_name == 'AudioContent' %}
+                                    <audio controls>
+                                        <source src="{{content.audio_url}}" type="audio/wav">
+                                        <source src="{{content.audio_url}}" type="audio/mpeg">
+                                        <source src="{{content.audio_url}}" type="audio/ogg">
+                                        <source src="{{content.audio_url}}" type="audio/mp3">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                {% elif content.content_name == 'VideoContent' %}
+                                    <video height='80em' controls>
+                                        <source src="{{content.video_url}}" type="video/mp4">
+                                        <source src="{{content.video_url}}" type="video/ogg">
+                                        Your browser does not support HTML5 video.
+                                    </video>
+                    
+                                {% else %}
+                                    <B>UNKNOWN TYPE!!!!! THIS SHOULDN'T HAPPEN</B>
+                                {% endif %}
+                    
+                                <!-- display comments -->
+                                {% if comments is defined %}
+                                <ul>
+                                    {% for comment in comments[ content.ContentID ] %}
+                                        <li>{{comment.username}}: {{comment.comment_text}}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                    
+                                {% if content.caption is not none %}
+                                    ({{content.caption}})
+                                {% endif %}
+                    
+                                <!-- comment form -->
+                                <form style="display: none;" id="commentForm{{content.ContentID}}" action="/PublicComment" method="POST">
+                                    <br />
+                                    <div class="textbox">
+                                        <input type="text" style="width: 92%" placeholder="Comment text..." name="comment_text" id="comment_box{{content.ContentID}}" />
+                                        <input type="hidden" value={{content.ContentID}} name='ContentID'>
+                                        <input type="hidden" value={{session['username']}} name='commenter_name'>
+                                        <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();update=true;" />
+                                    </div>
+                                </form>
+                    
+                            </td> 
+                            <td>
+                                <a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
+                    
+                                | 
+                    
+                                <a href="/addMediaFavorite?content_id={{content.ContentID}}"onclick="alert('Item has been added to your favorites.');"> Favorite </a>
+                            </td>
+                    
+                            <td>{% if content.public %} <img src="/static/imgs/unlock.png" alt="public" height="32" width="32"> {% else %} <img src="/static/imgs/lock.png" alt="private" height="32" width="32"> {% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
             </div>
         </div>
 
