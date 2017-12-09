@@ -93,23 +93,26 @@
 
                 <div class="textbox">
         <form action="/addPublicContent" method="POST">
-            <input type="text" style="width: 92%" placeholder="What's going on...? (enter some text or a url)" name="input_text" id="input_box" /> <br />
+            <input type="text" style="width: 92%" placeholder="Enter a message or post a URL" name="input_text" id="input_box"/>
+            <br />
+            <input type="text" style="width: 92%" placeholder="Enter Caption" name="caption_box" id="input_box"/>
+            <br />
 
             <input type="hidden" id="is_public" name="is_public" value = 'True'>
 
             <input type="radio" id="choice1" name="content_type" value="TextContent" checked="checked">
-            <label for="choice1">just some words</label>
+            <label for="choice1">Posting Text?</label>
 
             <input type="radio" id="choice2" name="content_type" value="ImageContent">
-            <label for="choice2">an image</label>
+            <label for="choice2">Posting Images?</label>
 
             <input type="radio" id="choice3" name="content_type" value="VideoContent">
-            <label for="choice3">a video</label>
+            <label for="choice3">Posting Video?</label>
 
             <input type="radio" id="choice4" name="content_type" value="AudioContent">
-            <label for="choice4">sound</label>
+            <label for="choice4">Posting Audio?</label>
 
-            <input type="submit" value="Post" class="sendButton" />
+            <button class="waves-effect waves-light btn" value="Post" type="submit" name="action">Post</button>
         </form>
         </div>
 

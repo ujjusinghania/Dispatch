@@ -34,6 +34,7 @@ conn = pymysql.connect(host='localhost',
 def addContent():
 	content 		= request.form['input_text']
 	content_type 	= request.form['content_type']
+	caption			= request.form['caption_box']
 	is_public 		= request.form.get('is_public') != None
 	conn.commit()
 
@@ -41,8 +42,8 @@ def addContent():
 	cursor = conn.cursor()
 
 	# insert base content object
-	query = 'INSERT INTO Content (username, content_name, public) VALUES(%s, %s, %s)'
-	cursor.execute(query, (session['username'], content_type, is_public))
+	query = 'INSERT INTO Content (username, content_name, public, caption) VALUES(%s, %s, %s, %s)'
+	cursor.execute(query, (session['username'], content_type, is_public, caption))
 	
 	# insert spacific type
 	query = 'INSERT INTO '+content_type+' VALUES(LAST_INSERT_ID(), %s)'
@@ -128,6 +129,26 @@ def messages():
 
 		return render_template('messages.html', messages=messages)
 
+@content_blueprint.route('/addFavorite')
+def addFavorite():
+
+	conn.commit()
+	cursor = conn.cursor()
+
+	query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
+
+	cursor.execute(query, (request.args.get("content_id"), session['username']))
+	# favs = cursor.fetchall()
+	cursor.close()
+	conn.commit()	
+
+
+	return redirect(url_for('content_blueprint.messages') +
+                 '?groupSelected=' + session['groupSelected'][0] +
+                 '&username_creator=' + session['groupSelected'][1]
+                 )
+
+
 
 @content_blueprint.route('/home/favorites')
 def favorites():
@@ -151,16 +172,26 @@ def favorites():
     LEFT JOIN AudioContent ON Content.id = AudioContent.id 		\
     LEFT JOIN VideoContent ON Content.id = VideoContent.id 		\
     LEFT JOIN ImageContent ON Content.id = ImageContent.id 		\
-    WHERE Content.username = %s; 								"
+    WHERE Favorite.username = %s; 								"
 
 	cursor.execute(query, session['username'])
 	favs = cursor.fetchall()
+	favs = unquote(favs)
+
+
+	print(favs)
+	# get comments 
+	comments = {} #dict for comments 
+	query = "SELECT * FROM Comment WHERE id=%s"
+
+	# loop through all the messages and store the comments for each one in a dict
+	for i in range(len(favs)):
+		cursor.execute(query, favs[i]['ContentID'])
+		comments[ favs[i]['ContentID'] ] = cursor.fetchall()
 
 	cursor.close()
 
-	favs = unquote(favs)
-
-	return render_template('getMessages.html', contents=favs)
+	return render_template('favorites.html', contents=favs, comments=comments)
 
 
 

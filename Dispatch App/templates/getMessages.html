@@ -1,5 +1,5 @@
 <table border="1" id='messageTable'>
-<tr><th>Timestamp</th><th>Owner</th><th>id</th><th>content</th><th>react</th><th>privacy</th>
+<tr><th>Timestamp</th><th>Owner</th><th>ContentID</th><th>Content</th><th>React</th><th>Privacy</th>
 {% for content in contents %} 
     <tr>
         <!-- <td> {{content.caption}} </td> -->
@@ -58,9 +58,13 @@
         </td> 
         <td>
         	<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
+
+            | 
+
+            <a href="/addFavorite?content_id={{content.ContentID}}"onclick="alert('fav');"> fav </a>
         </td>
 
-        <td>{% if content.public %} public {% else %} private {% endif %}</td>
+        <td>{% if content.public %} <img src="/static/imgs/unlock.png" alt="public" height="32" width="32"> {% else %} <img src="/static/imgs/lock.png" alt="private" height="32" width="32"> {% endif %}</td>
     </tr>
 {% endfor %}
 </table>

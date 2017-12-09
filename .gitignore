@@ -2,3 +2,4 @@
 __pycache__
 *.pyc
 Dispatch App/.DS_Store
+.vscode/launch.json
