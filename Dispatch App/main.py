@@ -249,7 +249,7 @@ def registerAuth():
 	if(data):
 		return render_template('register.html', error="Username already taken.")
 
-	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s)'
+	query = 'INSERT INTO person VALUES (%s, %s, %s, %s, %s, 1)'
 	cursor.execute(query, (username, password_digest, fname, lname, '#ea4c88'))
 	data = cursor.fetchone()
 
