@@ -65,8 +65,8 @@ def acceptTag():
 	cursor = conn.cursor()
 	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %s  AND status = FALSE'
 	cursor.execute(query,(username,taggedByUsername,taggedID))
-	query = 'INSERT INTO tag VALUES (%s,%s,%s,NULL,TRUE)'
-	cursor.execute(query,(taggedID,username,taggedByUsername))
+	query = 'INSERT INTO tag (username_taggee,username_tagger,id,status) VALUES (%s,%s,%s,TRUE)'
+	cursor.execute(query,(username,taggedByUsername,taggedID))
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('.tag'))
@@ -77,8 +77,8 @@ def declineTag():
 	taggedID = request.args.get('tagID')
 	username = session['username']
 	cursor = conn.cursor()
-	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s  AND status = FALSE'
-	cursor.execute(query,(username,taggedByUsername))
+	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %s AND status = FALSE'
+	cursor.execute(query,(username,taggedByUsername,taggedID))
 	conn.commit()
 	cursor.close()
 	return redirect(url_for('.tag'))

@@ -25,7 +25,7 @@
         <font size='40em'>Your Accepted Tags, {{session["fname"]}} {{session["lname"]}}.</font>
         </span>
         <br/> {% for tag in tags%}
-        <p> User {{tag.username_tagger}} tagged you in content with id {{tag.id}} on {{tag.timest}}</p>
+        <p> User {{tag.username_tagger}} tagged you in content with id {{tag.id}}</p>
         {% endfor %}
     </div>
 </body>
