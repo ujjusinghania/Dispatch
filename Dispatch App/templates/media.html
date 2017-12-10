@@ -89,7 +89,11 @@
                     
                                 | 
                     
-                                <a href="/addMediaFavorite?content_id={{content.ContentID}}"onclick="alert('Item has been added to your favorites.');"> Favorite </a>
+                                <a href="/addMediaFavorite?content_id={{content.ContentID}}" onclick="alert('Item has been added to your favorites.');"> Favorite </a>
+
+                                |
+
+                                <a href="/addTag?content_id={{content.ContentID}}">tag</a>
                             </td>
                     
                             <td>{% if content.public %} <img src="/static/imgs/unlock.png" alt="public" height="32" width="32"> {% else %} <img src="/static/imgs/lock.png" alt="private" height="32" width="32"> {% endif %}</td>
