@@ -107,4 +107,4 @@ def addTagAuth():
 	cursor.execute(query, (cid, session['username'], taggee))
 	conn.commit()
 
-	return redirect(url_for('.medialibrary'))
+	return redirect(url_for('media_blueprint.medialibrary'))
