@@ -51,8 +51,15 @@
 <body>
     
     {% include 'topnav.html' %}
+
     <div class=content>
-    {% include 'getMessages.html' %}
+        {% set infav = true %}
+        {% include 'getMessages.html' %}
     </div>
 </body>
 </html>
+
+
+
+
+

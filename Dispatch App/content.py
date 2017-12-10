@@ -124,6 +124,26 @@ def comment():
                  )
 
 
+@content_blueprint.route('/commentFav', methods=['POST'])
+def commentFav():
+	content_id 		= request.form['ContentID']
+	username   		= request.form['commenter_name']
+	comment_text  	= request.form['comment_text']
+
+	if (comment_text == ""):
+		return redirect(url_for('favorites'))
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO Comment (id, username, comment_text) VALUES(%s, %s, %s)'
+	cursor.execute(query, (content_id, username, comment_text))
+
+	conn.commit()
+
+	return redirect(url_for('content_blueprint.favorites'))
+
+
 
 @content_blueprint.route('/home/friendgroups/messages', methods=['GET', 'POST'])
 def messages():
