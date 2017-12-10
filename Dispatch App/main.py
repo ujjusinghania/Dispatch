@@ -151,6 +151,8 @@ def changepassAuth():
 def profile():
 	username = session['username']
 	cursor = conn.cursor()
+	conn.commit()
+	
 	query = 'SELECT username, color, url \
 			 FROM person JOIN ImageContent ON ImageContent.id = person.profilePic  \
 			 WHERE username = %s'
