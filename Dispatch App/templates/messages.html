@@ -29,14 +29,8 @@
                     }
                 });
             } // end if(update)
-            // updateScroll();
+            // 
         };
-
-        function updateScroll() {
-            // element = document.getElementById("scrollBox");
-            // if (element != null)
-            //     element.scrollTop = element.scrollHeight;
-        }
 
         getMessages();
         $(function () {
@@ -98,7 +92,7 @@
             <br />
             <div class="textbox">
                 <input type="text" style="width: 92%" placeholder="Enter your message" name="userEnteredMessage" id="input_box" />
-                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages();" />
             </div>
         </form>
 
@@ -106,7 +100,7 @@
             <br />
             <div class="textbox">
                 <input type="text" style="width: 92%" placeholder="Enter the url of the image you'd like to share..." name="photo_url" id="input_box" />
-                <input type="submit" text="Send" class="sendButton" onclick="getMessages();updateScroll();" />
+                <input type="submit" text="Send" class="sendButton" onclick="getMessages();" />
             </div>
         </form> -->
 
