@@ -13,6 +13,8 @@ INSERT INTO person VALUES ('BoatyMcBoatFace',md5('root'),'Boaty','McBoatFace','#
 INSERT INTO Content (id, username, content_name, caption, public) VALUES(0, 'BoatyMcBoatFace', "ImageContent", "default pic", TRUE);
 INSERT INTO ImageContent VALUES(LAST_INSERT_ID(), 'http%3A%2F%2Farrkenterprises.com%2Fwp-content%2Fuploads%2F2015%2F02%2Fempty-profile-pic.png');        #thisone
 
+UPDATE person SET profilePic=0 WHERE username='BoatyMcBoatFace';
+
 INSERT INTO person (username, password, first_name, last_name) VALUES ('AA', md5('AA'), 'Ann', 'Anderson');
 INSERT INTO person (username, password, first_name, last_name) VALUES ('BB', md5('BB'), 'Bob', 'Baker');
 INSERT INTO person (username, password, first_name, last_name) VALUES ('CC', md5('CC'), 'Cathy', 'Chang');

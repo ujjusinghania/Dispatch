@@ -4,6 +4,7 @@ from flask import Blueprint
 import pymysql.cursors
 
 import helpers
+from helpers import unquote
 
 content_blueprint = Blueprint('content_blueprint', __name__)
 
@@ -269,17 +270,5 @@ def getMessages():
 	return render_template('getMessages.html', contents=messages, comments=comments)
 
 
-
-def unquote(messages):
-	for i, _ in enumerate(messages):
-		if messages[i]['img_url']   != None:
-			messages[i]['img_url']   = urllib.parse.unquote( messages[i]['img_url'] )
-
-		if messages[i]['video_url'] != None:
-			messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
-
-		if messages[i]['audio_url'] != None:
-			messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
-	return messages
 
 

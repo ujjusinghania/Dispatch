@@ -156,6 +156,7 @@ def profile():
 			 WHERE username = %s'
 	cursor.execute(query, session['username'])
 	profs = cursor.fetchall()
+	profs = helpers.unquote(profs)
 	cursor.close()
 	return render_template('profile.html',profs=profs)
 
