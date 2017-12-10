@@ -43,6 +43,20 @@ def tag():
   print(tags)
   return render_template('tags.html', tags=tags)
 
+@tags_blueprint.route('/home/tags/viewTags', methods=['GET'])
+def viewTag():
+  	username = session['username']
+  	cursor = conn.cursor()
+  	query = 'SELECT username_tagger,id \
+  	FROM tag\
+  	WHERE username_taggee = %s AND status = 1'
+
+  	cursor.execute(query, (username))
+  	tags = cursor.fetchall()
+  	cursor.close()
+  	print(tags)
+  	return render_template('viewTags.html', tags=tags)
+
 @tags_blueprint.route('/home/tags/acceptTag')
 def acceptTag():
 	taggedByUsername = request.args.get('taggedBy')

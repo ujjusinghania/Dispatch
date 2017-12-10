@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Dispatch - Your Tags</title>
+    <title>Dispatch - Your Accepted Tags</title>
     <link rel="stylesheet" href="/static/styles/textStyle.css" />
     <link rel="stylesheet" href="/static/styles/materialize.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <!--Import jQuery before materialize.js-->
+        <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/static/js/materialize.min.js"></script>
     
@@ -22,19 +22,11 @@
     
     <div class=content>
         <span>
-            <font size='40em'>Your Pending Tags, {{session["fname"]}} {{session["lname"]}}.</font>
+        <font size='40em'>Your Accepted Tags, {{session["fname"]}} {{session["lname"]}}.</font>
         </span>
-        <a href='/home/tags/viewTags' style="text-decoration:none;">
-            <span style='float:right'>View Accepted Tags</span>
-        </a>
         <br/> {% for tag in tags%}
-        <p> User {{tag.username_tagger}} has tagged you in content with id {{tag.id}} </p>
-            <span style="float:right">
-                <a href='/home/tags/acceptTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn">
-                Accept </a>
-                <a href='/home/tags/declineTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn"> Decline </a>
-                {% endfor %}
-            </span>
+        <p> User {{tag.username_tagger}} tagged you in content with id {{tag.id}} on {{tag.timest}}</p>
+        {% endfor %}
     </div>
 </body>
 
