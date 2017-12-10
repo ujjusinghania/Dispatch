@@ -180,6 +180,20 @@ def addFavorite():
                  )
 
 
+@content_blueprint.route('/addTag',methods=['POST'])
+def addTag():
+	content_id = request.args.get('content_id')
+	username = request.form['taggee_name']
+
+	conn.commit()
+
+	cursor = conn.cursor()
+	query = 'INSERT INTO tag (id,username_tagger,username_taggee,status) VALUES (%s,%s,%s, False)'
+	cursor.execute(query,(content_id,username,session['username']))
+
+	conn.commit()
+	return redirect(url_for('.medialibrary'))
+
 
 @content_blueprint.route('/home/favorites')
 def favorites():
