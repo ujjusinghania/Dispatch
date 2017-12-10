@@ -109,7 +109,7 @@ CREATE TABLE Tag (
     username_tagger VARCHAR (50),
     username_taggee VARCHAR (50),
     timest TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status BOOLEAN,
+    status BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (id, username_tagger, username_taggee),
     FOREIGN KEY (id) REFERENCES Content(id) ON DELETE CASCADE,
     FOREIGN KEY (username_tagger) REFERENCES Person(username) ON DELETE CASCADE, 
