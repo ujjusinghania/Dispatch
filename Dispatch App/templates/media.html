@@ -86,11 +86,12 @@
                             </td> 
                             <td>
                                 <a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
-                    
+                                
+                                {% if not content.favorite %}
                                 | 
                     
                                 <a href="/addMediaFavorite?content_id={{content.ContentID}}" onclick="alert('Item has been added to your favorites.');"> Favorite </a>
-
+                                {% endif %}
                                 |
 
                                 <a href="/addTag?content_id={{content.ContentID}}">tag</a>

@@ -76,51 +76,69 @@ def medialibrary():
 		cursor = conn.cursor()
 		
 		#Query gets all the content that the user can view (public content and content in groups user is part of)
-		query = "SELECT * FROM ((SELECT														\
-					Content.timest,												\
-				    Content.id AS ContentID,									\
-				    Content.content_name,										\
-				    TextContent.text_content,									\
-				    ImageContent.url AS img_url,								\
-				    AudioContent.url AS audio_url,								\
-				    VideoContent.url AS video_url,								\
-				    Content.username AS ContentOwner,							\
-				    Content.public,												\
-       			 	Content.caption												\
-				FROM SHARE														\
-				JOIN Content ON Content.id = SHARE.id							\
-				LEFT JOIN TextContent ON Content.id = TextContent.id 			\
-				LEFT JOIN ImageContent ON Content.id = ImageContent.id 			\
-				LEFT JOIN AudioContent ON Content.id = AudioContent.id 			\
-				LEFT JOIN VideoContent ON Content.id = VideoContent.id			\
-				WHERE															\
-				    Content.id IN 											 	\
-				    (SELECT id													\
-				     FROM Share													\
-				     WHERE (group_name, username) IN							\
-				     	(SELECT group_name, username_creator 					\
-				         FROM member											\
-				         WHERE username = %s OR username_creator = %s)))		\
-				UNION 															\
-				(SELECT Content.timest,											\
-				    Content.id AS ContentID,									\
-				    Content.content_name,										\
-				    TextContent.text_content,									\
-				    ImageContent.url AS img_url,								\
-				    AudioContent.url AS audio_url,								\
-				    VideoContent.url AS video_url,								\
-				    Content.username AS ContentOwner,							\
-				    Content.public, 											\
-					Content.caption												\
-				FROM Content 													\
-				LEFT JOIN TextContent ON Content.id = TextContent.id 			\
-				LEFT JOIN ImageContent ON Content.id = ImageContent.id 			\
-				LEFT JOIN AudioContent ON Content.id = AudioContent.id 			\
-				LEFT JOIN VideoContent ON Content.id = VideoContent.id 			\
-							WHERE Content.public = 1)) AS contentSet 			\
-							ORDER BY contentSet.contentID ASC				 "
+		#also now gets favorites 
+		query = "SELECT timest,                                              \
+	ContentID,                                                               \
+    content_name,		                                                     \
+    text_content,                                                            \
+    img_url,                                                                 \
+    audio_url,                                                               \
+    video_url,                                                               \
+    ContentOwner,                                                            \
+    public,                                                                  \
+    caption,                                                                 \
+    !isnull(id) AS favorite 					                         	 \
+    	                                                                     \
+  FROM (                                                                     \
+                                                                             \
+((SELECT										                             \
+	Content.timest,											                 \
+    Content.id AS ContentID,								                 \
+    Content.content_name,									                 \
+    TextContent.text_content,								                 \
+    ImageContent.url AS img_url,							                 \
+    AudioContent.url AS audio_url,							                 \
+    VideoContent.url AS video_url,							                 \
+    Content.username AS ContentOwner,						                 \
+    Content.public,											                 \
+ 	Content.caption                                                          \
+FROM SHARE													                 \
+JOIN Content ON Content.id = SHARE.id						                 \
+LEFT JOIN TextContent ON Content.id = TextContent.id 		                 \
+LEFT JOIN ImageContent ON Content.id = ImageContent.id 		                 \
+LEFT JOIN AudioContent ON Content.id = AudioContent.id 		                 \
+LEFT JOIN VideoContent ON Content.id = VideoContent.id		                 \
+WHERE														                 \
+    Content.id IN 											                 \
+    (SELECT id												                 \
+     FROM Share												                 \
+     WHERE (group_name, username) IN						                 \
+     	(SELECT group_name, username_creator 				                 \
+         FROM member										                 \
+         WHERE username = %s OR username_creator = %s)))       	 	         \
+UNION 														                 \
+(SELECT Content.timest,										                 \
+    Content.id AS ContentID,								                 \
+    Content.content_name,									                 \
+    TextContent.text_content,								                 \
+    ImageContent.url AS img_url,							                 \
+    AudioContent.url AS audio_url,							                 \
+    VideoContent.url AS video_url,							                 \
+    Content.username AS ContentOwner,						                 \
+    Content.public, 										                 \
+	Content.caption											                 \
+FROM Content 												                 \
+LEFT JOIN TextContent ON Content.id = TextContent.id 		                 \
+LEFT JOIN ImageContent ON Content.id = ImageContent.id 		                 \
+LEFT JOIN AudioContent ON Content.id = AudioContent.id 		                 \
+LEFT JOIN VideoContent ON Content.id = VideoContent.id 		                 \
+			WHERE Content.public = 1)) AS contentSet 		                 \
+)                                                                            \
+LEFT JOIN Favorite ON ContentID = Favorite.id AND Favorite.username = %s   	 \
+ORDER BY contentSet.contentID ASC                                            "
 
-		cursor.execute(query, (session['username'], session['username']))
+
+		cursor.execute(query, (session['username'], session['username'], session['username']))
 		conn.commit()
 		messages = cursor.fetchall() 
 		query = ""
@@ -129,17 +147,19 @@ def medialibrary():
 		query = "SELECT * FROM Comment WHERE id= %s"
 		for i, _ in enumerate(messages):
 			print(messages[i])
-			if messages[i]['img_url'] != None:
-				messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
-			elif messages[i]['audio_url'] != None:
-				messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
-			if messages[i]['video_url'] != None:
-				messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
+			# if messages[i]['img_url'] != None:
+			# 	messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
+			# elif messages[i]['audio_url'] != None:
+			# 	messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+			# if messages[i]['video_url'] != None:
+			# 	messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()
 			print (cursor.fetchall())
- 
+
+		messages = helpers.unquote(messages)
+
 		cursor.close()
 
 		return render_template("media.html", contents=messages, comments=comments)
