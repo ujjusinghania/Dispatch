@@ -13,7 +13,22 @@
             }
         });
     };
-    console.log("in get messages...");
+
+    function unfavorite(id) {
+        //console.log("hello");
+        //console.log(id);
+        //alert("about to go");
+        $.ajax({
+            url: "/removeFavorite?content_id="+id,
+            success: function (response) {
+               //alert(response);
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    };
+
 </script>   
 
 <table border="1" id='messageTable'>
@@ -81,11 +96,11 @@
         </td> 
         <td>
         	<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
-
+            |
             {% if not infav is defined %}
-            | 
-
-            <a onclick="alert('You have favorited {{content.caption}}.'); favorite({{content.ContentID}}); "> fav </a>
+                <a onclick="alert('You have favorited {{content.caption}}.'); favorite({{content.ContentID}}); "> fav </a>
+            {% else %}
+                <a onclick="alert('You have unfavorited {{content.caption}}.'); unfavorite({{content.ContentID}}); location.reload(); "> unfav </a>
             {% endif %}
         </td>
 

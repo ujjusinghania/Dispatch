@@ -183,6 +183,28 @@ def addFavorite():
                  )
 
 
+
+
+@content_blueprint.route('/removeFavorite')
+def removeFavorite():
+
+	conn.commit()
+	cursor = conn.cursor()
+
+	query = "DELETE FROM Favorite WHERE id=%s AND username=%s;"
+
+	cursor.execute(query, (request.args.get("content_id"), session['username']))
+
+	cursor.close()
+	conn.commit()	
+
+
+	# return redirect(url_for('content_blueprint.messages') +
+ #                 '?groupSelected=' + session['groupSelected'][0] +
+ #                 '&username_creator=' + session['groupSelected'][1]
+ #                 )
+	return None
+
 @content_blueprint.route('/home/favorites')
 def favorites():
 	cursor = conn.cursor()
