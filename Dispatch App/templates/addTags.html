@@ -27,15 +27,12 @@
         <span>
             <font size='40em'>Tag Friends in Content, {{session["fname"]}} {{session["lname"]}}.</font>
         </span>
-        <a href='/home/friendhome/addfriend' style="text-decoration:none;">
-            <span style='float:right'>Add Friends</span>
-        </a>
         <br/> {% for possibleTag in possibleTags %}
         <br/>
         <br/>
         <span>{{possibleTag.first_name}} {{possibleTag.last_name}} {{possibleTag.username}}</span>
         <span style="float:right">
-            <a href='/home/friendhome/friendrequest/acceptRequest?sentBy={{request.username}}' class="waves-effect waves-light btn">Accept</a>
+            <a href='/addTag/auth?taggee={{possibleTag.username}}&cid={{content_id}}' class="waves-effect waves-light btn">Tag</a>
         </span>
         <br/>
         {% endfor %}

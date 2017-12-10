@@ -70,16 +70,27 @@ def declineTag():
 	return redirect(url_for('.tag'))
 
 
-@tag_blueprint.route('/addTag',methods=['POST'])
+@tag_blueprint.route('/addTag')
 def addTag():
-	content_id = request.args.get('content_id')
-	username = request.form['taggee_name']
-
-	conn.commit()
+	cid = request.args.get('content_id')
+	tagger = session['username']
 
 	cursor = conn.cursor()
-	query = 'INSERT INTO tag (id,username_tagger,username_taggee,status) VALUES (%s,%s,%s, False)'
-	cursor.execute(query,(content_id,username,session['username']))
-
+	query = 'SELECT first_name, last_name, username FROM ((SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s) UNION (SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s)) AS friends WHERE username NOT IN (SELECT username FROM tag WHERE id = %s)'
+	cursor.execute(query,(tagger, tagger, cid))
+	possibleTags = cursor.fetchall()
+	cursor.close()
 	conn.commit()
-	return redirect(url_for('.medialibrary'))
+	return render_template('addTags.html', possibleTags=possibleTags, content_id=cid)
+
+@tag_blueprint.route('/addTag/auth')
+def addTag():
+	taggee = request.args.get('taggee')
+	cid = request.args.cid('content_id')
+
+	cursor.conn.cursor()
+	query = 'INSERT INTO tag (id, username_tagger, username_taggee) VALUES (%s, %s, %s)'
+	cursor.execute(query, (cid, session['username'], taggee))
+	conn.commit()
+
+	return redirect(url_for('.addTag'), content_id=cid)
