@@ -5,7 +5,7 @@ import pymysql.cursors
 
 import helpers
 
-content_blueprint = Blueprint('content_blueprint', __name__)
+tags_blueprint = Blueprint('tags_blueprint', __name__)
 
 
 # [temporary solution] This checks python version to decide what to import 
@@ -29,7 +29,7 @@ conn = pymysql.connect(host='localhost',
                       charset='latin1',
                       cursorclass=pymysql.cursors.DictCursor)
 
-@tag_blueprint.route('/home/tags', methods=['GET'])
+@tags_blueprint.route('/home/tags', methods=['GET'])
 def tag():
   username = session['username']
   cursor = conn.cursor()
@@ -43,7 +43,7 @@ def tag():
   print(tags)
   return render_template('tags.html', tags=tags)
 
-@tag_blueprint.route('/home/tags/acceptTag')
+@tags_blueprint.route('/home/tags/acceptTag')
 def acceptTag():
 	taggedByUsername = request.args.get('taggedBy')
 	taggedID = request.args.get('tagID')
@@ -57,7 +57,7 @@ def acceptTag():
 	cursor.close()
 	return redirect(url_for('.tag'))
 
-@tag_blueprint.route('/home/tags/declineTag')
+@tags_blueprint.route('/home/tags/declineTag')
 def declineTag():
 	taggedByUsername = request.args.get('taggedBy')
 	taggedID = request.args.get('tagID')
@@ -70,27 +70,27 @@ def declineTag():
 	return redirect(url_for('.tag'))
 
 
-@tag_blueprint.route('/addTag')
+@tags_blueprint.route('/addTag', methods=['GET', 'POST'])
 def addTag():
 	cid = request.args.get('content_id')
 	tagger = session['username']
 
 	cursor = conn.cursor()
-	query = 'SELECT first_name, last_name, username FROM ((SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s) UNION (SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s)) AS friends WHERE username NOT IN (SELECT username FROM tag WHERE id = %s)'
+	query = 'SELECT first_name, last_name, username FROM ((SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s) UNION (SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s)) AS friends WHERE username NOT IN (SELECT username_taggee FROM tag WHERE id = %s)'
 	cursor.execute(query,(tagger, tagger, cid))
 	possibleTags = cursor.fetchall()
 	cursor.close()
 	conn.commit()
 	return render_template('addTags.html', possibleTags=possibleTags, content_id=cid)
 
-@tag_blueprint.route('/addTag/auth')
-def addTag():
+@tags_blueprint.route('/addTag/auth', methods=['GET', 'POST'])
+def addTagAuth():
 	taggee = request.args.get('taggee')
-	cid = request.args.cid('content_id')
-
-	cursor.conn.cursor()
+	cid = request.args.get('cid')
+	print(taggee, cid)
+	cursor = conn.cursor()
 	query = 'INSERT INTO tag (id, username_tagger, username_taggee) VALUES (%s, %s, %s)'
 	cursor.execute(query, (cid, session['username'], taggee))
 	conn.commit()
 
-	return redirect(url_for('.addTag'), content_id=cid)
+	return redirect(url_for('.medialibrary'))

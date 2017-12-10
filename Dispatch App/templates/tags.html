@@ -26,11 +26,12 @@
         </span>
         <br/> {% for tag in tags%}
         <p> User {{tag.username_tagger}} has tagged you in content
-            <a style="float:right">
+            <span style="float:right">
                 <a href='/home/tags/acceptTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn">
                 Accept </a>
                 <a href='/home/tags/declineTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn"> Decline </a>
                 {% endfor %}
+            </span>
     </div>
 </body>
 

@@ -67,20 +67,6 @@ def PublicComment():
 
 	return redirect(url_for('.medialibrary'))
 
-@media_blueprint.route('/addTag',methods=['POST'])
-def addTag():
-	content_id = request.form['ContentID']
-	username = request.form['taggee_name']
-
-	conn.commit()
-
-	cursor = conn.cursor()
-	query = 'INSERT INTO tag (id,username_tagger,username_taggee,status) VALUES (%s,%s,%s, False)'
-	cursor.execute(query,(content_id,username,session['username']))
-
-	conn.commit()
-	return redirect(url_for('.medialibrary'))
-
 	
 @media_blueprint.route('/home/medialibrary', methods=['GET'])
 def medialibrary():

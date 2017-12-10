@@ -5,6 +5,7 @@ import pymysql.cursors
 from friends import friends_blueprint
 from content import content_blueprint
 from medialib import media_blueprint
+from tag import tags_blueprint
 
 import helpers
 import sys
@@ -17,6 +18,7 @@ app = Flask(__name__)
 app.register_blueprint(friends_blueprint)
 app.register_blueprint(content_blueprint)
 app.register_blueprint(media_blueprint)
+app.register_blueprint(tags_blueprint)
 
 # this is for pulling the port and database password from environment variables
 import os
@@ -56,47 +58,6 @@ def friendgroups():
 		cursor.close()
 
 		return render_template('friendgroups.html', groups=groups)
-
-
-@app.route('/home/tags', methods=['GET'])
-def tag():
-  username = session['username']
-  cursor = conn.cursor()
-  query = 'SELECT username_tagger,id \
-  		   FROM tag\
-  		   WHERE username_taggee = %s AND status = 0'
-
-  cursor.execute(query, (username))
-  tags = cursor.fetchall()
-  cursor.close()
-  print(tags)
-  return render_template('tags.html', tags=tags)
-
-@app.route('/home/tags/acceptTag')
-def acceptTag():
-	taggedByUsername = request.args.get('taggedBy')
-	taggedID = request.args.get('tagID')
-	username = session['username']
-	cursor = conn.cursor()
-	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s AND id = %s  AND status = FALSE'
-	cursor.execute(query,(username,taggedByUsername,taggedID))
-	query = 'INSERT INTO tag VALUES (%s,%s,%s,NULL,TRUE)'
-	cursor.execute(query,(taggedID,username,taggedByUsername))
-	conn.commit()
-	cursor.close()
-	return redirect(url_for('.tag'))
-
-@app.route('/home/tags/declineTag')
-def declineTag():
-	taggedByUsername = request.args.get('taggedBy')
-	taggedID = request.args.get('tagID')
-	username = session['username']
-	cursor = conn.cursor()
-	query = 'DELETE FROM tag WHERE username_taggee = %s AND username_tagger = %s  AND status = FALSE'
-	cursor.execute(query,(username,taggedByUsername))
-	conn.commit()
-	cursor.close()
-	return redirect(url_for('.tag'))
 
 @app.route('/logout')
 def logout():
