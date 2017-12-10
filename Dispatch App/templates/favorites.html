@@ -15,40 +15,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     
-        {% set infav = true %}
-        <script>
-
-            // var update = true;
-            function getMessages() {
-                // if (update) {
-                $.ajax({
-                    url: "{{ url_for('content_blueprint.favorites') }}",
-                    // url: "{{ url_for('content_blueprint.getMessages') }}",
-                    success: function (response) {
-                        $("body").html(response);
-                    },
-                    error: function (xhr) {
-                        //Do Something to handle error
-                    }
-                });
-                // } // end if(update)
-                // updateScroll();
-                console.log("in favs")
-            };
-    
-            function updateScroll() {
-                // element = document.getElementById("scrollBox");
-                // if (element != null)
-                //     element.scrollTop = element.scrollHeight;
-            }
-    
-            // getMessages();
-            // $(function () {
-            //     $("#input_box").focus();
-            // });
-    
-            // window.setInterval(getMessages, 2000);
-        </script>
+       
 
 </head>
 
