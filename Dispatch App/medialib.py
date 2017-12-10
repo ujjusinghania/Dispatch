@@ -150,10 +150,15 @@ def addFavorite():
 	conn.commit()
 	cursor = conn.cursor()
 
-	query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
-
+	query = "SELECT id, username FROM favorite WHERE id = %s and username = %s "
 	cursor.execute(query, (request.args.get("content_id"), session['username']))
-	# favs = cursor.fetchall()
-	cursor.close()
-	conn.commit()
-	return redirect(url_for('.medialibrary'))
+
+	if (cursor.fetchone()):
+		return redirect(url_for('.medialibrary'))
+	else:
+		query = "INSERT INTO Favorite (id, username) VALUES(%s, %s);"
+		cursor.execute(query, (request.args.get("content_id"), session['username']))
+		# favs = cursor.fetchall()
+		cursor.close()
+		conn.commit()
+		return redirect(url_for('.medialibrary'))

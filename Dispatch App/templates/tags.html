@@ -27,9 +27,11 @@
         <a href='/home/tags/viewTags' style="text-decoration:none;">
             <span style='float:right'>View Accepted Tags</span>
         </a>
-        <br/> {% for tag in tags%}
-        <p> User {{tag.username_tagger}} has tagged you in content with id {{tag.id}} </p>
-            <span style="float:right">
+        <br/> {% for tag in tags %}
+        <br/>
+        <br/>
+        <font size='6em'><span> User {{tag.username_tagger}} has tagged you in content with id {{tag.id}} </span></font>
+        <span style="float:right">
                 <a href='/home/tags/acceptTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn">
                 Accept </a>
                 <a href='/home/tags/declineTag?taggedBy={{tag.username_tagger}}&tagID={{tag.id}}' class="waves-effect waves-light btn"> Decline </a>
