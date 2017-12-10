@@ -15,21 +15,25 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     
+        {% set infav = true %}
         <script>
-            var update = true;
+
+            // var update = true;
             function getMessages() {
-                if (update) {
-                    $.ajax({
-                        url: "{{ url_for('content_blueprint.getMessages') }}",
-                        success: function (response) {
-                            $("#messages").html(response);
-                        },
-                        error: function (xhr) {
-                            //Do Something to handle error
-                        }
-                    });
-                } // end if(update)
+                // if (update) {
+                $.ajax({
+                    url: "{{ url_for('content_blueprint.favorites') }}",
+                    // url: "{{ url_for('content_blueprint.getMessages') }}",
+                    success: function (response) {
+                        $("body").html(response);
+                    },
+                    error: function (xhr) {
+                        //Do Something to handle error
+                    }
+                });
+                // } // end if(update)
                 // updateScroll();
+                console.log("in favs")
             };
     
             function updateScroll() {
@@ -38,12 +42,12 @@
                 //     element.scrollTop = element.scrollHeight;
             }
     
-            getMessages();
-            $(function () {
-                $("#input_box").focus();
-            });
+            // getMessages();
+            // $(function () {
+            //     $("#input_box").focus();
+            // });
     
-            // window.setInterval(getMessages, 200);
+            // window.setInterval(getMessages, 2000);
         </script>
 
 </head>
@@ -53,8 +57,10 @@
     {% include 'topnav.html' %}
 
     <div class=content>
-        {% set infav = true %}
-        {% include 'getMessages.html' %}
+        <div id="favs">
+            {% set infav = true %}
+            {% include 'getMessages.html' %}
+        </div>
     </div>
 </body>
 </html>

@@ -4,6 +4,7 @@ from flask import Blueprint
 import pymysql.cursors
 import hashlib
 import helpers
+from helpers import unquote
 
 media_blueprint = Blueprint('media_blueprint',__name__)
 
@@ -146,13 +147,13 @@ ORDER BY contentSet.contentID ASC                                            "
 		comments = {}
 		query = "SELECT * FROM Comment WHERE id= %s"
 		for i, _ in enumerate(messages):
-			print(messages[i])
-			# if messages[i]['img_url'] != None:
-			# 	messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
-			# elif messages[i]['audio_url'] != None:
-			# 	messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
-			# if messages[i]['video_url'] != None:
-			# 	messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
+		# 	print(messages[i])
+		# 	if messages[i]['img_url'] != None:
+		# 		messages[i]['img_url'] = urllib.parse.unquote( messages[i]['img_url'] )
+		# 	elif messages[i]['audio_url'] != None:
+		# 		messages[i]['audio_url'] = urllib.parse.unquote( messages[i]['audio_url'] )
+		# 	if messages[i]['video_url'] != None:
+		# 		messages[i]['video_url'] = urllib.parse.unquote( messages[i]['video_url'] )
 
 			cursor.execute(query, messages[i]['ContentID'])
 			comments[ messages[i]['ContentID'] ] = cursor.fetchall()

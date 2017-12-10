@@ -125,16 +125,18 @@ def comment():
                  )
 
 
-@content_blueprint.route('/commentFav', methods=['POST'])
+@content_blueprint.route('/commentFav', methods=['POST', 'GET'])
 def commentFav():
 	content_id 		= request.form['ContentID']
 	username   		= request.form['commenter_name']
 	comment_text  	= request.form['comment_text']
 
-	if (comment_text == ""):
-		return redirect(url_for('favorites'))
-
 	conn.commit()
+
+	if (comment_text == ""):
+		return redirect(url_for('content_blueprint.favorites'))
+
+	# conn.commit()
 
 	cursor = conn.cursor()
 	query = 'INSERT INTO Comment (id, username, comment_text) VALUES(%s, %s, %s)'
@@ -184,6 +186,8 @@ def addFavorite():
 @content_blueprint.route('/home/favorites')
 def favorites():
 	cursor = conn.cursor()
+
+	conn.commit()
 
 	query = "SELECT timest,										\
 		Favorite.id as ContentID,								\

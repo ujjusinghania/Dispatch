@@ -13,6 +13,7 @@
             }
         });
     }
+    console.log("in get messages...")
 </script>   
 
 <table border="1" id='messageTable'>
@@ -81,9 +82,11 @@
         <td>
         	<a onclick="update=false; $('#commentForm{{content.ContentID}}').show(); $('#comment_box{{content.ContentID}}').focus();"> ⃔comment </a>
 
+            {% if not infav is defined %}
             | 
 
             <a onclick="alert('You have favorited {{content.caption}}.'); favorite({{content.ContentID}}); "> fav </a>
+            {% endif %}
         </td>
 
         <td>{% if content.public %} <img src="/static/imgs/unlock.png" alt="public" height="32" width="32"> {% else %} <img src="/static/imgs/lock.png" alt="private" height="32" width="32"> {% endif %}</td>
