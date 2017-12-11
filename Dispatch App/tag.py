@@ -90,8 +90,8 @@ def addTag():
 	tagger = session['username']
 
 	cursor = conn.cursor()
-	query = 'SELECT first_name, last_name, username FROM ((SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s) UNION (SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s)) AS friends WHERE username NOT IN (SELECT username_taggee FROM tag WHERE id = %s)'
-	cursor.execute(query,(tagger, tagger, cid))
+	query = 'SELECT first_name, last_name, username FROM ((SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_receive_username = person.username WHERE accepted_request = TRUE AND friend_send_username = %s) UNION (SELECT first_name, last_name, username FROM friends JOIN person ON friends.friend_send_username = person.username WHERE accepted_request = TRUE AND friend_receive_username = %s)) AS friends WHERE username NOT IN (Select username_taggee from tag where id = %s and username_tagger = %s)'
+	cursor.execute(query,(tagger, tagger, cid, session['username']))
 	possibleTags = cursor.fetchall()
 	cursor.close()
 	conn.commit()
