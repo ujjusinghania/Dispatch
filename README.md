@@ -41,9 +41,15 @@ Windows
 ```
 set FLASK_APP=main.py
 set DB_PASS="root"
-set DB_PORT=8889
+set DB_PORT=3306
 flask run
 ```
+
+#Another way to run
+Navigate to /"Dispatch App"/
+set environment variables DB_PASS and DB_PORT
+run with command "python3 main.py"
+
 
 ### port numbers
 3306 for Windows, 8889 for MacOS
