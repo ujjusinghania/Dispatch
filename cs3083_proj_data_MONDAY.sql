@@ -57,6 +57,22 @@ INSERT INTO `member` (`username`, `group_name`, `username_creator`) VALUES
 ('UserC', 'Friends', 'UserF'),
 ('UserD', 'Work', 'UserF');
 
+
+--
+-- Dumping data for table 'friends'
+--
+
+INSERT INTO friends VALUES
+('UserC', 'UserD', 1),
+('UserC', 'UserE', 1),
+('UserC', 'UserA', 1),
+('UserC', 'UserB', 1),
+('UserC', 'UserC', 1),
+('UserF', 'UserA', 1),
+('UserF', 'UserC', 1),
+('UserF', 'UserD', 1);
+
+
 --
 -- Dumping data for table `content`
 --
